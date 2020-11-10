@@ -26,9 +26,9 @@ jobs:
         pip install flask
         pip install pyyaml
         pip install nltk
-        pip install json
+        pip install pyjson
         pip install pandas
-        pip install yaml
+        pip install pyyaml
     - name: Test with pytest
       run: |
         python test.py
