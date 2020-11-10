@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake
+        pip install flask
         pip install pyyaml
         pip install nltk
         pip install json
