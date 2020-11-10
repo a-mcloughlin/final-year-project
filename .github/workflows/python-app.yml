@@ -28,6 +28,7 @@ jobs:
         pip install nltk
         pip install pyjson
         pip install pandas
+        pip install requests
         pip install pyyaml
     - name: Test with pytest
       run: |
