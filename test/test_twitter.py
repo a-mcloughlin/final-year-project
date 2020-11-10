@@ -1,6 +1,5 @@
 
 import unittest
-import requests
 import internal.twitter.requests as requests
 import internal.twitter.auth as auth
 
