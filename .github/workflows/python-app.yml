@@ -30,6 +30,7 @@ jobs:
         pip install pandas
         pip install requests
         pip install pyyaml
+        pip install pytest
     - name: Test with pytest
       run: |
         pytest test -v
