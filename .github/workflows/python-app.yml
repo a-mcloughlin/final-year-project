@@ -32,4 +32,4 @@ jobs:
         pip install pyyaml
     - name: Test with pytest
       run: |
-        python test.py
+        pytest test -v
