@@ -31,6 +31,7 @@ jobs:
         pip install requests
         pip install pyyaml
         pip install pytest
+        python test\install_nltk.py
     - name: Test with pytest
       run: |
         pytest test -v
