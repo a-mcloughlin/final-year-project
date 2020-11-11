@@ -24,7 +24,7 @@ class TestTwitter(unittest.TestCase):
         
     def test_get_tweets_for_tag_maxid(self):
         result = self.assertEqual(
-            requests.get_tweets_for_tag_maxid("hash", 1245), 
+            requests.get_tweets_for_tag_maxid("hash", 12345), 
             base_url + "&query=hash" + until_tweet
         )
         
