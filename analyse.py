@@ -9,6 +9,20 @@ import internal.word_processing.process_json_tweets as process_json
 import internal.sentiment.detect_emotions as check
 import sys
 
+# A class to store result data more efficiently 
+class result:  
+    def __init__(self, term, most_used_words, most_used_emojis, word_count, strongest_emotions, tweet_count, sentiment):  
+        self.word_count=word_count
+        self.term = term
+        self.most_used_words=most_used_words
+        self.most_used_emojis=most_used_emojis
+        self.strongest_emotions = strongest_emotions
+        self.tweet_count = tweet_count
+        self.sentiment = sentiment
+        self.mxscale = most_used_words[0].count
+        
+        
+
 # Check the type of the request passed - Is it a # or @
 def check_type(param):
     if param[0] == '#':
@@ -23,7 +37,7 @@ def check_type(param):
 def analyse_tweets(url, typ, parsed):
 
     tweets = run_twitter_request(url, "auth.yaml")
-    word_list, tweet_count, last_id = process_json.process_json_tweetset(tweets)
+    word_list, emoji_list, tweet_count, last_id = process_json.process_json_tweetset(tweets)
 
     extra_tweet_count = tweet_count
     for item in range(2):
@@ -34,13 +48,14 @@ def analyse_tweets(url, typ, parsed):
                 next_url = requests.get_tweets_for_usr_maxid(parsed, last_id)
                 
             more_tweets = run_twitter_request(next_url, "auth.yaml")
-            word_list, extra_tweet_count, last_id = process_json.process_additional_json_tweetset(more_tweets, word_list)
+            word_list, emoji_list, extra_tweet_count, last_id = process_json.process_additional_json_tweetset(more_tweets, word_list, emoji_list)
             tweet_count = tweet_count + extra_tweet_count
     
     most_used_words = handle_wordlist.get_n_most_frequent_words(word_list, 20)
+    most_used_emojis = handle_wordlist.get_n_most_frequent_words(emoji_list, 5)
     word_count = handle_wordlist.unique_word_count(word_list)
     emotion_levels = check.get_emotions_from_wordlist(word_list)
-    return most_used_words, word_count, emotion_levels, tweet_count
+    return most_used_words, most_used_emojis, word_count, emotion_levels, tweet_count
 
 # Return twitter request data based on the search param passed
 # This function does not make the request, it only geretaed the data to make the request            
@@ -66,12 +81,13 @@ def get_tag_or_usr(param):
 # Return the most used words, the word count, the strongest emotions, the number of tweets and the overall sentiment
 def analyse(name):
     url, typ, parsed = get_tag_or_usr(name)
-    most_used_words, word_count, emotion_levels, tweet_count = analyse_tweets(url, typ, parsed)
+    most_used_words, most_used_emojis, word_count, emotion_levels, tweet_count = analyse_tweets(url, typ, parsed)
     strongest_emotions = check.get_strongest_emotions(emotion_levels)
     positivity, sentiment = check.get_positivity_and_negativity(emotion_levels)
     print("Negativity: "+str(positivity[0].get_strength()))  
     print("Positivity: "+str(positivity[1].get_strength()))  
-    return most_used_words, word_count, strongest_emotions, tweet_count, sentiment
+    resultitem = result(name, most_used_words, most_used_emojis, word_count, strongest_emotions, tweet_count, sentiment)
+    return resultitem
 
 # When running this file locally through the command line:
 # Take user search input
@@ -79,13 +95,16 @@ def analyse(name):
 # Display nicely formatted response data
 if __name__ == "__main__":
     print("Enter the hashtag or user tag to analyse in the form #tag or @user")
-    most_used_words, word_count, strongest_emotions, tweet_count, sentiment = analyse(input())
+    resultitem = analyse(input())
 
-    print("Unique words used in "+str(tweet_count)+" tweets: "+word_count)
-    print("This tweet-set is overall "+sentiment)
+    print("Unique words used in "+str(resultitem.tweet_count)+" tweets: "+resultitem.word_count)
+    print("This tweet-set is overall "+resultitem.sentiment)
     print("Strongest Emotions: ")
-    for i in strongest_emotions:
+    for i in resultitem.strongest_emotions:
         print(i.name+" : "+str(i.get_strength()))
     print("Most Used Words: ")
-    for i in most_used_words:
+    for i in resultitem.most_used_words:
+        print(i.word+":"+str(i.count))
+    print("Most Used Emojis: ")
+    for i in resultitem.most_used_emojis:
         print(i.word+":"+str(i.count))

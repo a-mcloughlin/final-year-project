@@ -26,11 +26,19 @@
             This tweet-set is overall {{result.sentiment}}<br>
             Strongest Emotions: 
             {% for item in result.strongest_emotions %}
-              <div style="font-size:{{item.get_strength()*1000}}px">{{item.name}}&emsp;{{item.get_strength()}}</div>
+              <div style="font-size:{{item.get_strength()*50}}vw">{{item.name}}&emsp;{{item.get_strength()}}</div>
             {% endfor %}
+            {% if result.most_used_emojis != [] %}
+              Most Used Emojis: <br>
+              {% for item in result.most_used_emojis %}
+                <div style="font-size:{{item.count/15}}wv">{{item.word}}&emsp;{{item.count}}</div>
+              {% endfor %}
+            {% else %}
+              No emojis used in the last 7 days<br>
+            {% endif %}
             Most Used Words: <br>
             {% for item in result.most_used_words %}
-              <div style="font-size:{{item.count*2}}px">{{item.word}}&emsp;{{item.count}}</div>
+              <div style="font-size:{{(item.count/result.mxscale)*5}}vw">{{item.word}}&emsp;{{item.count}}</div>
             {% endfor %}
           </td>
         {% endfor %}

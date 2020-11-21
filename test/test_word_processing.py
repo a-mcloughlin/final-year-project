@@ -33,6 +33,7 @@ mock_wordlist = [
     mock_word("little",1),
     mock_word("body",1),
     mock_word("ground",1),
+    mock_word("course,",1),
     mock_word("flies",1),
     mock_word("anyway",1),
     mock_word("bees",1),
@@ -51,7 +52,7 @@ mock_mostused = [
 class TestWordProcessing(unittest.TestCase):
     
     def test_getItem(self):
-        self.assertEqual(handle_wordlist.getItem(mock_wordlist, "humans"), 19)
+        self.assertEqual(handle_wordlist.getItem(mock_wordlist, "humans"), 20)
     
     def test_checkList(self):
         self.assertEqual(handle_wordlist.checkList(mock_wordlist, "humans"), True)
@@ -61,7 +62,6 @@ class TestWordProcessing(unittest.TestCase):
         self.assertEqual(handle_wordlist.check_validity('@user'), False)
         self.assertEqual(handle_wordlist.check_validity('https://google.com'), False)
         self.assertEqual(handle_wordlist.check_validity('12345'), False)
-        self.assertEqual(handle_wordlist.check_validity('&etc'), False)
         self.assertEqual(handle_wordlist.check_validity('rt'), False)
         self.assertEqual(handle_wordlist.check_validity('the'), False)
         self.assertEqual(handle_wordlist.check_validity('forest'), True)
@@ -71,7 +71,7 @@ class TestWordProcessing(unittest.TestCase):
         assert_wordlists_equal(self, wordlist, mock_wordlist)
 
     def test_unique_word_count(self):
-        self.assertEqual(handle_wordlist.unique_word_count(mock_wordlist), '22')
+        self.assertEqual(handle_wordlist.unique_word_count(mock_wordlist), '23')
 
     def test_get_n_most_frequent_words(self):
         most_used = handle_wordlist.get_n_most_frequent_words(mock_wordlist,5)
