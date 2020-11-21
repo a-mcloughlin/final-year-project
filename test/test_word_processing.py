@@ -1,62 +1,18 @@
 
 import unittest
+import json
 import internal.word_processing.handle_wordlist as handle_wordlist
+import internal.word_processing.process_json_tweets as process_json_tweets
+import test.mocked_data as mock
 
-class mock_word:  
-    def __init__(self, word, count):  
-        self.word = word  
-        self.count = count
-
-mock_words = [
-    "According", "to","all", "known","laws", "of","aviation", 
-    "there","is", "no","way", "a","bee", "should","be", "able",
-    "to", "fly","Its", "wings","are", "too","small", "to","get", 
-    "its","fat", "little","body", "off","the", "ground","The", 
-    "bee","of", "course,","flies", "anyway","because", "bees",
-    "don't", "care","what", "humans","think", "is", "impossible",
-    "bee", "laws","fly", "humans","bee", "laws", "care",
-]
-
-mock_wordlist = [
-    mock_word("according",1),
-    mock_word("known",1),
-    mock_word("laws",3),
-    mock_word("aviation",1),
-    mock_word("way",1),
-    mock_word("bee",4),
-    mock_word("able",1),
-    mock_word("fly",2),
-    mock_word("wings",1),
-    mock_word("small",1),
-    mock_word("get",1),
-    mock_word("fat",1),
-    mock_word("little",1),
-    mock_word("body",1),
-    mock_word("ground",1),
-    mock_word("course,",1),
-    mock_word("flies",1),
-    mock_word("anyway",1),
-    mock_word("bees",1),
-    mock_word("care",2),
-    mock_word("humans",2),
-    mock_word("think",1),
-    mock_word("impossible",1)
-]
-mock_mostused = [
-    mock_word("bee",4),
-    mock_word("laws",3),
-    mock_word("fly",2),
-    mock_word("care",2),
-    mock_word("humans",2),
-]
 class TestWordProcessing(unittest.TestCase):
     
     def test_getItem(self):
-        self.assertEqual(handle_wordlist.getItem(mock_wordlist, "humans"), 20)
+        self.assertEqual(handle_wordlist.getItem(mock.mock_wordlist, "humans"), 20)
     
     def test_checkList(self):
-        self.assertEqual(handle_wordlist.checkList(mock_wordlist, "humans"), True)
-        self.assertEqual(handle_wordlist.checkList(mock_wordlist, "orange"), False)
+        self.assertEqual(handle_wordlist.checkList(mock.mock_wordlist, "humans"), True)
+        self.assertEqual(handle_wordlist.checkList(mock.mock_wordlist, "orange"), False)
     
     def test_check_validity(self):
         self.assertEqual(handle_wordlist.check_validity('@user'), False)
@@ -66,16 +22,45 @@ class TestWordProcessing(unittest.TestCase):
         self.assertEqual(handle_wordlist.check_validity('the'), False)
         self.assertEqual(handle_wordlist.check_validity('forest'), True)
 
+    def test_contains_emoji(self):
+        self.assertEqual(handle_wordlist.contains_emoji('12345'), False)
+        self.assertEqual(handle_wordlist.contains_emoji('abcdefg'), False)
+        self.assertEqual(handle_wordlist.contains_emoji('happy😁'), True)
+        self.assertEqual(handle_wordlist.contains_emoji('its👍good'), True)
+        
     def test_add_words_to_list(self):
-        wordlist = handle_wordlist.add_words_to_list(mock_words,[])
-        assert_wordlists_equal(self, wordlist, mock_wordlist)
+        wordlist = handle_wordlist.add_words_to_list(mock.mock_words,[])
+        assert_wordlists_equal(self, wordlist, mock.mock_wordlist)
+        
+    def test_add_emojis_to_list(self):
+        emojilist = handle_wordlist.add_emojis_to_list(mock.mock_emojis,[])
+        assert_wordlists_equal(self, emojilist, mock.mock_emojilist)      
 
     def test_unique_word_count(self):
-        self.assertEqual(handle_wordlist.unique_word_count(mock_wordlist), '23')
+        self.assertEqual(handle_wordlist.unique_word_count(mock.mock_wordlist), '23')
 
     def test_get_n_most_frequent_words(self):
-        most_used = handle_wordlist.get_n_most_frequent_words(mock_wordlist,5)
-        assert_wordlists_equal(self, mock_mostused, most_used)
+        most_used = handle_wordlist.get_n_most_frequent_words(mock.mock_wordlist,5)
+        assert_wordlists_equal(self, mock.mock_mostused, most_used)
+      
+    def test_process_json_tweetset(self):
+        file = open('test/json_tweetset.json', encoding='UTF8')
+        json_data = json.load(file)
+        word_list, emoji_list, count, last_id = process_json_tweets.process_json_tweetset(json_data, [], [])
+        for e in word_list:
+            print("mock_word(\""+e.word+"\","+str(e.count)+"),")
+        assert_wordlists_equal(self, word_list, mock.mock_jsonfile_wordlist)
+        assert_wordlists_equal(self, emoji_list, mock.mock_jsonfile_emojilist)
+        self.assertEqual(count, 100)
+        self.assertEqual(last_id, '1330256994016645120')
+       
+    def test_split_into_words_and_emojis(self):
+        sentence = "The quick💨 brown fox🦊 jumped over the lazy dog😁"
+        words = ["The","quick","brown","fox","jumped","over","the","lazy","dog"]
+        emojis = ['💨', '🦊', '😁']
+        wordlist, emojilist = process_json_tweets.split_into_words_and_emojis(sentence)
+        self.assertEqual(wordlist, words)
+        self.assertEqual(emojilist, emojis)
 
 def assert_wordlists_equal(self, wordlist1, wordlist2):
     for index, word in enumerate(wordlist1):

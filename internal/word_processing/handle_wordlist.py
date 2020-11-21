@@ -62,7 +62,7 @@ def add_words_to_list(words, word_list):
             word_list[index].count  = count+1
     return word_list
 
-# Add the words from a tweet to the list of word objects
+# Add the emojis from a tweet to the list of emoji word objects
 def add_emojis_to_list(emojis, emoji_list):
     for i in emojis: 
         if checkList(emoji_list, i) == False: 

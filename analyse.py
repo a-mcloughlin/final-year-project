@@ -37,7 +37,7 @@ def check_type(param):
 def analyse_tweets(url, typ, parsed):
 
     tweets = run_twitter_request(url, "auth.yaml")
-    word_list, emoji_list, tweet_count, last_id = process_json.process_json_tweetset(tweets)
+    word_list, emoji_list, tweet_count, last_id = process_json.process_first_json_tweetset(tweets)
 
     extra_tweet_count = tweet_count
     for item in range(2):
@@ -48,7 +48,7 @@ def analyse_tweets(url, typ, parsed):
                 next_url = requests.get_tweets_for_usr_maxid(parsed, last_id)
                 
             more_tweets = run_twitter_request(next_url, "auth.yaml")
-            word_list, emoji_list, extra_tweet_count, last_id = process_json.process_additional_json_tweetset(more_tweets, word_list, emoji_list)
+            word_list, emoji_list, extra_tweet_count, last_id = process_json.process_json_tweetset(more_tweets, word_list, emoji_list)
             tweet_count = tweet_count + extra_tweet_count
     
     most_used_words = handle_wordlist.get_n_most_frequent_words(word_list, 20)
