@@ -29,6 +29,7 @@ jobs:
         pip install requests
         pip install pyyaml
         pip install pytest
+        pip install emoji
         python test/install_nltk.py
     - name: Test with pytest
       run: |
