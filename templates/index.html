@@ -36,6 +36,22 @@
             {% else %}
               No emojis used in the last 7 days<br>
             {% endif %}
+            {% if result.most_used_hashtags!= [] %}
+              Most Used Hashtags: <br>
+              {% for item in result.most_used_hashtags %}
+                <div style="font-size:{{item.count/15}}wv">{{item.word}}&emsp;{{item.count}}</div>
+              {% endfor %}
+            {% else %}
+              No hashtags used in the last 7 days<br>
+            {% endif %}
+            {% if result.most_tagged_users != [] %}
+              Most Frequently Tagged Users: <br>
+              {% for item in result.most_tagged_users %}
+                <div style="font-size:{{item.count/15}}wv">{{item.word}}&emsp;{{item.count}}</div>
+              {% endfor %}
+            {% else %}
+              No users tagged in the last 7 days<br>
+            {% endif %}
             Most Used Words: <br>
             {% for item in result.most_used_words %}
               <div style="font-size:{{(item.count/result.mxscale)*5}}vw">{{item.word}}&emsp;{{item.count}}</div>
