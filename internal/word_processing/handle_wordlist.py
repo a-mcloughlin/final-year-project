@@ -23,15 +23,13 @@ def checkList(list, word):
     return False
 
 # Check that a word is:
-# - not a username 
+# - not an empty string
 # - not a url
 # - not a number
 # - is not representing a retweet (rt)
 # - is not a 'stopword' in the english language
 def check_validity(word):
     if word == '':
-        return False
-    if word[0] == '@':
         return False
     if word.startswith("http"):
         return False
@@ -62,19 +60,20 @@ def add_words_to_list(words, word_list):
             word_list[index].count  = count+1
     return word_list
 
-# Add the emojis from a tweet to the list of emoji word objects
-def add_emojis_to_list(emojis, emoji_list):
-    for i in emojis: 
-        if checkList(emoji_list, i) == False: 
-            emoji_list.append( word(i)) 
+# Add the items (emojis, hashtags, mentions) from a tweet to the list of word objects
+def add_items_to_list(items, item_list):
+    for i in items: 
+        i = i.lower()
+        if checkList(item_list, i) == False:
+            item_list.append( word(i)) 
         else:
-            index = getItem(emoji_list, i)
-            count = emoji_list[index].count
-            emoji_list[index].count  = count+1
-    return emoji_list
+            index = getItem(item_list, i)
+            count = item_list[index].count
+            item_list[index].count  = count+1
+    return item_list
 
 # Get the 'num' most frequently used words from the passed word list
-def get_n_most_frequent_words(list, num):
+def get_n_most_frequent_items(list, num):
     list.sort(key=lambda x: x.count, reverse=True)
     return list[:num]
 

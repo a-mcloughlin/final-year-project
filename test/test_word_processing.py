@@ -15,7 +15,7 @@ class TestWordProcessing(unittest.TestCase):
         self.assertEqual(handle_wordlist.checkList(mock.mock_wordlist, "orange"), False)
     
     def test_check_validity(self):
-        self.assertEqual(handle_wordlist.check_validity('@user'), False)
+        self.assertEqual(handle_wordlist.check_validity(''), False)
         self.assertEqual(handle_wordlist.check_validity('https://google.com'), False)
         self.assertEqual(handle_wordlist.check_validity('12345'), False)
         self.assertEqual(handle_wordlist.check_validity('rt'), False)
@@ -32,35 +32,45 @@ class TestWordProcessing(unittest.TestCase):
         wordlist = handle_wordlist.add_words_to_list(mock.mock_words,[])
         assert_wordlists_equal(self, wordlist, mock.mock_wordlist)
         
-    def test_add_emojis_to_list(self):
-        emojilist = handle_wordlist.add_emojis_to_list(mock.mock_emojis,[])
+    def test_add_items_to_list(self):
+        emojilist = handle_wordlist.add_items_to_list(mock.mock_emojis,[])
+        hashtaglist = handle_wordlist.add_items_to_list(mock.mock_hashtags,[])
+        mentionlist = handle_wordlist.add_items_to_list(mock.mock_mentions,[])
         assert_wordlists_equal(self, emojilist, mock.mock_emojilist)      
+        assert_wordlists_equal(self, hashtaglist, mock.mock_hashtaglist)      
+        assert_wordlists_equal(self, mentionlist, mock.mock_mentionlist)      
 
     def test_unique_word_count(self):
         self.assertEqual(handle_wordlist.unique_word_count(mock.mock_wordlist), '23')
 
-    def test_get_n_most_frequent_words(self):
-        most_used = handle_wordlist.get_n_most_frequent_words(mock.mock_wordlist,5)
-        assert_wordlists_equal(self, mock.mock_mostused, most_used)
+    def test_get_n_most_frequent_items(self):
+        most_used_words = handle_wordlist.get_n_most_frequent_items(mock.mock_wordlist,5)
+        most_used_emojis = handle_wordlist.get_n_most_frequent_items(mock.mock_jsonfile_emojilist,5)
+        assert_wordlists_equal(self, mock.mock_words_mostused, most_used_words)
+        assert_wordlists_equal(self, mock.mock_jsonfile_emojilist_mostused, most_used_emojis)
       
     def test_process_json_tweetset(self):
         file = open('test/json_tweetset.json', encoding='UTF8')
         json_data = json.load(file)
-        word_list, emoji_list, count, last_id = process_json_tweets.process_json_tweetset(json_data, [], [])
-        for e in word_list:
-            print("mock_word(\""+e.word+"\","+str(e.count)+"),")
+        word_list, emoji_list, hashtag_list, mention_list, count, last_id = process_json_tweets.process_json_tweetset(json_data, [], [], [], [])
         assert_wordlists_equal(self, word_list, mock.mock_jsonfile_wordlist)
         assert_wordlists_equal(self, emoji_list, mock.mock_jsonfile_emojilist)
+        assert_wordlists_equal(self, hashtag_list, mock.mock_jsonfile_hashtaglist)
+        assert_wordlists_equal(self, mention_list, mock.mock_jsonfile_mentionlist)
         self.assertEqual(count, 100)
         self.assertEqual(last_id, '1330256994016645120')
        
-    def test_split_into_words_and_emojis(self):
-        sentence = "The quick💨 brown fox🦊 jumped over the lazy dog😁"
-        words = ["The","quick","brown","fox","jumped","over","the","lazy","dog"]
+    def test_split_into_tweet_data_categories(self):
+        sentence = "@The quick💨 @brown fox🦊 jumped #over the #Lazy dog😁"
+        words = ["quick","fox","jumped","the","dog"]
         emojis = ['💨', '🦊', '😁']
-        wordlist, emojilist = process_json_tweets.split_into_words_and_emojis(sentence)
-        self.assertEqual(wordlist, words)
-        self.assertEqual(emojilist, emojis)
+        hashtags = ['#over', '#Lazy']
+        tagged_users = ['@The', '@brown']
+        splitdata = process_json_tweets.split_into_tweet_data_categories(sentence)
+        self.assertEqual(splitdata.words, words)
+        self.assertEqual(splitdata.emojis, emojis)
+        self.assertEqual(splitdata.hashtags, hashtags)
+        self.assertEqual(splitdata.tagged_users, tagged_users)
 
 def assert_wordlists_equal(self, wordlist1, wordlist2):
     for index, word in enumerate(wordlist1):
