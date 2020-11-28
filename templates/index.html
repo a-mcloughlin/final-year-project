@@ -24,6 +24,8 @@
             Results for searching term: {{result.term}}<br>
             Unique words used in {{result.tweet_count}} tweets: {{result.word_count}}<br>
             This tweet-set is overall {{result.sentiment}}<br>
+            Political Leaning: {{result.political_statement}}<br>
+            Political Score: {{result.political_score}}<br>
             Strongest Emotions: 
             {% for item in result.strongest_emotions %}
               <div style="font-size:{{item.get_strength()*50}}vw">{{item.name}}&emsp;{{item.get_strength()}}</div>

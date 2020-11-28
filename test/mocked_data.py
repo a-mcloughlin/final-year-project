@@ -3,41 +3,6 @@ class mock_word:
         self.word = word  
         self.count = count
 
-mock_words = [
-    "According", "to","all", "known","laws", "of","aviation", 
-    "there","is", "no","way", "a","bee", "should","be", "able",
-    "to", "fly","Its", "wings","are", "too","small", "to","get", 
-    "its","fat", "little","body", "off","the", "ground","The", 
-    "bee","of", "course,","flies", "anyway","because", "bees",
-    "don't", "care","what", "humans","think", "is", "impossible",
-    "bee", "laws","fly", "humans","bee", "laws", "care",
-]
-
-mock_wordlist = [
-    mock_word("according",1),
-    mock_word("known",1),
-    mock_word("laws",3),
-    mock_word("aviation",1),
-    mock_word("way",1),
-    mock_word("bee",4),
-    mock_word("able",1),
-    mock_word("fly",2),
-    mock_word("wings",1),
-    mock_word("small",1),
-    mock_word("get",1),
-    mock_word("fat",1),
-    mock_word("little",1),
-    mock_word("body",1),
-    mock_word("ground",1),
-    mock_word("course,",1),
-    mock_word("flies",1),
-    mock_word("anyway",1),
-    mock_word("bees",1),
-    mock_word("care",2),
-    mock_word("humans",2),
-    mock_word("think",1),
-    mock_word("impossible",1)
-]
 mock_words_mostused = [
     mock_word("bee",4),
     mock_word("laws",3),
@@ -46,16 +11,24 @@ mock_words_mostused = [
     mock_word("humans",2),
 ]
 
-mock_emojis = ["😍","❤","😁","👍"]
-mock_emojilist = [
+mock_words_sample = ["medium","love","dogs","exercise"]
+mock_wordlist_sample = [
+    mock_word("medium",1),
+    mock_word("love",1),
+    mock_word("dogs",1),
+    mock_word("exercise",1)
+]
+
+mock_emojis_sample = ["😍","❤","😁","👍"]
+mock_emojilist_sample = [
     mock_word("😍",1),
     mock_word("❤",1),
     mock_word("😁",1),
     mock_word("👍",1)
 ]
 
-mock_hashtags = ["#dog","#cat1","#Goat","#biRd"]
-mock_hashtaglist = [
+mock_hashtags_sample = ["#dog","#cat1","#Goat","#biRd"]
+mock_hashtaglist_sample = [
     mock_word("#dog",1),
     mock_word("#cat1",1),
     mock_word("#goat",1),
@@ -63,15 +36,15 @@ mock_hashtaglist = [
 ]
 
 
-mock_mentions = ["@person","@person1","@Person2","@perSon3"]
-mock_mentionlist = [
+mock_mentions_sample = ["@person","@person1","@Person2","@perSon3"]
+mock_mentionlist_sample = [
     mock_word("@person",1),
     mock_word("@person1",1),
     mock_word("@person2",1),
     mock_word("@person3",1)
 ]
 
-mock_jsonfile_emojilist = [
+mock_emojilist = [
     mock_word("❤",8),
     mock_word("😍",3),
     mock_word("🔥",3),
@@ -96,7 +69,7 @@ mock_jsonfile_emojilist = [
     mock_word("🐶",1)
 ]
 
-mock_jsonfile_hashtaglist = [
+mock_hashtaglist = [
     mock_word("#worcestershire",6),
     mock_word("#ge19",1),
     mock_word("#shop",1),
@@ -142,7 +115,7 @@ mock_jsonfile_hashtaglist = [
     mock_word("#dogsoftwitter",1)
 ]
 
-mock_jsonfile_mentionlist = [
+mock_mentionlist = [
     mock_word("@trylolli",1),
     mock_word("@playadoptme",1),
     mock_word("@rightwingwatch",1),
@@ -192,14 +165,14 @@ mock_jsonfile_mentionlist = [
     mock_word("@snubs",1)
 ]
 
-mock_jsonfile_emojilist_mostused = [
+mock_emojilist_mostused = [
     mock_word("❤",8),
     mock_word("😍",3),
     mock_word("🔥",3),
     mock_word("🙏",2),
     mock_word("😁",1)
 ]
-mock_jsonfile_wordlist = [
+mock_wordlist = [
     mock_word("dog",90),
     mock_word("home",9),
     mock_word("please",8),
@@ -824,6 +797,14 @@ mock_jsonfile_wordlist = [
     mock_word("hill",1)
 ]
 
+mock_words_mostused = [
+    mock_word("dog",90),
+    mock_word("home",9),
+    mock_word("please",8),
+    mock_word("help",8),
+    mock_word("needs",7)
+]
+
 class mock_emotion:
     def __init__(self, name, weight, count):  
         self.name = name  
@@ -834,56 +815,25 @@ class mock_emotion:
         return round(self.count/self.weight,5)
     
 mock_emotionlist = [
-    mock_emotion("joy",689,0),
-    mock_emotion("negative",3322,3),
-    mock_emotion("positive",2312,0),
-    mock_emotion("sadness",1189,2),
-    mock_emotion("surprise",534,0),
-    mock_emotion("trust",1230,1),
-    mock_emotion("anger",1245,1),
-    mock_emotion("anticipation",839,0),
-    mock_emotion("disgust",1058,1),
-    mock_emotion("fear",1473,1)
+    mock_emotion("anger",1247,24),
+    mock_emotion("anticipation",839,22),
+    mock_emotion("disgust",1058,16),
+    mock_emotion("fear",1476,22),
+    mock_emotion("joy",689,24),
+    mock_emotion("negative",3324,35),
+    mock_emotion("positive",2312,45),
+    mock_emotion("sadness",1191,19),
+    mock_emotion("surprise",534,16),
+    mock_emotion("trust",1231,29)
 ]
 
 mock_strongest_emotions = [
-    mock_emotion("sadness",1189,2),
-    mock_emotion("disgust",1058,1),
-    mock_emotion("trust",1230,1),
+    mock_emotion("joy",689,24),
+    mock_emotion("surprise",534,16),
+    mock_emotion("anticipation",839,22)
 ] 
 
 mock_positivity_negativity = [
-    mock_emotion("negative",3322,3),
-    mock_emotion("positive",2312,0),
-]
-
-class mock_word_2:  
-    def __init__(self, word):  
-        self.word = word  
-        self.count = 1 
-
-mock_wordlist_2 = [
-    mock_word_2("According"),mock_word_2("to"),
-    mock_word_2("all"),mock_word_2("known"),
-    mock_word_2("laws"),mock_word_2("of"),
-    mock_word_2("aviation"),mock_word_2("there"),
-    mock_word_2("is"),mock_word_2("no"),
-    mock_word_2("way"),mock_word_2("a"),
-    mock_word_2("bee"),mock_word_2("should"),
-    mock_word_2("be"),mock_word_2("able"),
-    mock_word_2("to"),mock_word_2("fly"),
-    mock_word_2("Its"),mock_word_2("wings"),
-    mock_word_2("are"),mock_word_2("too"),
-    mock_word_2("small"),mock_word_2("to"),
-    mock_word_2("get"),mock_word_2("its"),
-    mock_word_2("fat"),mock_word_2("little"),
-    mock_word_2("body"),mock_word_2("off"),
-    mock_word_2("the"),mock_word_2("ground"),
-    mock_word_2("The"),mock_word_2("bee,"),
-    mock_word_2("of"),mock_word_2("course,"),
-    mock_word_2("flies"),mock_word_2("anyway"),
-    mock_word_2("because"),mock_word_2("bees"),
-    mock_word_2("don't"),mock_word_2("care"),
-    mock_word_2("what"),mock_word_2("humans"),
-    mock_word_2("think"),mock_word_2("is"),mock_word_2("impossible")
+    mock_emotion("negative",3324,35),
+    mock_emotion("positive",2312,45),
 ]

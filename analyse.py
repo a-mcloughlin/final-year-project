@@ -6,12 +6,13 @@ from internal.twitter.auth import run_twitter_request
 import internal.twitter.requests as requests
 import internal.word_processing.handle_wordlist as handle_wordlist
 import internal.word_processing.process_json_tweets as process_json
-import internal.sentiment.detect_emotions as check
+import internal.data_analysis.detect_emotions as check_emotion
+import internal.data_analysis.detect_political_leaning as check_politics
 import sys
 
 # A class to store result data more efficiently 
 class result:  
-    def __init__(self, term, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, tweet_count, sentiment):  
+    def __init__(self, term, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, political_score, political_statement, tweet_count, sentiment):  
         self.word_count=word_count
         self.term = term
         self.most_used_words=most_used_words
@@ -19,6 +20,8 @@ class result:
         self.most_used_hashtags=most_used_hashtags
         self.most_tagged_users=most_tagged_users
         self.strongest_emotions = strongest_emotions
+        self.political_score = political_score
+        self.political_statement = political_statement
         self.tweet_count = tweet_count
         self.sentiment = sentiment
         self.mxscale = most_used_words[0].count
@@ -58,8 +61,9 @@ def analyse_tweets(url, typ, parsed):
     most_used_hashtags = handle_wordlist.get_n_most_frequent_items(hashtag_list, 5)
     most_tagged_users = handle_wordlist.get_n_most_frequent_items(mention_list, 5)
     word_count = handle_wordlist.unique_word_count(word_list)
-    emotion_levels = check.get_emotions_from_wordlist(word_list)
-    return most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, tweet_count
+    emotion_levels = check_emotion.get_emotions_from_wordlist(word_list)
+    political_score = check_politics.get_politics_from_wordlist(word_list)
+    return most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count
 
 # Return twitter request data based on the search param passed
 # This function does not make the request, it only geretaed the data to make the request            
@@ -85,12 +89,14 @@ def get_tag_or_usr(param):
 # Return the most used words, the word count, the strongest emotions, the number of tweets and the overall sentiment
 def analyse(name):
     url, typ, parsed = get_tag_or_usr(name)
-    most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, tweet_count = analyse_tweets(url, typ, parsed)
-    strongest_emotions = check.get_strongest_emotions(emotion_levels)
-    positivity, sentiment = check.get_positivity_and_negativity(emotion_levels)
+    most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count = analyse_tweets(url, typ, parsed)
+    strongest_emotions =  check_emotion.get_strongest_emotions(emotion_levels)
+    positivity, sentiment =  check_emotion.get_positivity_and_negativity(emotion_levels)
     print("Negativity: "+str(positivity[0].get_strength()))  
     print("Positivity: "+str(positivity[1].get_strength()))  
-    resultitem = result(name, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, tweet_count, sentiment)
+    print("Political Leaning: "+str(political_score))  
+    political_statement = check_politics.describe_political_leaning(political_score)
+    resultitem = result(name, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, political_score, political_statement, tweet_count, sentiment)
     return resultitem
 
 # When running this file locally through the command line:
@@ -106,6 +112,8 @@ if __name__ == "__main__":
     print("Strongest Emotions: ")
     for i in resultitem.strongest_emotions:
         print(i.name+" : "+str(i.get_strength()))
+    print("Political Score: "+str(resultitem.political_score))
+    print(resultitem.political_statement)
     print("Most Used Words: ")
     for i in resultitem.most_used_words:
         print(i.word+":"+str(i.count))

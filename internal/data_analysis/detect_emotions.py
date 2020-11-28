@@ -51,7 +51,6 @@ def get_emotions_from_wordlist(wordlist):
         weight = len(emolex_words[(emolex_words.association == 1) & (emolex_words.emotion == em)])
         emotions.append( emotion_data(em, weight))
     emolex_words = emolex_words.pivot(index='word', columns='emotion', values='association').reset_index()
-    emolex_words.head()
     for word in wordlist: 
         data = emolex_words.loc[emolex_words.word == word.word]
         if data.empty == False:
@@ -82,7 +81,6 @@ def get_strongest_emotions(emotion_list):
 # Return the data from the csv file
 def read_csv():
     filepath = 'NRC-Emotion-Lexicon/NRC-Emotion-Lexicon-v0.92/NRC-Emotion-Lexicon-Wordlevel-v0.92.txt'
-    emolex_df = pd.read_csv(filepath,  names=["word", "emotion", "association"], skiprows=45, sep='\t')
-    emolex_df.head(12)
+    emolex_df = pd.read_csv(filepath,  names=["word", "emotion", "association"], sep='\t')
     return emolex_df
   
