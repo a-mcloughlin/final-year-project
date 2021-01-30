@@ -40,8 +40,8 @@ def split_into_tweet_data_categories(sentence):
     
     words = sentence.split() 
     for word in words:
-        hashtag = re.search("^#\w+$", word)
-        mention = re.search("^@\w+$", word)
+        hashtag = re.search(r'^#\w+$', word)
+        mention = re.search(r'^@\w+$', word)
         if hashtag != None:
             hashtags.append(hashtag.string)
         elif mention != None:
