@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request          # import flask
+from flask import Flask, render_template, request
 from analyse import analyse
-
 resultlist = []
 app = Flask(__name__)
 

@@ -55,7 +55,8 @@ class TestWordProcessing(unittest.TestCase):
     def test_process_json_tweetset(self):
         file = open('test/json_tweetset.json', encoding='UTF8')
         json_data = json.load(file)
-        word_list, emoji_list, hashtag_list, mention_list, count, last_id = process_json_tweets.process_json_tweetset(json_data, [], [], [], [])
+        tweet_list, word_list, emoji_list, hashtag_list, mention_list, count, last_id = process_json_tweets.process_json_tweetset(json_data, [], [], [], [], [])
+        self.assertEqual(len(tweet_list), len(mock.mock_tweetlist))
         assert_wordlists_equal(self, word_list, mock.mock_wordlist)
         assert_wordlists_equal(self, emoji_list, mock.mock_emojilist)
         assert_wordlists_equal(self, hashtag_list, mock.mock_hashtaglist)
