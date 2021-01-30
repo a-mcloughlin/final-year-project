@@ -8,11 +8,17 @@ import internal.word_processing.handle_wordlist as handle_wordlist
 import internal.word_processing.process_json_tweets as process_json
 import internal.data_analysis.detect_emotions as check_emotion
 import internal.data_analysis.detect_political_leaning as check_politics
-import sys
+from internal.machine_learning.political_leaning_ibc import build_ml_model as build_ml_model_ibc ,predict_from_model as predict_from_model_ibc
+from internal.machine_learning.political_leaning_kaggle import build_ml_model as build_ml_model_kaggle ,predict_from_model as predict_from_model_kaggle
+from internal.machine_learning.political_leaning_my_set import build_ml_model as build_ml_model_my_set ,predict_from_model as predict_from_model_my_set, describe_political_leaning
+
+ml_model_ibc = None
+ml_model_kaggle = None
+ml_model_my_set = None
 
 # A class to store result data more efficiently 
 class result:  
-    def __init__(self, term, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, political_score, political_statement, tweet_count, sentiment):  
+    def __init__(self, term, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, political_score, political_statement, tweet_count, sentiment, prediction):  
         self.word_count=word_count
         self.term = term
         self.most_used_words=most_used_words
@@ -24,6 +30,7 @@ class result:
         self.political_statement = political_statement
         self.tweet_count = tweet_count
         self.sentiment = sentiment
+        self.prediction = prediction
         self.mxscale = most_used_words[0].count
         
         
@@ -42,7 +49,7 @@ def check_type(param):
 def analyse_tweets(url, typ, parsed):
 
     tweets = run_twitter_request(url, "auth.yaml")
-    word_list, emoji_list, hashtag_list, mention_list, tweet_count, last_id = process_json.process_json_tweetset(tweets, [], [], [], [])
+    tweet_list, word_list, emoji_list, hashtag_list, mention_list, tweet_count, last_id = process_json.process_json_tweetset(tweets, [], [], [], [], [])
 
     extra_tweet_count = tweet_count
     for item in range(2):
@@ -53,7 +60,7 @@ def analyse_tweets(url, typ, parsed):
                 next_url = requests.get_tweets_for_usr_maxid(parsed, last_id)
                 
             more_tweets = run_twitter_request(next_url, "auth.yaml")
-            word_list, emoji_list, hashtag_list, mention_list, extra_tweet_count, last_id = process_json.process_json_tweetset(more_tweets, word_list, emoji_list, hashtag_list, mention_list)
+            tweet_list, word_list, emoji_list, hashtag_list, mention_list, extra_tweet_count, last_id = process_json.process_json_tweetset(more_tweets, tweet_list, word_list, emoji_list, hashtag_list, mention_list)
             tweet_count = tweet_count + extra_tweet_count
     
     most_used_words = handle_wordlist.get_n_most_frequent_items(word_list, 20)
@@ -63,7 +70,7 @@ def analyse_tweets(url, typ, parsed):
     word_count = handle_wordlist.unique_word_count(word_list)
     emotion_levels = check_emotion.get_emotions_from_wordlist(word_list)
     political_score = check_politics.get_politics_from_wordlist(word_list)
-    return most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count
+    return tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count
 
 # Return twitter request data based on the search param passed
 # This function does not make the request, it only geretaed the data to make the request            
@@ -88,15 +95,62 @@ def get_tag_or_usr(param):
 # From that data, get the strongest emotions, the positivity, sentiment
 # Return the most used words, the word count, the strongest emotions, the number of tweets and the overall sentiment
 def analyse(name):
+    prediction_ibc = 0
+    prediction_kaggle = 0
+    prediction_my_set = 0
+    prediction_political = 0
+    try:
+        ml_model
+        print("Model Reused")
+    except:
+        ml_model_ibc, word_count_vect_ibc = build_ml_model_ibc()
+        ml_model_kaggle, word_count_vect_kaggle = build_ml_model_kaggle()
+        ml_model_my_set, word_count_vect_my_set = build_ml_model_my_set()
+        print("model built")
+    
     url, typ, parsed = get_tag_or_usr(name)
-    most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count = analyse_tweets(url, typ, parsed)
+    tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count = analyse_tweets(url, typ, parsed)
+    
+    for tweet in tweetset:
+        party = predict_from_model_ibc(ml_model_ibc, word_count_vect_ibc, tweet)
+        if party == 'lib':
+            prediction_ibc += 1
+        else:
+            prediction_ibc -= 1
+            
+    for tweet in tweetset:
+        party = predict_from_model_kaggle(ml_model_kaggle, word_count_vect_kaggle, tweet)
+        if party == 'Democrat':
+            prediction_kaggle += 1
+        else:
+            prediction_kaggle -= 1
+        
+    for tweet in tweetset:
+        party = predict_from_model_my_set(ml_model_my_set, word_count_vect_my_set, tweet)
+        if party == 'liberal':
+            prediction_my_set += 1
+        else:
+            prediction_my_set -= 1
+
+        
+    prediction_ibc = prediction_ibc/len(tweetset)
+    prediction_kaggle = prediction_kaggle/len(tweetset)
+    prediction_my_set = prediction_my_set/len(tweetset)
+    
+    print("IBC Leaning     : "+str(prediction_ibc))
+    print("Kaggle Leaning  : "+str(prediction_kaggle))
+    print("My Set Leaning  : "+str(prediction_my_set))
+    
+    prediction = prediction_my_set
+    
+    #prediction = predict_from_model(ml_model, word_count_vect, full_wordset)
     strongest_emotions =  check_emotion.get_strongest_emotions(emotion_levels)
     positivity, sentiment =  check_emotion.get_positivity_and_negativity(emotion_levels)
     print("Negativity: "+str(positivity[0].get_strength()))  
     print("Positivity: "+str(positivity[1].get_strength()))  
     print("Political Leaning: "+str(political_score))  
     political_statement = check_politics.describe_political_leaning(political_score)
-    resultitem = result(name, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, political_score, political_statement, tweet_count, sentiment)
+    resultitem = result(name, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, strongest_emotions, political_score, political_statement, tweet_count, sentiment, prediction)
     return resultitem
 
 # When running this file locally through the command line:
@@ -112,8 +166,10 @@ if __name__ == "__main__":
     print("Strongest Emotions: ")
     for i in resultitem.strongest_emotions:
         print(i.name+" : "+str(i.get_strength()))
-    print("Political Score: "+str(resultitem.political_score))
+    print("Political Score (Non-ML): "+str(resultitem.political_score))
     print(resultitem.political_statement)
+    print("Political Leaning (ML): "+str(resultitem.prediction))
+    print(describe_political_leaning(resultitem.prediction))
     print("Most Used Words: ")
     for i in resultitem.most_used_words:
         print(i.word+":"+str(i.count))
