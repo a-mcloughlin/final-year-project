@@ -1,0 +1,106 @@
+/*  COLORS
+    #efefef --  LIGHT GREY
+    #24d1f9 --  LIGHT BLUE
+    #8d8d8d --  MID GREY
+    #000000 --  BLACK
+    #747474 --  DARK GREY
+    #54b936 --  GREEN
+    #fc5b57 --  RED
+*/
+
+html {
+    margin: 0;
+    padding: 0;
+    background-color: #D0CECE;
+    max-height: 100vh;
+}
+
+table, tr, td{ 
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+th {
+    text-align:left;
+}
+
+tr.colh th{
+    text-align:center;
+}
+
+.navbar{ 
+    background:#D0CECE;  
+    color: #D0CECE; 
+    position: relative;
+    border-bottom: none;
+    width: 100%;
+    margin: auto;
+    padding-left: 40px !important;
+}
+.navbar-brand{ 
+    color: #000000; 
+    cursor: pointer;
+    padding-left: 5px;
+}
+.nav-link{ 
+    background: #908C8C; 
+    margin-right: 1em !important; 
+    color: #000000;
+}
+.nav-item {
+    background: #D0CECE;
+}
+.nav-link:hover{ 
+    background: #AFABAB;
+    color: #000000;
+}
+.navbar-default {
+    border: 0;
+}
+.navbar-collapse{ 
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: -17px;
+}
+.navbar-toggler{  
+    background:#fff !important;
+}
+
+.rounded-pill-left {
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+    padding-left: 15px;
+  }
+
+.rounded-pill-right {
+    border-top-right-radius: 50rem !important;
+    border-bottom-right-radius: 50rem !important;
+}
+
+.contents {
+    background-color: #D0CECE;
+    padding-top: 30px;
+}
+
+.bigtab {
+    background-color: #AFABAB;
+    padding-left: 25px;
+    padding-right: 15px;
+    padding-bottom: 25px;
+    min-height: 90%;
+    position: absolute;
+    border-bottom: none;
+    width: 97%;
+    margin: 0px 10px 10px;
+    border-bottom-right-radius: 2rem !important;
+    border-bottom-left-radius: 2rem !important;
+    border-top-left-radius: 2rem;
+
+}
+
+.vl {
+    border-left: 6px solid green;
+    height: 500px;
+    width:1px;
+  }
