@@ -1,0 +1,101 @@
+
+{% extends 'base.html' %}
+{% block tab1 %}{% endblock %}
+{% block tab2 %}" style="background: #AFABAB; border-color: #AFABAB; font-weight: bold;{% endblock %}
+{% block tab3 %}{% endblock %}
+{% block content %}
+  <div class="container-fluid contents">
+  <div class="bigtab">
+  <br><br>
+    <table style="border: 0; width:100%; table-layout: fixed;">
+      <tr>
+        {% for result in resultlist %}
+        {% if loop.index == 1 %}
+          <td style="border-right: 1px solid #a19d9c; vertical-align: top;">
+          {% else %}
+          <td style="vertical-align: top;">
+          {%endif%}
+            <form action="compare" style="width:75%;" method="POST">
+            <input type="hidden" id='loopnum' name='loopnum' style="display:none;" value="{{loop.index}}">
+              <div class="input-group mb-3">
+                <input class="rounded-pill-left form-control" type="text" style="width:50%;" placeholder="Enter the hashtag or user tag in the form #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query">
+                <span class="input-group-btn">
+                  <button class="btn btn-success rounded-pill-right" type="submit" style="padding-right: 15px;">
+                    <i class="fa fa-search">Submit</i>
+                  </button>
+                </span>
+                <br>
+              </div>
+              <label for="twitter_query">Click 'Submit' to analyse the User account ot Hashtag data:</label>
+            </form>
+            <hr><br>
+            {% if result != None %}
+        <p style="text-align:left;"> 
+          <div style="text-align:center;">Search Term: <b>{{result.term}}</b></div>
+          <div style="text-align:center;">Found <b>{{result.tweet_count}} tweets</b> from the last 7 days with <b>{{result.word_count}}</b> unique words used</div></div>
+          <br>
+          <div style="padding-top:10px"> Positivity 
+            <div style="float:right;">This tweet-set is overall {{result.sentiment}}</div>
+            <br>
+          </div>
+          <div style="padding-top:10px">Political Leaning 
+            <div style="float:right;">{{result.political_statement}}</div>
+            <br>
+          </div>
+          <div style="padding-top:10px">Political Leaning II 
+            <div style="float:right;">{{result.prediction}}</div>
+            <br>
+          </div>
+          <div style="padding-top:10px">Strongest Emotions
+            <div style="float:right;">
+              {% for item in result.strongest_emotions %}
+                {{item.name}}, &nbsp;
+              {% endfor %}
+            </div>
+            <br>
+          </div>
+          <div style="padding-top:10px">Most Used Emojis
+            <div style="float:right;">
+							{% if result.most_used_emojis != [] %}
+                {% for item in result.most_used_emojis %}
+                  {{item.word}}, &nbsp;
+                {% endfor %}
+              {% else %}
+							  No emojis used in the last 7 days<br>
+							{% endif %}
+            </div>
+            <br>
+          </div>
+          <div style="padding-top:10px">Most Used Words
+            <div style="float:right;">
+							{% if result.most_used_words != [] %}
+                {% for item in result.most_used_words %}
+                  {{item.word}}, &nbsp;
+                {% endfor %}
+              {% else %}
+							  No words used in the last 7 days<br>
+							{% endif %}
+            </div>
+            <br>
+          </div>
+          <div style="padding-top:10px">Most Used Hashtags
+            <div style="float:right;">
+							{% if result.most_used_hashtags != [] %}
+                {% for item in result.most_used_hashtags %}
+                  {{item.word}}, &nbsp;
+                {% endfor %}
+              {% else %}
+							  No hashtags used in the last 7 days<br>
+							{% endif %}
+            </div>
+            <br>
+          </div>
+        <p>
+      {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+  </div>
+  </div>
+{% endblock %}

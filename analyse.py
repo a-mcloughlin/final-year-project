@@ -63,7 +63,7 @@ def analyse_tweets(url, typ, parsed):
             tweet_list, word_list, emoji_list, hashtag_list, mention_list, extra_tweet_count, last_id = process_json.process_json_tweetset(more_tweets, tweet_list, word_list, emoji_list, hashtag_list, mention_list)
             tweet_count = tweet_count + extra_tweet_count
     
-    most_used_words = handle_wordlist.get_n_most_frequent_items(word_list, 20)
+    most_used_words = handle_wordlist.get_n_most_frequent_items(word_list, 5)
     most_used_emojis = handle_wordlist.get_n_most_frequent_items(emoji_list, 5)
     most_used_hashtags = handle_wordlist.get_n_most_frequent_items(hashtag_list, 5)
     most_tagged_users = handle_wordlist.get_n_most_frequent_items(mention_list, 5)
@@ -95,35 +95,35 @@ def get_tag_or_usr(param):
 # From that data, get the strongest emotions, the positivity, sentiment
 # Return the most used words, the word count, the strongest emotions, the number of tweets and the overall sentiment
 def analyse(name):
-    prediction_ibc = 0
-    prediction_kaggle = 0
+  #  prediction_ibc = 0
+   # prediction_kaggle = 0
     prediction_my_set = 0
-    prediction_political = 0
+   # prediction_political = 0
     try:
         ml_model
         print("Model Reused")
     except:
-        ml_model_ibc, word_count_vect_ibc = build_ml_model_ibc()
-        ml_model_kaggle, word_count_vect_kaggle = build_ml_model_kaggle()
+       # ml_model_ibc, word_count_vect_ibc = build_ml_model_ibc()
+        #ml_model_kaggle, word_count_vect_kaggle = build_ml_model_kaggle()
         ml_model_my_set, word_count_vect_my_set = build_ml_model_my_set()
         print("model built")
     
     url, typ, parsed = get_tag_or_usr(name)
     tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count = analyse_tweets(url, typ, parsed)
     
-    for tweet in tweetset:
-        party = predict_from_model_ibc(ml_model_ibc, word_count_vect_ibc, tweet)
-        if party == 'lib':
-            prediction_ibc += 1
-        else:
-            prediction_ibc -= 1
+    # for tweet in tweetset:
+    #     party = predict_from_model_ibc(ml_model_ibc, word_count_vect_ibc, tweet)
+    #     if party == 'lib':
+    #         prediction_ibc += 1
+    #     else:
+    #         prediction_ibc -= 1
             
-    for tweet in tweetset:
-        party = predict_from_model_kaggle(ml_model_kaggle, word_count_vect_kaggle, tweet)
-        if party == 'Democrat':
-            prediction_kaggle += 1
-        else:
-            prediction_kaggle -= 1
+    # for tweet in tweetset:
+    #     party = predict_from_model_kaggle(ml_model_kaggle, word_count_vect_kaggle, tweet)
+    #     if party == 'Democrat':
+    #         prediction_kaggle += 1
+    #     else:
+    #         prediction_kaggle -= 1
         
     for tweet in tweetset:
         party = predict_from_model_my_set(ml_model_my_set, word_count_vect_my_set, tweet)
@@ -133,12 +133,12 @@ def analyse(name):
             prediction_my_set -= 1
 
         
-    prediction_ibc = prediction_ibc/len(tweetset)
-    prediction_kaggle = prediction_kaggle/len(tweetset)
+   # prediction_ibc = prediction_ibc/len(tweetset)
+    #prediction_kaggle = prediction_kaggle/len(tweetset)
     prediction_my_set = prediction_my_set/len(tweetset)
     
-    print("IBC Leaning     : "+str(prediction_ibc))
-    print("Kaggle Leaning  : "+str(prediction_kaggle))
+    #print("IBC Leaning     : "+str(prediction_ibc))
+    #print("Kaggle Leaning  : "+str(prediction_kaggle))
     print("My Set Leaning  : "+str(prediction_my_set))
     
     prediction = prediction_my_set
