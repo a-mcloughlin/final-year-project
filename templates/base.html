@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-<<<<<<< HEAD
   	</head>
 	    <meta charset="UTF-8">
     	<title>Twitter Analysis Application</title>
@@ -34,58 +33,5 @@
     	<section class="content" style="widt:100%">
       		{% block content %}{% endblock %}
     	</section>
-=======
-  </head>
-    <meta charset="UTF-8">
-    <title>Twitter Analysis Application</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ url_for('static',filename='images/fyplogo.png') }}">
-    <link rel='stylesheet' type= "text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<script>
-window.onload=function() { 
-	window.alert("refresh");
-  if window.location.href == "/analyse"{
-  tablinks = document.getElementsByClassName("nav-link");
-	for (i = 0; i < tablinks.length; i++) {
-		tablinks[i].className = tablinks[i].className.replace(" active", "");
-	}
-	evt.currentTarget.className += " active";
-  }
-};
-	</script>	
-
-	
-	</head>
-  </body>
-  
-	<div class="container-fluid">
-    <nav class="navbar navbar-expand-lg fixed-top flex-nowrap">  
-      <img src="{{ url_for('static',filename='images/fyplogo.png') }}" alt="logo" width="30" height="30"/>
-  		<a class="navbar-brand" href="/analyse">  Twitter Analysis Application</a>
-  		<div class="navbar-collapse d-flex">     
-  			<ul class="nav nav-tabs mr-4 bd-navbar-nav flex-row" id="myTab" role="tablist">
-	  			<li class="nav-item">
-	  				<a id="analyse"  class="nav-link tab {% block tab1 %}{% endblock %}" data-value="analyse" href="/analyse">Analyse Tweets</a>        
-	  			</li>  
-	  			<li class="nav-item">
-	  				<a id="compare" class="nav-link tab {% block tab2 %}{% endblock %}" data-value="compare" href="/compare">Compare Tweets</a>    
-	  			</li>  
-		  		<li class="nav-item">  
-	  				<a id="blah"  class="nav-link tab {% block tab3 %}{% endblock %}" data-value="team" href="#">Analyse Content</a>       
-			  	</li>  
-			  </ul> 
-		  </div>
-		</nav>
-    </div>
-
-    <section class="content">
-	  <br>
-      {% block content %}{% endblock %}
-    </section>
->>>>>>> master
   </body>
 </html>
