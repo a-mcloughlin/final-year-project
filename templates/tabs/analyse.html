@@ -4,14 +4,12 @@
 {% block tab2 %}{% endblock %}
 {% block tab3 %}{% endblock %}
 {% block content %}
-  <div class="container-fluid contents">
-  <div class="bigtab">
-  <br><br>
-    <table style="border: 0; width:75%;">
+  <div class="bigtab d-flex flex-column">
+    <table style="border: 0; width:100%; table-layout: fixed;">
       <tr>
       <form action ='analyse'  method="POST">
         <div class="input-group mb-3">
-          <input class="rounded-pill-left" type="text" style="width:50%;" placeholder="Enter the hashtag or user tag in the form #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query">
+          <input class="rounded-pill-left " type="text" style="width:50%;" placeholder="Enter #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query">
           <span class="input-group-btn">
              <button class="btn btn-success rounded-pill-right" type="submit" style="padding-right: 15px;">
              <i class="fa fa-search">Submit</i>
@@ -26,57 +24,60 @@
       <hr>
       </tr>
       {% if result != None %}
-        <p style="text-align:left;"> 
-          <div style="text-align:center;">Search Term: <b>{{result.term}}</b></div>
-          <div style="text-align:center;">Found <b>{{result.tweet_count}} tweets</b> from the last 7 days with <b>{{result.word_count}}</b> unique words used</div></div>
-          
-          <div style="padding-top:10px"> Positivity 
-            <div style="float:right;">This tweet-set is overall {{result.sentiment}}</div>
-            <br>
-          </div>
-          <div style="padding-top:10px">Political Leaning 
-            <div style="float:right;">{{result.political_statement}}</div>
-            <br>
-          </div>
-          <div style="padding-top:10px">Political Leaning II 
-            <div style="float:right;">{{result.prediction}}</div>
-            <br>
-          </div>
-          <div style="padding-top:10px">Strongest Emotions
-            <div style="float:right;">
+        <div style="text-align:center;">Search Term: <b>{{result.term}}</b></div>
+        <div style="text-align:center;">Found <b>{{result.tweet_count}} tweets</b> from the last 7 days with <b>{{result.word_count}}</b> unique words used</div></div>
+        <br>
+        <table style="width:100%;">
+          <tr>
+            <td class="td-content-desc">Positivity </td>
+            <td class="td-content-data">This tweet-set is overall {{result.sentiment}}</td>
+          </tr>
+           <tr class="tr-content-mid">
+             <td class="td-content-desc">Political Leaning </td>
+           	<td class="td-content-data">{{result.political_statement}}</td>
+          </tr>
+          <tr class="tr-content-mid">
+            <td class="td-content-desc">Political Leaning II </td>
+          	<td class="td-content-data">{{result.prediction}}</td>
+          </tr>
+          <tr class="tr-content-mid">
+            <td class="td-content-desc">Strongest Emotions </td>
+          	<td class="td-content-data">
               {% for item in result.strongest_emotions %}
-                {{item.name}}, &nbsp;
+                {{item.name}} 
+                {% if not loop.last %},&nbsp;{%endif%}
               {% endfor %}
-            </div>
-            <br>
-          </div>
-          <div style="padding-top:10px">Most Used Emojis
-            <div style="float:right;">
+            </td>
+          </tr>
+          <tr class="tr-content-mid">
+            <td class="td-content-desc">Most Used Emojis </td>
+          	<td class="td-content-data">
               {% for item in result.most_used_emojis %}
-                {{item.word}}, &nbsp;
+                {{item.word}}
+                {% if not loop.last %},&nbsp;{%endif%}
               {% endfor %}
-            </div>
-            <br>
-          </div>
-          <div style="padding-top:10px">Most Used Words
-            <div style="float:right;">
+            </td>
+          </tr>
+          <tr class="tr-content-mid">
+            <td class="td-content-desc">Most Used Words </td>
+          	<td class="td-content-data">
               {% for item in result.most_used_words %}
-                {{item.word}}, &nbsp;
+                {{item.word}}
+                {% if not loop.last %},&nbsp;{%endif%}
               {% endfor %}
-            </div>
-            <br>
-          </div>
-          <div style="padding-top:10px">Most Used Hashtags
-            <div style="float:right;">
+            </td>
+          </tr>
+          <tr class="tr-content-mid">
+            <td class="td-content-desc">Most Used Hashtags </td>
+            <td class="td-content-data">
               {% for item in result.most_used_hashtags %}
-                {{item.word}}, &nbsp;
+                {{item.word}}
+                {% if not loop.last %},&nbsp;{%endif%}
               {% endfor %}
-            </div>
-            <br>
-          </div>
-        <p>
+            </td>
+          </tr>
+        </table>
       {% endif %}
     </table>
-  </div>
   </div>
 {% endblock %}
