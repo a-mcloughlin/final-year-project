@@ -10,7 +10,7 @@ from sklearn.feature_selection import chi2
 
 def build_ml_model():
     #data = pd.read_csv('internal\machine_learning\datasets\my_collected_dataset.csv')
-    data = pd.read_csv('internal\machine_learning\datasets\\full_set.csv')
+    data = pd.read_csv(r'internal/machine_learning/datasets/full_set.csv')
     #data.columns = ['Phrase', 'User', 'Leaning']
     data.columns = ['Leaning', 'Phrase']
     data['leaning_id'] = data['Leaning'].factorize()[0]
