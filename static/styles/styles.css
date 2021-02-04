@@ -9,6 +9,7 @@
 */
 
 html {
+<<<<<<< HEAD
     background-color: #D0CECE;
     padding-bottom: 10px !important;
     padding-left: 10px !important;
@@ -24,6 +25,35 @@ html {
     width: 100%;
     margin: auto;
     height: 60px;
+=======
+    margin: 0;
+    padding: 0;
+    background-color: #D0CECE;
+    max-height: 100vh;
+}
+
+table, tr, td{ 
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+th {
+    text-align:left;
+}
+
+tr.colh th{
+    text-align:center;
+}
+
+.navbar{ 
+    background:#D0CECE;  
+    color: #D0CECE; 
+    position: relative;
+    border-bottom: none;
+    width: 100%;
+    margin: auto;
+    padding-left: 40px !important;
+>>>>>>> master
 }
 .navbar-brand{ 
     color: #000000; 
@@ -32,10 +62,15 @@ html {
 }
 .nav-link{ 
     background: #908C8C; 
+<<<<<<< HEAD
     margin-right: 10px !important; 
     color: #000000;
     display:inline-block;
     height:100%;
+=======
+    margin-right: 1em !important; 
+    color: #000000;
+>>>>>>> master
 }
 .nav-item {
     background: #D0CECE;
@@ -47,6 +82,7 @@ html {
 .navbar-default {
     border: 0;
 }
+<<<<<<< HEAD
 .navbar-toggler{  
     background:#fff !important;
 }
@@ -114,6 +150,17 @@ html {
         padding-top: 15px !important;
     }
 }
+=======
+.navbar-collapse{ 
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: -17px;
+}
+.navbar-toggler{  
+    background:#fff !important;
+}
+>>>>>>> master
 
 .rounded-pill-left {
     border-top-left-radius: 50rem !important;
@@ -126,6 +173,7 @@ html {
     border-bottom-right-radius: 50rem !important;
 }
 
+<<<<<<< HEAD
 .bigtab {
     background-color: #AFABAB;
     padding-top: 30px;
@@ -151,3 +199,31 @@ html {
     width: calc(100vw - 30px);
 }​
 /* End */
+=======
+.contents {
+    background-color: #D0CECE;
+    padding-top: 30px;
+}
+
+.bigtab {
+    background-color: #AFABAB;
+    padding-left: 25px;
+    padding-right: 15px;
+    padding-bottom: 25px;
+    min-height: 90%;
+    position: absolute;
+    border-bottom: none;
+    width: 97%;
+    margin: 0px 10px 10px;
+    border-bottom-right-radius: 2rem !important;
+    border-bottom-left-radius: 2rem !important;
+    border-top-left-radius: 2rem;
+
+}
+
+.vl {
+    border-left: 6px solid green;
+    height: 500px;
+    width:1px;
+  }
+>>>>>>> master
