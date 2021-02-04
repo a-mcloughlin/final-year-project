@@ -82,7 +82,7 @@ html {
     right:0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 760px) {
     
     html {
         font-size: 11px;
