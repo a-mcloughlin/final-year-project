@@ -94,7 +94,9 @@ html {
         padding-bottom: 15px !important; 
         vertical-align: top;
     }
-    
+    .rounded-pill-left {
+        width: 70% !important; 
+    }
     .compare-content2 {
         padding-top: 15px !important; 
     }
@@ -112,6 +114,10 @@ html {
     
     .bigtab {
         padding-top: 15px !important;
+    }
+    .biggroup{
+        padding-bottom: 5px !important;
+        padding-top: 0 !important;
     }
 }
 
@@ -150,4 +156,4 @@ html {
     width: -o-calc(100vw - 30px);
     width: calc(100vw - 30px);
 }​
-/* End */
+
