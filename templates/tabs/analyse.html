@@ -6,74 +6,108 @@
 {% block content %}
   <div class="bigtab d-flex flex-column">
     <table style="border: 0; width:100%; table-layout: fixed;">
-      <tr>
-      <form action ='analyse'  method="POST">
-        <div class="input-group mb-3">
-          <input class="rounded-pill-left " type="text" style="width:50%;" placeholder="Enter #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query">
+      <tr style="border-bottom: 1px solid #a19d9c;">
+      <div class="row">
+      <form action ='analyse' method="POST">
+        <div class="col-12 col-md-6 input-group mb-3">
+          <input class="rounded-pill-left " type="text" style="width:75%;" placeholder="Enter #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query">
           <span class="input-group-btn">
              <button class="btn btn-success rounded-pill-right" type="submit" style="padding-right: 15px;">
              <i class="fa fa-search">Submit</i>
            </button>
           </span>
-          <br>
         </div>
-        <label for="twitter_query">Click 'Submit' to analyse the User account ot Hashtag data:</label>
+        <div class="col-12 col-md-6 btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="flex: 1; border-radius: 2px; padding-bottom: 10px; padding-top: 10px; margin-right:10px;">
+          <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;" >
+            <b style="font-style: italic;">Political Analysis Dataset&nbsp;</b>
+          </label>
+          <label class="btn btn-outline-dark form-check-label active" for="ie" style="flex: 1; font-weight: bold;">
+            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="ie" id="ie" style="display: none;" checked/>Ireland
+          </label>
+          <label class="btn btn-outline-dark form-check-label" for="uk" style="flex: 1; font-weight: bold;">
+            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="uk" id="uk" style="display: none;"/>UK
+          </label>
+          <label class="btn btn-outline-dark form-check-label" for="us" style="flex: 1; font-weight: bold;">
+            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="us" id="us" style="display: none;"/>US
+          </label>
+        
+          <label class="btn btn-outline-dark form-check-label" for="global" style="flex: 1; font-weight: bold;">
+            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="global" id="global" style="display: none;"/>Global
+          </label>
+        </div>
+        <label for="twitter_query" style="padding-left:10px;">Click 'Submit' to analyse the User account or Hashtag data:</label>
       </form>
-      </tr>
-      <br>
-      <hr>
+      </div>
+      <div style="border-bottom: 1px solid #a19d9c; padding-top:7.5px;"/>
       </tr>
       {% if result != None %}
-        <div style="text-align:center;">Search Term: <b>{{result.term}}</b></div>
-        <div style="text-align:center;">Found <b>{{result.tweet_count}} tweets</b> from the last 7 days with <b>{{result.word_count}}</b> unique words used</div></div>
+        <div style="text-align:center; padding-top:7.5px;">Search Term: <b>{{result.tweetsetInfo.term}}</b></div>
+        <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.word_count}}</b> unique words used</div>
+        <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.tweetsetInfo.dataset_country}}</b></div>
         <br>
         <table style="width:100%;">
           <tr>
             <td class="td-content-desc">Positivity </td>
-            <td class="td-content-data">This tweet-set is overall {{result.sentiment}}</td>
+            <td class="td-content-data">This tweet-set is overall {{result.political_sentiment_data.sentiment}}</td>
           </tr>
            <tr class="tr-content-mid">
-             <td class="td-content-desc">Political Leaning </td>
-           	<td class="td-content-data">{{result.political_statement}}</td>
+            <td class="td-content-desc">Political Leaning Words</td>
+           	<td class="td-content-data">{{result.political_sentiment_data.political_statement}}</td>
           </tr>
           <tr class="tr-content-mid">
-            <td class="td-content-desc">Political Leaning II </td>
-          	<td class="td-content-data">{{result.prediction}}</td>
+            <td class="td-content-desc">Political Leaning ML</td>
+          	<td class="td-content-data">{{result.political_sentiment_data.prediction}}</td>
           </tr>
           <tr class="tr-content-mid">
             <td class="td-content-desc">Strongest Emotions </td>
           	<td class="td-content-data">
-              {% for item in result.strongest_emotions %}
-                {{item.name}} 
-                {% if not loop.last %},&nbsp;{%endif%}
-              {% endfor %}
+							{% if result.most_used_data.strongest_emotions != [] %}
+                {% for item in result.most_used_data.strongest_emotions %}
+                  {{item.name}} 
+                  {% if not loop.last %},&nbsp;{%endif%}
+                {% endfor %}
+							{% else %}
+							  No emotions detected in the last 7 days of tweets<br>
+							{% endif %}
             </td>
           </tr>
           <tr class="tr-content-mid">
             <td class="td-content-desc">Most Used Emojis </td>
           	<td class="td-content-data">
-              {% for item in result.most_used_emojis %}
-                {{item.word}}
-                {% if not loop.last %},&nbsp;{%endif%}
-              {% endfor %}
+							{% if result.most_used_data.most_used_emojis != [] %}
+                {% for item in result.most_used_data.most_used_emojis %}
+                  {{item.word}}
+                  {% if not loop.last %},&nbsp;{%endif%}
+                {% endfor %}
+							{% else %}
+							  No emojis used in the last 7 days of tweets<br>
+							{% endif %}
             </td>
           </tr>
           <tr class="tr-content-mid">
             <td class="td-content-desc">Most Used Words </td>
           	<td class="td-content-data">
-              {% for item in result.most_used_words %}
-                {{item.word}}
-                {% if not loop.last %},&nbsp;{%endif%}
-              {% endfor %}
+							{% if result.most_used_data.most_used_words != [] %}
+                {% for item in result.most_used_data.most_used_words %}
+                  {{item.word}}
+                  {% if not loop.last %},&nbsp;{%endif%}
+                {% endfor %}
+							{% else %}
+							  No Words used in the last 7 days of tweets<br>
+							{% endif %}
             </td>
           </tr>
           <tr class="tr-content-mid">
             <td class="td-content-desc">Most Used Hashtags </td>
             <td class="td-content-data">
-              {% for item in result.most_used_hashtags %}
-                {{item.word}}
-                {% if not loop.last %},&nbsp;{%endif%}
-              {% endfor %}
+							{% if result.most_used_data.most_used_hashtags != [] %}
+                {% for item in result.most_used_data.most_used_hashtags %}
+                  {{item.word}}
+                  {% if not loop.last %},&nbsp;{%endif%}
+                {% endfor %}
+							{% else %}
+							  No hashtags used in the last 7 days of tweets<br>
+							{% endif %}
             </td>
           </tr>
         </table>

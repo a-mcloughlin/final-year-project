@@ -32,7 +32,8 @@ def compare():
 @app.route('/analyse', methods=['POST'])
 def analyseQuery():
     term = request.form['twitter_query']
-    resultitem = analyse(term)
+    country = request.form.get('countryDataset', 'global')
+    resultitem = analyse(term, country)
     return render_template('tabs/analyse.html', result=resultitem)   
 
 
@@ -40,8 +41,9 @@ def analyseQuery():
 @app.route('/compare', methods=['POST'])
 def compareQuery():
     term = request.form.get('twitter_query', None)
+    country = request.form.get('countryDataset', 'global')
     lp = request.form.get('loopnum', 0)
-    result = analyse(term)    
+    result = analyse(term, country)    
     if lp == '1':
         resultlist[0] = result
     elif lp == '2':
