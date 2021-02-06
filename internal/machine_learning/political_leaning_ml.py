@@ -81,9 +81,9 @@ def test():
 def describe_political_leaning(political_score):
     statement = ""
     if political_score < -0.15:
-        statement = "These tweets align more closely with right-leaning than left-leaning tweets from the training dataset"
+        statement = "More politically Left Leaning than Right Leaning"
     elif political_score > 0.15:
-        statement = "These tweets align more closely with left-leaning than right-leaning tweets from the training dataset"
+        statement = "More politically Right Leaning than Left Leaning"
     else:
         statement = "These tweets have no strong political leaning"
     return statement
