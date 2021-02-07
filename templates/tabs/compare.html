@@ -59,9 +59,26 @@
 						<td class="td-content-data">{{result.political_sentiment_data.political_statement}}</td>
 					</tr>
 					<tr class="tr-content-mid">
-						<td class="td-content-desc">Political Leaning II </td>
-						<td class="td-content-data">{{result.political_sentiment_data.prediction}}</td>
-					</tr>
+            <td class="td-content-desc">Political Leaning ML</td>
+          	<td class="td-content-data political_leaning_wrapper">
+                <svg id="political_leaning_meter" style="margin-top:7.5px;">
+                  <circle class="circlesector" id="liberal" r="50" cx="50%" cy="50%" stroke="#7CCCE5" 
+                  stroke-width="20" stroke-dasharray="157, 314" fill="none">
+                  </circle>
+                  <circle class="circlesector" id="neutral" r="50" cx="50%" cy="50%" stroke="#8f8f8f"
+                  stroke-width="20" stroke-dasharray="91, 314" fill="none">
+                  </circle>
+                  <circle class="circlesector" id="conservative" r="50" cx="50%" cy="50%" stroke="#e5957c"
+                  stroke-width="20" stroke-dasharray="67, 314" fill="none">
+                  </circle>
+                  <img id="meter_needle" src="{{ url_for('static',filename='images/meter-gauge-needle.svg') }}" alt="" style="margin-top:7.5px; transform: rotate({{result.political_sentiment_data.political_leaning_degree}}deg);">
+                  <p id="liberal_label">Left</p>
+                  <p id="conservative_label">Right</p>
+                </svg>
+                <div id="politicalLeaningDesc1" style="margin-top: -50px;">{{result.political_sentiment_data.prediction}}</div>
+                <div id="politicalLeaningDesc2">{{result.political_sentiment_data.prediction}}</div>
+            </td>
+          </tr>
 					<tr class="tr-content-mid">
 						<td class="td-content-desc">Strongest Emotions </td>
 						<td class="td-content-data">

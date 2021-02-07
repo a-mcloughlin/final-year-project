@@ -54,7 +54,7 @@ html {
     height:5vh;
 }
 .tr-content-mid {
-    border-top: None;
+    border-top: 1px solid #a19d9c;
 }
 .td-content-desc {
     padding:0px; 
@@ -62,6 +62,7 @@ html {
 }
 .td-content-data {
     padding:0px; 
+    padding-left: 20px;
     text-align:right; 
     padding-bottom: 7.5px; 
     padding-top: 7.5px;
@@ -119,8 +120,63 @@ html {
         padding-bottom: 5px !important;
         padding-top: 0 !important;
     }
+    #politicalLeaningDesc1 {
+        display: none;
+    }
+    #politicalLeaningDesc2 {
+        padding-top: 0px;
+    }
+    
+    .political_leaning_wrapper{
+        right: 40px;
+    }
+    
+    #conservative_label {
+        right: 10px;
+    }
+    
+    #liberal_label {
+        right: 115px;
+    }
+    #meter_needle {
+        margin: auto;
+        position: absolute;
+        left: 0;
+        right: 0;
+        transform-origin: bottom center !important;
+        margin-right: 70px;
+    }
 }
 
+@media (min-width: 761px) {
+    #politicalLeaningDesc1 {
+        position: absolute;
+        right: 220px;
+        width: 350px;
+    }
+    #politicalLeaningDesc2 {
+        display: none;
+    }
+    .political_leaning_wrapper{
+        padding-right: 60px !important;
+    }
+    
+    #conservative_label {
+        right: 60px;
+    }
+
+    #liberal_label {
+        right: 170px;
+    }
+    #meter_needle {
+        margin: auto;
+        position: absolute;
+        left: 0;
+        right: 0;
+        transform-origin: bottom center !important;
+        margin-right: 130px;
+    }
+}
 .rounded-pill-left {
     border-top-left-radius: 50rem !important;
     border-bottom-left-radius: 50rem !important;
@@ -156,4 +212,35 @@ html {
     width: -o-calc(100vw - 30px);
     width: calc(100vw - 30px);
 }​
+
+.political_leaning_wrapper{
+    position: absolute;
+    padding-top:10px !important;
+    width: 120px;
+    height: 120px;
+}
+
+#political_leaning_meter {
+    width: 120px;
+    height: 120px;
+    transform: rotateX(180deg);
+    margin-bottom:-40px;
+}
+#meter_needle {
+    height: 55px;
+}
+
+#liberal_label {
+    margin: auto;
+    position: absolute;
+    font-weight: bold;
+    margin-top:-25px;
+}
+
+#conservative_label {
+    margin: auto;
+    position: absolute;
+    font-weight: bold;
+    margin-top:-25px;
+}
 /* End */

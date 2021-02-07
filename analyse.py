@@ -39,11 +39,12 @@ class most_used_data:
         self.strongest_emotions = strongest_emotions
 
 class political_sentiment_data:
-    def __init__(self, political_score, political_statement, sentiment, prediction):  
+    def __init__(self, political_score, political_statement, sentiment, prediction, political_leaning_degree):  
         self.political_score = political_score
         self.political_statement = political_statement
         self.sentiment = sentiment
         self.prediction = prediction
+        self.political_leaning_degree = political_leaning_degree
 
 # Check the type of the request passed - Is it a # or @
 def check_type(param):
@@ -114,9 +115,9 @@ def analyse(term, country):
     for tweet in tweetset:
         party = predict_from_model(ml_model_my_set, word_count_vect_my_set, tweet)
         if party == 'liberal':
-            political_prediction += 1
-        else:
             political_prediction -= 1
+        else:
+            political_prediction += 1
 
         
     political_prediction = political_prediction/len(tweetset)
@@ -139,9 +140,12 @@ def analyse(term, country):
     elif country == 'us':
         dataset_country = "The United States of America"
         
+    political_leaning_degree =  (((political_prediction + 1) / 2)*180) + 270
+    print("political Leaning Degree: "+str(political_leaning_degree))  
+    
     tweetset_info = tweetset_data(term, word_count, tweet_count, dataset_country)
     most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions)
-    political_data_info = political_sentiment_data(political_score, political_statement, sentiment, statement)
+    political_data_info = political_sentiment_data(political_score, political_statement, sentiment, statement, political_leaning_degree)
     resultitem = result(tweetset_info, most_used_data_info, political_data_info)
     return resultitem
 
