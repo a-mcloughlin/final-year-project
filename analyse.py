@@ -8,8 +8,7 @@ import internal.word_processing.handle_wordlist as handle_wordlist
 import internal.word_processing.process_json_tweets as process_json
 import internal.data_analysis.detect_emotions as check_emotion
 import internal.data_analysis.detect_political_leaning as check_politics
-#from internal.machine_learning.political_leaning_ibc import build_ml_model as build_ml_model ,predict_from_model as predict_from_model
-#from internal.machine_learning.political_leaning_kaggle import build_ml_model as build_ml_model ,predict_from_model as predict_from_model, describe_political_leaning
+from internal.data_analysis.detect_sentiment import get_sentiment, describe_sentiment
 from internal.machine_learning.political_leaning_ml import build_ml_model as build_ml_model ,predict_from_model as predict_from_model, describe_political_leaning
 
 ml_model_ibc = None
@@ -61,7 +60,7 @@ def analyse_tweets(url, typ, parsed):
 
     tweets = run_twitter_request(url, "auth.yaml")
     tweet_list, word_list, emoji_list, hashtag_list, mention_list, tweet_count, last_id = process_json.process_json_tweetset(tweets, [], [], [], [], [])
-
+    
     extra_tweet_count = tweet_count
     for item in range(2):
         if (extra_tweet_count == 100):
@@ -122,11 +121,12 @@ def analyse(term, country):
         
     political_prediction = political_prediction/len(tweetset)
     
-    #prediction = predict_from_model(ml_model, word_count_vect, full_wordset)
     strongest_emotions =  check_emotion.get_strongest_emotions(emotion_levels)
-    positivity, sentiment =  check_emotion.get_positivity_and_negativity(emotion_levels)
-    print("Negativity: "+str(positivity[0].get_strength()))  
-    print("Positivity: "+str(positivity[1].get_strength()))  
+    
+    pos_ratio, neg_ratio, neut_ratio = get_sentiment(tweetset)
+    print("Pos_ratio: "+str(pos_ratio)+"\tneg_ratio: "+str(neg_ratio)+"\tneut_ratio: "+str(neut_ratio))
+    sentiment = describe_sentiment(pos_ratio, neg_ratio, neut_ratio)
+    
     print("Political Leaning: (ML) "+str(political_prediction))  
     political_statement = check_politics.describe_political_leaning(political_score)
     statement = describe_political_leaning(political_prediction)
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     resultitem = analyse(input(), "global")
 
     print("Unique words used in "+str(resultitem.tweetsetInfo.tweet_count)+" tweets: "+resultitem.tweetsetInfo.word_count)
-    print("This tweet-set is overall "+resultitem.political_sentiment_data.sentiment)
+    print(resultitem.political_sentiment_data.sentiment)
     print("Strongest Emotions: ")
     for i in resultitem.most_used_data.strongest_emotions:
         print(i.name+" : "+str(i.get_strength()))

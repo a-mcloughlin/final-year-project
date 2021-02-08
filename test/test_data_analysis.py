@@ -2,14 +2,33 @@
 import unittest
 import internal.data_analysis.detect_emotions as detect_emotions
 import internal.data_analysis.detect_political_leaning as detect_political_leaning
+import internal.data_analysis.detect_sentiment as detect_sentiment
 import test.mocked_data as mock
 
 class TestSentiment(unittest.TestCase):
     
-    def test_get_positivity_and_negativity(self):
-        positivity_negativity, sentiment = detect_emotions.get_positivity_and_negativity(mock.mock_emotionlist)
-        assert_emotionlists_are_equal(self, positivity_negativity, mock.mock_positivity_negativity)
-        self.assertEqual(sentiment, "more Positive than Negative")
+    def test_get_sentiment(self):
+        pos_ratio, neg_ratio, neut_ratio = detect_sentiment.get_sentiment(mock.mock_tweetlist)
+        self.assertEqual(pos_ratio, 0.33)
+        self.assertEqual(neg_ratio, 0.23)
+        self.assertEqual(neut_ratio, 0.44)
+        
+    def test_describe_sentiment(self):
+        sentiment = detect_sentiment.describe_sentiment(0.64, 0.13, 0.24)
+        self.assertEqual(sentiment, 'These tweets are overall much more Positive than Negative')
+        
+        sentiment = detect_sentiment.describe_sentiment(0.44, 0.33, 0.24)
+        self.assertEqual(sentiment, 'These tweets are overall more Positive than Negative')
+        
+        sentiment = detect_sentiment.describe_sentiment(0.33, 0.24, 0.44)
+        self.assertEqual(sentiment, 'These tweets are overall of neutral sentiment')
+        
+        sentiment = detect_sentiment.describe_sentiment(0.24, 0.44, 0.23)
+        self.assertEqual(sentiment, 'These tweets are overall more Negative than Positive')
+        
+        sentiment = detect_sentiment.describe_sentiment(0.14, 0.64, 0.23)
+        self.assertEqual(sentiment, 'These tweets are overall much more Negative than Positive')
+        
     
     def test_get_emotions_from_wordlist(self):
         detected_emotions = detect_emotions.get_emotions_from_wordlist(mock.mock_wordlist)
