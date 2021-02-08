@@ -36,7 +36,6 @@ def build_ml_model(country):
         lib_downsampled = resample(liberal,replace=True, n_samples=len(conservative),random_state=27)
         scaled_data = pd.concat([conservative, lib_downsampled])
         scaled_data.Leaning.value_counts()
-        scaled_data.to_csv('blah.csv') 
         conservative = scaled_data[scaled_data.Leaning=='conservative']
         liberal = scaled_data[scaled_data.Leaning=='liberal']
     else:
