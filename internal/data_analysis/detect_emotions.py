@@ -17,32 +17,6 @@ class emotion_data:
     def get_strength(self):
         return round(self.count/self.weight,5)
 
-# NO LONGER IN USE
-# # From a list of words, get the overall positivity/negativity of the wordset
-# # Return an array with the strengths, and a string indicating the sentiment of the word set
-# def get_positivity_and_negativity(wordlist):
-#     new_list = []
-#     for i in wordlist:
-#         if i.name == 'positive':
-#             new_list.append(i)
-#             positivity = i.get_strength()
-#         elif i.name == 'negative':
-#             new_list.append(i)
-#             negativity = i.get_strength()
-#     sentiment_strength = ( positivity / negativity )
-    
-#     if 0.8 < sentiment_strength < 1.2:
-#         status = "not strongly more negative or positive"
-#     elif 0 < sentiment_strength < 0.8:
-#         status = "more Negative than Positive"
-#     elif 1.2 < sentiment_strength < 2:
-#         status = "more Positive than Negative"
-#     elif sentiment_strength >= 2:
-#         status = "much more Positive than Negative"
-#     elif sentiment_strength <= 0:
-#         status = "much more Negative than Positive"
-#     return new_list, status
-
 # From a list of words, Calculate the strengths of each of the measured emotions
 # Return this data as a list of emotions with strength data
 def get_emotions_from_wordlist(wordlist):
