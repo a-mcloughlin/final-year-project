@@ -80,16 +80,22 @@
 						</td>
 					</tr>
 					<tr class="tr-content-mid">
-						<td class="td-content-desc">Strongest Emotions </td>
+						<td class="td-content-desc">Tweet Emotions </td>
 						<td class="td-content-data">
-							{% if result.most_used_data.strongest_emotions != [] %}
-								{% for item in result.most_used_data.strongest_emotions %}
-									{{item.name}} 
-									{% if not loop.last %},&nbsp;{%endif%}
+							<div class="emotion-chart flex-container">
+								{% for emotion in result.most_used_data.strongest_emotions %}
+								<div class="{% if loop.index == 1 %}emot-first {% elif loop.last %}emot-last  {% endif %}all-emot" style="
+								flex: 1 1 {{emotion.get_bar_fraction(result.tweetsetInfo.tweet_count)}}%; 
+								background-color: {{emotion.colour}};">
+									{{emotion.name.capitalize()}}
+								</div>
 								{% endfor %}
-							{% else %}
-								No emotions detected in the last 7 days of tweets<br>
-							{% endif %}
+							</div>
+							<div id="politicalLeaningDesc2" class="flex-wrap">
+								{% for emotion in result.most_used_data.strongest_emotions %}
+								<div class="Column"><div class="colour-inidicator" style="background-color: {{emotion.colour}};"></div><p class="legendlabel">{{emotion.name.capitalize()}}</p></div>
+								{% endfor %}
+							</div>
 						</td>
 					</tr>
 					<tr class="tr-content-mid">

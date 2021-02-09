@@ -30,9 +30,19 @@ class TestSentiment(unittest.TestCase):
         self.assertEqual(sentiment, 'These tweets are overall much more Negative than Positive')
         
     
-    def test_get_emotions_from_wordlist(self):
-        detected_emotions = detect_emotions.get_emotions_from_wordlist(mock.mock_wordlist)
-        assert_emotionlists_are_equal(self, detected_emotions, mock.mock_emotionlist)
+    def test_get_emotion_of_tweet(self):
+        dataset = detect_emotions.prepare_dataset()
+        emotions = detect_emotions.create_emotion_set()
+        emotion = detect_emotions.get_emotion_of_tweet(emotions, dataset, mock.mock_tweetlist[1])
+        self.assertEqual(emotion, 'anger')
+        emotion = detect_emotions.get_emotion_of_tweet(emotions, dataset, mock.mock_tweetlist[12])
+        self.assertEqual(emotion, 'anticipation')
+        emotion = detect_emotions.get_emotion_of_tweet(emotions, dataset, mock.mock_tweetlist[8])
+        self.assertEqual(emotion, 'disgust')
+        emotion = detect_emotions.get_emotion_of_tweet(emotions, dataset, mock.mock_tweetlist[58])
+        self.assertEqual(emotion, 'fear')
+        emotion = detect_emotions.get_emotion_of_tweet(emotions, dataset, mock.mock_tweetlist[10])
+        self.assertEqual(emotion, 'joy')
 
     def test_removelistelement(self):
         word1 = detect_emotions.emotion_data('one',0)
@@ -43,10 +53,6 @@ class TestSentiment(unittest.TestCase):
             detect_emotions.removelistelement(test_list, "one"), 
             [word2]
         )
-            
-    def test_get_strongest_emotions(self):
-        strongest_emotions = detect_emotions.get_strongest_emotions(mock.mock_emotionlist)
-        assert_emotionlists_are_equal(self, strongest_emotions, mock.mock_strongest_emotions)
         
     def test_get_politics_from_wordlist(self):
         political_leaning = detect_political_leaning.get_politics_from_wordlist(mock.mock_wordlist)
