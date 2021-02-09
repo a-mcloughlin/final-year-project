@@ -78,9 +78,8 @@ def analyse_tweets(url, typ, parsed):
     most_used_hashtags = handle_wordlist.get_n_most_frequent_items(hashtag_list, 5)
     most_tagged_users = handle_wordlist.get_n_most_frequent_items(mention_list, 5)
     word_count = handle_wordlist.unique_word_count(word_list)
-    emotion_levels = check_emotion.get_emotions_from_wordlist(word_list)
     political_score = check_politics.get_politics_from_wordlist(word_list)
-    return tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count
+    return tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count
 
 # Return twitter request data based on the search param passed
 # This function does not make the request, it only geretaed the data to make the request            
@@ -109,19 +108,42 @@ def analyse(term, country):
     ml_model_my_set, word_count_vect_my_set = build_ml_model(country)
     
     url, typ, parsed = get_tag_or_usr(term)
-    tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, emotion_levels, political_score, tweet_count = analyse_tweets(url, typ, parsed)
-
+    tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count = analyse_tweets(url, typ, parsed)
+    
+    emolex_words = check_emotion.prepare_dataset()
+    emotions = check_emotion.create_emotion_set()
+    
     for tweet in tweetset:
+        
         party = predict_from_model(ml_model_my_set, word_count_vect_my_set, tweet)
         if party == 'liberal':
             political_prediction -= 1
         else:
             political_prediction += 1
+            
+        emotion = check_emotion.get_emotion_of_tweet(emotions, emolex_words, tweet)
+        for em in emotions:
+            if emotion==em.name:
+                em.increase_count()
+    
+    for em in emotions:
+        print(em.name+":        "+str(em.predominant_tweet_count)+"          "+str(em.get_bar_fraction(len(tweetset))))
 
+    sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(len(tweetset)))
+    
+    strongest_emotions = []
+    othercount = len(tweetset)
+    for i in range(0,3):
+        if sorted_emotions[i].get_bar_fraction(len(tweetset)) > 5 :
+            strongest_emotions.append(sorted_emotions[i])
+            othercount -= sorted_emotions[i].predominant_tweet_count
+    
+    if othercount > 0 & ((othercount/len(tweetset))*100 > 5):
+        strongest_emotions.append( check_emotion.other_emotion(othercount))
         
+    
     political_prediction = political_prediction/len(tweetset)
     
-    strongest_emotions =  check_emotion.get_strongest_emotions(emotion_levels)
     
     pos_ratio, neg_ratio, neut_ratio = get_sentiment(tweetset)
     print("Pos_ratio: "+str(pos_ratio)+"\tneg_ratio: "+str(neg_ratio)+"\tneut_ratio: "+str(neut_ratio))
@@ -130,7 +152,6 @@ def analyse(term, country):
     print("Political Leaning: (ML) "+str(political_prediction))  
     political_statement = check_politics.describe_political_leaning(political_score)
     statement = describe_political_leaning(political_prediction)
-    print("political Statement: "+statement)  
     
     dataset_country = "Ireland, The UK and The USA"
     if country == 'ie':
@@ -141,7 +162,6 @@ def analyse(term, country):
         dataset_country = "The United States of America"
         
     political_leaning_degree =  (((political_prediction + 1) / 2)*180) + 270
-    print("political Leaning Degree: "+str(political_leaning_degree))  
     
     tweetset_info = tweetset_data(term, word_count, tweet_count, dataset_country)
     most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions)
@@ -161,7 +181,7 @@ if __name__ == "__main__":
     print(resultitem.political_sentiment_data.sentiment)
     print("Strongest Emotions: ")
     for i in resultitem.most_used_data.strongest_emotions:
-        print(i.name+" : "+str(i.get_strength()))
+        print(i.name+" : "+str(i.get_bar_fraction(resultitem.tweetsetInfo.tweet_count)))
     print("Political Score (Non-ML): "+str(resultitem.political_sentiment_data.political_score))
     print(resultitem.political_sentiment_data.political_statement)
     print("Political Leaning (ML): "+str(resultitem.political_sentiment_data.prediction))

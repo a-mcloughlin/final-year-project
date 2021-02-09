@@ -69,7 +69,7 @@ html {
 }
 
 .compare-content1 {
-    border-right: 1px solid #a19d9c !important; 
+    border-right: 2px solid #616161 !important; 
     vertical-align: top;
 }
 
@@ -91,7 +91,6 @@ html {
     
     .compare-content1 {
         border-right: None !important; 
-        border-bottom: 1px solid #a19d9c !important; 
         padding-bottom: 15px !important; 
         vertical-align: top;
     }
@@ -146,6 +145,12 @@ html {
         transform-origin: bottom center !important;
         margin-right: 70px;
     }
+    .emotion-chart{
+        width: 100%;
+    }
+    .all-emot {
+        font-size: 0px;
+    }
 }
 
 @media (min-width: 761px) {
@@ -175,6 +180,17 @@ html {
         right: 0;
         transform-origin: bottom center !important;
         margin-right: 130px;
+    }
+    .emotion-chart{
+        width: 75%;
+    }
+    .all-emot {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .emotionlabel {
+        padding-right: 5px !important;
     }
 }
 .rounded-pill-left {
@@ -243,4 +259,56 @@ html {
     font-weight: bold;
     margin-top:-25px;
 }
+
+.emotion-chart{
+    min-height: 30px;
+    display: flex;
+    border: 2px solid #6a6868;
+    border-radius: 50rem !important;
+    float:right;
+    margin-bottom: 7.5px;
+}
+
+.emot-first{
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+}
+
+.emot-last{
+    flex-grow: 1;
+    border-top-right-radius: 50rem !important;
+    border-bottom-right-radius: 50rem !important;
+}
+
+.all-emot {
+    height: 100%;
+    text-align: center;
+    line-height: 30px;
+    padding-left: 2px;
+    padding-right: 2px;
+    min-width: fit-content;
+}
+
+.colour-inidicator {
+    height: 20px;
+    width: 20px;
+    background-color: #555;
+    border-radius: 20rem !important;
+    border: 2px solid #6a6868;
+    float:left;
+}
+
+.Column {
+    display: inline-block;
+    padding-right: 5px;
+    width: 49%;
+}
+
+.legendlabel {
+    padding-left: 3px;
+    vertical-align: middle;
+    height: 100%;
+    float:left;
+}
+
 /* End */
