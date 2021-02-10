@@ -23,5 +23,5 @@ def run_twitter_request(url, auth_location):
     twitter_api_token = create_token(data)
     res_json = twitter_auth_and_connect(twitter_api_token, url)
     if res_json['meta']['result_count'] == 0:
-        err = "No results to analyse"
+        err = "noTweetsFound"
     return res_json, err

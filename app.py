@@ -48,8 +48,8 @@ def analyseQuery():
     if resultitem == "noHashorAt":
         return analyse_err("You must enter a #tag or @user, please try again")
     
-    elif resultitem == "invalidSearch":
-        return analyse_err("Not a valid twitter user or hashtag, please try again")
+    elif resultitem == "noTweetsFound":
+        return analyse_err("No tweets found for this query, please try again")
     
     return render_template('tabs/analyse.html', result=resultitem)   
 
@@ -72,8 +72,8 @@ def compareQuery():
     if result == "noHashorAt":
         return compare_err("You must enter a #tag or @user, please try again", lp)
     
-    elif result == "invalidSearch":
-        return compare_err("Not a valid twitter user or hashtag, please try again",lp)
+    elif result == "noTweetsFound":
+        return compare_err("No tweets found for this query, please try again",lp)
       
     if lp == '1':
         resultlist[0] = result

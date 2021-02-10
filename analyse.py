@@ -97,7 +97,7 @@ def get_tag_or_usr(param):
         elif typ == 'usr':
             url = requests.get_tweets_for_user(parsed)
         elif typ == None:
-            err = "You must pass a # or an @ - Please try again"
+            err = "noHashorAt"
             url = 'err'
             
     return url, typ, parsed, err
@@ -112,12 +112,12 @@ def analyse(term, country):
     url, typ, parsed, err = get_tag_or_usr(term)
     
     if err != None:
-        return "noHashorAt"
+        return err
     
     err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count = analyse_tweets(url, typ, parsed)
     
     if err != None:
-        return "invalidSearch"
+        return err
     
     political_prediction = 0
     ml_model_my_set, word_count_vect_my_set = build_ml_model(country)
@@ -190,8 +190,8 @@ if __name__ == "__main__":
     
     if resultitem == "noHashorAt":
         print("You must enter a #tag or @user")
-    elif resultitem == "invalidSearch":
-        print("Not a valid twitter user or hashtag")
+    elif resultitem == "noTweetsFound":
+        print("No tweets found for this query")
     else:
         print("Unique words used in "+str(resultitem.tweetsetInfo.tweet_count)+" tweets: "+resultitem.tweetsetInfo.word_count)
         print(resultitem.political_sentiment_data.sentiment)
