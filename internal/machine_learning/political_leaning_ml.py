@@ -26,10 +26,10 @@ def build_ml_model(country):
     
     if country != "us":
         from sklearn.utils import resample
-        import matplotlib.pyplot as plt
-        # fig = plt.figure(figsize=(8,6))
-        # data.groupby('Leaning').Tweet.count().plot.bar(ylim=0)
-        # plt.show()
+        # import matplotlib.pyplot as plt
+        # # fig = plt.figure(figsize=(8,6))
+        # # data.groupby('Leaning').Tweet.count().plot.bar(ylim=0)
+        # # plt.show()
         
         conservative = data[data.Leaning=='conservative']
         liberal = data[data.Leaning=='liberal']

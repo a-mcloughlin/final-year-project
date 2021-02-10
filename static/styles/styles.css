@@ -311,4 +311,10 @@ html {
     float:left;
 }
 
+.alert {
+    background-color: #e5957c !important;
+    border-color: #a96b58 !important;
+    color: #50342b !important;
+    font-weight: bold !important;
+}
 /* End */

@@ -58,7 +58,10 @@ def check_type(param):
 # Return the most used words, the number of unique words, the number of tweets and the emotion levels
 def analyse_tweets(url, typ, parsed):
 
-    tweets = run_twitter_request(url, "auth.yaml")
+    tweets, err = run_twitter_request(url, "auth.yaml")
+    if err != None:
+        return err, None, None, None, None, None, None, None, None
+    
     tweet_list, word_list, emoji_list, hashtag_list, mention_list, tweet_count, last_id = process_json.process_json_tweetset(tweets, [], [], [], [], [])
     
     extra_tweet_count = tweet_count
@@ -79,12 +82,12 @@ def analyse_tweets(url, typ, parsed):
     most_tagged_users = handle_wordlist.get_n_most_frequent_items(mention_list, 5)
     word_count = handle_wordlist.unique_word_count(word_list)
     political_score = check_politics.get_politics_from_wordlist(word_list)
-    return tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count
+    return err, tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count
 
 # Return twitter request data based on the search param passed
 # This function does not make the request, it only geretaed the data to make the request            
 def get_tag_or_usr(param):
-    
+    err = None
     url = ''
     while url == '':
         typ, parsed = check_type(param)
@@ -94,9 +97,10 @@ def get_tag_or_usr(param):
         elif typ == 'usr':
             url = requests.get_tweets_for_user(parsed)
         elif typ == None:
-            print("You must pass a # or an @ - Please try again")
+            err = "You must pass a # or an @ - Please try again"
+            url = 'err'
             
-    return url, typ, parsed
+    return url, typ, parsed, err
     
 # Taking a serach input:
 # Generate the request url - Run that request
@@ -104,12 +108,19 @@ def get_tag_or_usr(param):
 # From that data, get the strongest emotions, the positivity, sentiment
 # Return the most used words, the word count, the strongest emotions, the number of tweets and the overall sentiment
 def analyse(term, country):
+    
+    url, typ, parsed, err = get_tag_or_usr(term)
+    
+    if err != None:
+        return "noHashorAt"
+    
+    err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count = analyse_tweets(url, typ, parsed)
+    
+    if err != None:
+        return "invalidSearch"
+    
     political_prediction = 0
     ml_model_my_set, word_count_vect_my_set = build_ml_model(country)
-    
-    url, typ, parsed = get_tag_or_usr(term)
-    tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count = analyse_tweets(url, typ, parsed)
-    
     emolex_words = check_emotion.prepare_dataset()
     emotions = check_emotion.create_emotion_set()
     
@@ -176,25 +187,30 @@ def analyse(term, country):
 if __name__ == "__main__":
     print("Enter the hashtag or user tag to analyse in the form #tag or @user")
     resultitem = analyse(input(), "global")
-
-    print("Unique words used in "+str(resultitem.tweetsetInfo.tweet_count)+" tweets: "+resultitem.tweetsetInfo.word_count)
-    print(resultitem.political_sentiment_data.sentiment)
-    print("Strongest Emotions: ")
-    for i in resultitem.most_used_data.strongest_emotions:
-        print(i.name+" : "+str(i.get_bar_fraction(resultitem.tweetsetInfo.tweet_count)))
-    print("Political Score (Non-ML): "+str(resultitem.political_sentiment_data.political_score))
-    print(resultitem.political_sentiment_data.political_statement)
-    print("Political Leaning (ML): "+str(resultitem.political_sentiment_data.prediction))
-    print(resultitem.political_sentiment_data.prediction)
-    print("Most Used Words: ")
-    for i in resultitem.most_used_data.most_used_words:
-        print(i.word+":"+str(i.count))
-    print("Most Used Emojis: ")
-    for i in resultitem.most_used_data.most_used_emojis:
-        print(i.word+":"+str(i.count))
-    print("Most Used Hashtags: ")
-    for i in resultitem.most_used_data.most_used_hashtags:
-        print(i.word+":"+str(i.count))
-    print("Most Tagged Users: ")
-    for i in resultitem.most_used_data.most_tagged_users:
-        print(i.word+":"+str(i.count))
+    
+    if resultitem == "noHashorAt":
+        print("You must enter a #tag or @user")
+    elif resultitem == "invalidSearch":
+        print("Not a valid twitter user or hashtag")
+    else:
+        print("Unique words used in "+str(resultitem.tweetsetInfo.tweet_count)+" tweets: "+resultitem.tweetsetInfo.word_count)
+        print(resultitem.political_sentiment_data.sentiment)
+        print("Strongest Emotions: ")
+        for i in resultitem.most_used_data.strongest_emotions:
+            print(i.name+" : "+str(i.get_bar_fraction(resultitem.tweetsetInfo.tweet_count)))
+        print("Political Score (Non-ML): "+str(resultitem.political_sentiment_data.political_score))
+        print(resultitem.political_sentiment_data.political_statement)
+        print("Political Leaning (ML): "+str(resultitem.political_sentiment_data.prediction))
+        print(resultitem.political_sentiment_data.prediction)
+        print("Most Used Words: ")
+        for i in resultitem.most_used_data.most_used_words:
+            print(i.word+":"+str(i.count))
+        print("Most Used Emojis: ")
+        for i in resultitem.most_used_data.most_used_emojis:
+            print(i.word+":"+str(i.count))
+        print("Most Used Hashtags: ")
+        for i in resultitem.most_used_data.most_used_hashtags:
+            print(i.word+":"+str(i.count))
+        print("Most Tagged Users: ")
+        for i in resultitem.most_used_data.most_tagged_users:
+            print(i.word+":"+str(i.count))
