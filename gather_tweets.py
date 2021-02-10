@@ -10,9 +10,22 @@ import csv
 def gather():
     print("Enter the hashtag or user tag to analyse in the form #tag or @user")
     tag = input()
-    url, typ, parsed = get_tag_or_usr(tag)
-    tweets = run_twitter_request(url, "auth.yaml")
+    if len(tag) == 0:
+        print("You must add a search query")
+        return
+    
+    url, typ, parsed, err = get_tag_or_usr(tag)
+    if err != None:
+        print("You must enter a #tag or @user")
+        return
+        
+    tweets, err = run_twitter_request(url, "auth.yaml")
+    if err != None:
+        print("No tweets found for this query")
+        return
+    
     full_wordset = process_tweetset(tweets, tag)
+    
     
     
 # Save the tweets in csv format with the relevant user/hashtag tagged

@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, flash
 from analyse import analyse
 import os
 resultlist = [None,None]
 resultitem = None
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 # Add a result to the list of results 
 # The current implementation only shows 2 results at a time for easy comparison
@@ -14,7 +15,8 @@ def add_to_resultlist(resultitem, resultlist):
 
 # If nothing has been passed, display an empty html page
 @app.route("/")
-def hello():              
+def hello(): 
+    flash("Success!")             
     return render_template('tabs/analyse.html', result=resultitem)
 
 @app.route('/analyse')
@@ -28,22 +30,51 @@ def compare():
     resultitem = None
     return render_template('tabs/compare.html', resultlist=resultlist)
 
+def analyse_err(msg):
+    flash(msg)
+    return render_template('tabs/analyse.html', result=None)
+    
+
 # If a request has been made, render the results on the page
 @app.route('/analyse', methods=['POST'])
 def analyseQuery():
-    term = request.form['twitter_query']
+    term = request.form.get('twitter_query', '')
+    if len(term) == 0:
+        return analyse_err("You must add a search query")
+    
     country = request.form.get('countryDataset', 'global')
     resultitem = analyse(term, country)
+    
+    if resultitem == "noHashorAt":
+        return analyse_err("You must enter a #tag or @user, please try again")
+    
+    elif resultitem == "noTweetsFound":
+        return analyse_err("No tweets found for this query, please try again")
+    
     return render_template('tabs/analyse.html', result=resultitem)   
 
+def compare_err(msg, column):
+    flash(msg, "category"+column)
+    return render_template('tabs/compare.html', resultlist=resultlist) 
 
 # If a request has been made, render the results on the page
 @app.route('/compare', methods=['POST'])
 def compareQuery():
     term = request.form.get('twitter_query', None)
-    country = request.form.get('countryDataset', 'global')
     lp = request.form.get('loopnum', 0)
-    result = analyse(term, country)    
+    
+    if len(term) == 0:
+        return compare_err("You must add a search query", lp)
+    
+    country = request.form.get('countryDataset', 'global')
+    result = analyse(term, country)  
+    
+    if result == "noHashorAt":
+        return compare_err("You must enter a #tag or @user, please try again", lp)
+    
+    elif result == "noTweetsFound":
+        return compare_err("No tweets found for this query, please try again",lp)
+      
     if lp == '1':
         resultlist[0] = result
     elif lp == '2':

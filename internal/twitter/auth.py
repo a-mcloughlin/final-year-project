@@ -18,7 +18,10 @@ def twitter_auth_and_connect(twitter_api_token, url):
 
 # Run the twitter API request url passed to the function, and return the results
 def run_twitter_request(url, auth_location):
+    err = None
     data = process_yaml(auth_location)
     twitter_api_token = create_token(data)
     res_json = twitter_auth_and_connect(twitter_api_token, url)
-    return res_json
+    if res_json['meta']['result_count'] == 0:
+        err = "noTweetsFound"
+    return res_json, err

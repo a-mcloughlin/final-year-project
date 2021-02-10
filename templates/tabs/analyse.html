@@ -5,12 +5,22 @@
 {% block tab3 %}{% endblock %}
 {% block content %}
   <div class="bigtab d-flex flex-column">
+  {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+		  <div class="alert alert-warning alert-dismissible" role="alert">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			{{message}}
+		  </div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
     <table style="border: 0; width:100%; table-layout: fixed;">
       <tr style="border-bottom: 1px solid #a19d9c;">
       <div class="row">
       <form action ='analyse' method="POST">
         <div class="col-12 col-md-6 input-group mb-3">
-          <input class="rounded-pill-left " type="text" style="width:75%;" placeholder="Enter #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query">
+          <input class="rounded-pill-left " type="text" style="width:75%;" placeholder="Enter #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query" >
           <span class="input-group-btn">
              <button class="btn btn-success rounded-pill-right" type="submit" style="padding-right: 15px;">
              <i class="fa fa-search">Submit</i>
