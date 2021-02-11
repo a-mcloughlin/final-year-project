@@ -15,8 +15,7 @@ def add_to_resultlist(resultitem, resultlist):
 
 # If nothing has been passed, display an empty html page
 @app.route("/")
-def hello(): 
-    flash("Success!")             
+def hello():           
     return render_template('tabs/analyse.html', result=resultitem)
 
 @app.route('/analyse')
@@ -35,6 +34,7 @@ def analyse_err(msg):
     return render_template('tabs/analyse.html', result=None)
     
 
+    
 # If a request has been made, render the results on the page
 @app.route('/analyse', methods=['POST'])
 def analyseQuery():

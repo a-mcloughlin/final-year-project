@@ -22,7 +22,7 @@
         <div class="col-12 col-md-6 input-group mb-3">
           <input class="rounded-pill-left " type="text" style="width:75%;" placeholder="Enter #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query" >
           <span class="input-group-btn">
-             <button class="btn btn-success rounded-pill-right" type="submit" style="padding-right: 15px;">
+             <button class="btn btn-success rounded-pill-right" style="padding-right: 15px;" onclick="showLoadingAnalyse()">
              <i class="fa fa-search">Submit</i>
            </button>
           </span>
@@ -45,17 +45,21 @@
             <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="global" id="global" style="display: none;"/>Global
           </label>
         </div>
-        <label for="twitter_query" style="padding-left:10px;">Click 'Submit' to analyse the User account or Hashtag data:</label>
       </form>
       </div>
+        <label for="twitter_query" style="padding-left:10px;">Click 'Submit' to analyse the User account or Hashtag data:</label>
       <div style="border-bottom: 1px solid #a19d9c; padding-top:7.5px;"/>
       </tr>
+      <div id="loading" style="display: none;">
+        <img class="loadingImg" src="{{ url_for('static',filename='images/loading-gif.gif') }}" alt="loading"/>
+      </div>
       {% if result != None %}
+      <div id="result_section_1">
         <div style="text-align:center; padding-top:7.5px;">Search Term: <b>{{result.tweetsetInfo.term}}</b></div>
-        <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.word_count}}</b> unique words used</div>
+        <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
         <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.tweetsetInfo.dataset_country}}</b></div>
         <br>
-        <table style="width:100%;">
+        <table id="result_section_2" style="width:100%;">
           <tr>
             <td class="td-content-desc">Positivity </td>
             <td class="td-content-data">{{result.political_sentiment_data.sentiment}}</td>
@@ -144,6 +148,7 @@
             </td>
           </tr>
         </table>
+        </div>
       {% endif %}
     </table>
   </div>
