@@ -72,7 +72,10 @@ def analyse_tweets(url, typ, parsed):
             else:
                 next_url = requests.get_tweets_for_usr_maxid(parsed, last_id)
                 
-            more_tweets = run_twitter_request(next_url, "auth.yaml")
+            more_tweets, err = run_twitter_request(next_url, "auth.yaml")
+            if err != None:
+                return err, None, None, None, None, None, None, None, None
+            
             tweet_list, word_list, emoji_list, hashtag_list, mention_list, extra_tweet_count, last_id = process_json.process_json_tweetset(more_tweets, tweet_list, word_list, emoji_list, hashtag_list, mention_list)
             tweet_count = tweet_count + extra_tweet_count
     

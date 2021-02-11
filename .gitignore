@@ -1,5 +1,6 @@
 auth.yaml
 **/.vscode
+**/.vs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
