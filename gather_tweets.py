@@ -1,4 +1,4 @@
-from internal.twitter.auth import run_twitter_request
+from internal.twitter.auth import run_twitter_request_fetch_tweets
 from internal.word_processing.handle_wordlist import contains_emoji
 from analyse import get_tag_or_usr
 import nltk
@@ -19,7 +19,7 @@ def gather():
         print("You must enter a #tag or @user")
         return
         
-    tweets, err = run_twitter_request(url, "auth.yaml")
+    tweets, err = run_twitter_request_fetch_tweets(url, "auth.yaml")
     if err != None:
         print("No tweets found for this query")
         return

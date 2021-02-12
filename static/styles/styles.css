@@ -78,6 +78,10 @@ html {
     vertical-align: top;
 }
 
+.analyse_account2 {
+    vertical-align: top;
+}
+
 .navbar-collapse{
     position:absolute;
     bottom:0;
@@ -152,6 +156,23 @@ html {
     .all-emot {
         font-size: 0px;
     }
+    .two-row-fill {
+        width:108%;
+    }
+    
+    .followingdata1{
+        text-align: center; 
+    }
+    .followingdata3{
+        text-align: center; 
+    }
+    .condbreak {
+        margin-top: -15px;
+    }
+    .analyse_account2{
+        padding-top: 15px !important; 
+        border-top: 2px solid #a19d9c;
+    }
 }
 
 @media (min-width: 761px) {
@@ -162,6 +183,7 @@ html {
     }
     #politicalLeaningDesc2 {
         display: none;
+        margin-right: -50px;
     }
     .political_leaning_wrapper{
         padding-right: 60px !important;
@@ -193,6 +215,31 @@ html {
     .emotionlabel {
         padding-right: 5px !important;
     }
+
+    .td-content-desc {
+        min-width: 100px;
+    }
+    .two-row-fill {
+        width:100%;
+    }
+    .followingdata1{
+        text-align: right; 
+    }
+    .followingdata3{
+        text-align: left; 
+    }
+    .condbreak {
+        display: none;
+    }
+}
+
+.followingdata1{
+    padding-top: 7.5px; 
+    padding-bottom: 7.5px;
+}
+.followingdata3{ 
+    padding-top: 7.5px; 
+    padding-bottom: 7.5px;
 }
 .rounded-pill-left {
     border-top-left-radius: 50rem !important;
@@ -334,4 +381,15 @@ html {
     height: 100%;
 }
 
+.profile_picture {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #6a6868;
+    border-radius: 50rem !important;
+}
+
+.verified_tick {
+    width: 15px;
+    height: 15px;
+}
 /* End */

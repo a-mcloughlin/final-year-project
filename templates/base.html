@@ -29,6 +29,15 @@
 				document.getElementsByName("loading_"+i)[0].style.display = "block";
 				$(this).parent().trigger('submit')
 			}
+			function showLoadingAnalyseAcc(){
+				var myElem = document.getElementById("result_section_1");
+				if (myElem != null) {
+					myElem.style.display = "none";
+					document.getElementById("result_section_2").style.display = "none";
+				}
+				document.getElementById("loading").style.display = "block";
+				$(this).parent().trigger('submit')
+			}
 		</script>
 		<nav class="navbar navbar-expand-lg fixed-top flex-nowrap">  
         	<img src="{{ url_for('static',filename='images/fyplogo.png') }}" alt="logo" class="logo"/>

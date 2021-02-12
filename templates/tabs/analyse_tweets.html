@@ -57,12 +57,12 @@
       <div id="result_section_1">
         <div style="text-align:center; padding-top:7.5px;">Search Term: <b>{{result.tweetsetInfo.term}}</b></div>
         <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
-        <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.tweetsetInfo.dataset_country}}</b></div>
+        <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.political_sentiment_data.dataset_country}}</b></div>
         <br>
         <table id="result_section_2" style="width:100%;">
           <tr>
             <td class="td-content-desc">Positivity </td>
-            <td class="td-content-data">{{result.political_sentiment_data.sentiment}}</td>
+            <td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
           </tr>
           <tr class="tr-content-mid">
             <td class="td-content-desc">Political Leaning</td>
