@@ -7,7 +7,6 @@ import internal.twitter.requests as requests
 import internal.word_processing.handle_wordlist as handle_wordlist
 import internal.word_processing.process_json_tweets as process_json
 import internal.data_analysis.detect_emotions as check_emotion
-import internal.data_analysis.detect_political_leaning as check_politics
 from internal.data_analysis.detect_sentiment import get_sentiment, describe_sentiment
 from internal.machine_learning.political_leaning_ml import build_ml_model as build_ml_model ,predict_from_model as predict_from_model, describe_political_leaning
 
@@ -38,9 +37,7 @@ class most_used_data:
         self.strongest_emotions = strongest_emotions
 
 class political_sentiment_data:
-    def __init__(self, political_score, political_statement, sentiment, prediction, political_leaning_degree):  
-        self.political_score = political_score
-        self.political_statement = political_statement
+    def __init__(self, sentiment, prediction, political_leaning_degree):
         self.sentiment = sentiment
         self.prediction = prediction
         self.political_leaning_degree = political_leaning_degree
@@ -84,8 +81,7 @@ def analyse_tweets(url, typ, parsed):
     most_used_hashtags = handle_wordlist.get_n_most_frequent_items(hashtag_list, 5)
     most_tagged_users = handle_wordlist.get_n_most_frequent_items(mention_list, 5)
     word_count = handle_wordlist.unique_word_count(word_list)
-    political_score = check_politics.get_politics_from_wordlist(word_list)
-    return err, tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count
+    return err, tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count
 
 # Return twitter request data based on the search param passed
 # This function does not make the request, it only geretaed the data to make the request            
@@ -117,7 +113,7 @@ def analyse(term, country):
     if err != None:
         return err
     
-    err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, political_score, tweet_count = analyse_tweets(url, typ, parsed)
+    err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count = analyse_tweets(url, typ, parsed)
     
     if err != None:
         return err
@@ -164,7 +160,6 @@ def analyse(term, country):
     sentiment = describe_sentiment(pos_ratio, neg_ratio, neut_ratio)
     
     print("Political Leaning: (ML) "+str(political_prediction))  
-    political_statement = check_politics.describe_political_leaning(political_score)
     statement = describe_political_leaning(political_prediction)
     
     dataset_country = "Ireland, The UK and The USA"
@@ -179,7 +174,7 @@ def analyse(term, country):
     
     tweetset_info = tweetset_data(term, word_count, tweet_count, dataset_country)
     most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions)
-    political_data_info = political_sentiment_data(political_score, political_statement, sentiment, statement, political_leaning_degree)
+    political_data_info = political_sentiment_data(sentiment, statement, political_leaning_degree)
     resultitem = result(tweetset_info, most_used_data_info, political_data_info)
     return resultitem
 
@@ -201,9 +196,7 @@ if __name__ == "__main__":
         print("Strongest Emotions: ")
         for i in resultitem.most_used_data.strongest_emotions:
             print(i.name+" : "+str(i.get_bar_fraction(resultitem.tweetsetInfo.tweet_count)))
-        print("Political Score (Non-ML): "+str(resultitem.political_sentiment_data.political_score))
-        print(resultitem.political_sentiment_data.political_statement)
-        print("Political Leaning (ML): "+str(resultitem.political_sentiment_data.prediction))
+        print("Political Leaning : "+str(resultitem.political_sentiment_data.prediction))
         print(resultitem.political_sentiment_data.prediction)
         print("Most Used Words: ")
         for i in resultitem.most_used_data.most_used_words:

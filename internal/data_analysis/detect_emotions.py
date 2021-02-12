@@ -43,7 +43,7 @@ def removelistelement(list, key):
 
 # Read and rotate the NRC emotion lexicon dataset so it can be more easily alaysed
 def prepare_dataset():
-    filepath = 'NRC-Emotion-Lexicon/NRC-Emotion-Lexicon-v0.92/NRC-Emotion-Lexicon-Wordlevel-v0.92.txt'
+    filepath = 'datasets/NRC-Emotion-Lexicon-Wordlevel-v0.92.txt'
     emolex_df = pd.read_csv(filepath,  names=["word", "emotion", "association"], sep='\t')
     emolex_df = emolex_df.pivot(index='word', columns='emotion', values='association').reset_index()
     return emolex_df

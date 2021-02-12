@@ -1,7 +1,6 @@
 
 import unittest
 import internal.data_analysis.detect_emotions as detect_emotions
-import internal.data_analysis.detect_political_leaning as detect_political_leaning
 import internal.data_analysis.detect_sentiment as detect_sentiment
 import test.mocked_data as mock
 
@@ -53,18 +52,6 @@ class TestSentiment(unittest.TestCase):
             detect_emotions.removelistelement(test_list, "one"), 
             [word2]
         )
-        
-    def test_get_politics_from_wordlist(self):
-        political_leaning = detect_political_leaning.get_politics_from_wordlist(mock.mock_wordlist)
-        self.assertEqual(political_leaning, 34)
-        
-    def test_get_politics_from_wordlist(self):
-        right_leaning = detect_political_leaning.describe_political_leaning(-100)
-        left_leaning = detect_political_leaning.describe_political_leaning(100)
-        centrist = detect_political_leaning.describe_political_leaning(0)
-        self.assertEqual(right_leaning, "These tweets use more right-leaning words than left leaning words")
-        self.assertEqual(left_leaning, "These tweets use more left-leaning words than right leaning words")
-        self.assertEqual(centrist, "These tweets have no strong political leaning")
             
 def assert_emotionlists_are_equal(self, list1, list2):
    for index, emotion in enumerate(list1):
