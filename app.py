@@ -16,27 +16,48 @@ def add_to_resultlist(resultitem, resultlist):
 # If nothing has been passed, display an empty html page
 @app.route("/")
 def hello():           
-    return render_template('tabs/analyse.html', result=resultitem)
+    return render_template('tabs/analyse_tweets.html', result=resultitem)
 
-@app.route('/analyse')
-def search():
+@app.route('/analyse_account')
+def analyse_acc():
     resultlist[0] = None
     resultlist[1] = None
-    return render_template('tabs/analyse.html', result=resultitem)
+    return render_template('tabs/analyse_account.html', result=resultitem)
 
-@app.route('/compare')
-def compare():
-    resultitem = None
-    return render_template('tabs/compare.html', resultlist=resultlist)
+def analyse_acc_err(msg):
+    flash(msg)
+    return render_template('tabs/analyse_account.html', result=None)
+
+# If a request has been made, render the results on the page
+@app.route('/analyse_account', methods=['POST'])
+def analyse_acc_Query():
+    term = request.form.get('twitter_query', '')
+    if len(term) == 0:
+        return analyse_acc_err("You must add a search query")
+    
+    country = request.form.get('countryDataset', 'global')
+    resultitem = analyse(term, country)
+    
+    if resultitem == "noHashorAt":
+        return analyse_acc_err("You must enter a #tag or @user, please try again")
+    
+    elif resultitem == "noTweetsFound":
+        return analyse_acc_err("No tweets found for this query, please try again")
+    
+    return render_template('tabs/analyse_account.html', result=resultitem)   
+
+@app.route('/analyse_tweets')
+def analyse_tweets():
+    resultlist[0] = None
+    resultlist[1] = None
+    return render_template('tabs/analyse_tweets.html', result=resultitem)
 
 def analyse_err(msg):
     flash(msg)
-    return render_template('tabs/analyse.html', result=None)
-    
-
+    return render_template('tabs/analyse_tweets.html', result=None)
     
 # If a request has been made, render the results on the page
-@app.route('/analyse', methods=['POST'])
+@app.route('/analyse_tweets', methods=['POST'])
 def analyseQuery():
     term = request.form.get('twitter_query', '')
     if len(term) == 0:
@@ -51,14 +72,19 @@ def analyseQuery():
     elif resultitem == "noTweetsFound":
         return analyse_err("No tweets found for this query, please try again")
     
-    return render_template('tabs/analyse.html', result=resultitem)   
+    return render_template('tabs/analyse_tweets.html', result=resultitem)   
+
+@app.route('/compare_tweets')
+def compare():
+    resultitem = None
+    return render_template('tabs/compare_tweets.html', resultlist=resultlist)
 
 def compare_err(msg, column):
     flash(msg, "category"+column)
-    return render_template('tabs/compare.html', resultlist=resultlist) 
+    return render_template('tabs/compare_tweets.html', resultlist=resultlist) 
 
 # If a request has been made, render the results on the page
-@app.route('/compare', methods=['POST'])
+@app.route('/compare_tweets', methods=['POST'])
 def compareQuery():
     term = request.form.get('twitter_query', None)
     lp = request.form.get('loopnum', 0)
@@ -79,7 +105,7 @@ def compareQuery():
         resultlist[0] = result
     elif lp == '2':
         resultlist[1] = result
-    return render_template('tabs/compare.html', resultlist=resultlist)   
+    return render_template('tabs/compare_tweets.html', resultlist=resultlist)   
 
 @app.route('/favicon.ico')
 def favicon():

@@ -10,16 +10,16 @@ from sklearn.feature_selection import chi2
 
 def build_ml_model(country):
     if country == "ie":
-        data = pd.read_csv(r'internal/machine_learning/datasets/ie_parties_04_02_2021.csv')
+        data = pd.read_csv(r'datasets/ie_parties_04_02_2021.csv')
         print("Using Irish Dataset")
     elif country == "uk":
-        data = pd.read_csv(r'internal/machine_learning/datasets/uk_parties_04_02_2021.csv')
+        data = pd.read_csv(r'datasets/uk_parties_04_02_2021.csv')
         print("Using UK Dataset")
     elif country == "us":
-        data = pd.read_csv(r'internal/machine_learning/datasets/kaggle_US_dataset_modified.csv')
+        data = pd.read_csv(r'datasets/kaggle_US_dataset_modified.csv')
         print("Using US Dataset")
     else:
-        data = pd.read_csv(r'internal/machine_learning/datasets/ie_uk_us_04_02_2021.csv')
+        data = pd.read_csv(r'datasets/ie_uk_us_04_02_2021.csv')
         print("Using IE, UK and US Datasets")
     
     data.columns = ['Tweet', 'Account', 'Score', 'Leaning']
