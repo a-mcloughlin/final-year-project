@@ -67,7 +67,7 @@
               </tr>
               <tr>
                 <td colspan="3" style="padding-bottom: 7.5px;"><b>{{result.tweetsetInfo.term}}</b>
-                  {% if result.account_data.verified != "True" %}
+                  {% if result.account_data.verified == true %}
                     <img src="{{ url_for('static',filename='images/twitter_verified_tick.png') }}" alt="Verified" class="verified_tick"/>
                   {% endif %}
                 </td>
@@ -107,10 +107,11 @@
               {% endif %}
             </table>
           </div>
-          <div class="col-12 col-md-6 analyse_account2">
+          <div id="result_section_1" class="col-12 col-md-6 analyse_account2">
+          {% if result.most_used_data != None %}
             <table style="width:100%;">
             <tr>
-            <div id="result_section_1">
+            <div>
               <div style="text-align:center; padding-top:7.5px;">Account Analysed: <b>{{result.tweetsetInfo.term}}</b></div>
               <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
               <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.political_sentiment_data.dataset_country}}</b></div>
@@ -200,6 +201,9 @@
                 </td>
               </tr>
             </table>
+            {% else %}
+            <div style="text-align: center; padding-top: 50px;">No Tweets by <b>{{result.tweetsetInfo.term}}</b> in the last 7 days</div>
+              {% endif %}
           </div>
         </div>
       {% endif %}

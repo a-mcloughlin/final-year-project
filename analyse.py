@@ -79,36 +79,40 @@ def get_tag_or_usr(param):
    
 def analyse_account(term, country):
     
+    tweetNumErr = None
+    
     url, typ, parsed, err = get_tag_or_usr(term)
     
     if typ == 'tag':
-        return "hashNotAt"
+        return "hashNotAt", None
     
-    if err != None:
-        return err
-    
-    err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count = fetch_tweetset_data(url, typ, parsed)
+    errtweets, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count = fetch_tweetset_data(url, typ, parsed)
+
     
     acc_url = requests.get_account_info(parsed)
-    data, err = run_twitter_request_fetch_account_info(acc_url, "auth.yaml")
+    data, erracc = run_twitter_request_fetch_account_info(acc_url, "auth.yaml")
     account_data = process_json.process_user_data(data)
-    
-    if err != None:
-        return err
+        
+    if erracc != None:
+        return erracc, None
 
-    dataset_country, statement, political_leaning_degree = evaluate_politics(tweetset, country)
-    political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree)
-    sentiment, strongest_emotions = evaluate_emotions_sentiment(tweetset)
+    if errtweets != None:
+        tweetset_info = tweetset_data(term, None, None, None)
+        most_used_data_info = None
+        political_data_info = None
+    else:
+        dataset_country, statement, political_leaning_degree = evaluate_politics(tweetset, country)
+        political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree)
+        sentiment, strongest_emotions = evaluate_emotions_sentiment(tweetset)
+        
+        tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment)
+        most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions)
+        if tweet_count < 20:
+            tweetNumErr = "InsufficientTweets"
     
-    tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment)
-    most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions)
     resultitem = account_result(tweetset_info, most_used_data_info, political_data_info, account_data)
     
-    err = None
-    if tweet_count < 20:
-        err = "InsufficientTweets"
-    
-    return resultitem, err
+    return resultitem, tweetNumErr
     
 # Taking a serach input:
 # Generate the request url - Run that request
