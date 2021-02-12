@@ -32,3 +32,12 @@ def get_tweets_for_tag_maxid(tag, until_id):
         q, until
     )
     return url
+
+# kjhgfdswdefrgthyjukujyhtgrf
+def get_account_info(handle):
+    user = "usernames={}".format(handle)
+    user_fields = "user.fields={}".format("verified,name,description,location,created_at,public_metrics,withheld,profile_image_url")
+    url = "https://api.twitter.com/2/users/by?{}&{}".format(
+        user, user_fields
+    )
+    return url

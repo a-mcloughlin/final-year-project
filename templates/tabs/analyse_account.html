@@ -17,135 +17,195 @@
 	{% endwith %}
     <table style="border: 0; width:100%; table-layout: fixed;">
       <tr style="border-bottom: 1px solid #a19d9c;">
-      <div class="row">
-      <form action ='analyse_account' method="POST">
-        <div class="col-12 col-md-6 input-group mb-3">
-          <input class="rounded-pill-left " type="text" style="width:75%;" placeholder="Enter @user handle" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query" >
-          <span class="input-group-btn">
-             <button class="btn btn-success rounded-pill-right" style="padding-right: 15px;" onclick="showLoadingAnalyse()">
-             <i class="fa fa-search">Submit</i>
-           </button>
-          </span>
+        <div class="row two-row-fill" >
+          <form action ='analyse_account' method="POST">
+            <div class="col-12 col-md-6 input-group mb-3">
+              <input class="rounded-pill-left " type="text" style="width:75%;" placeholder="Enter @user handle" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query" >
+              <span class="input-group-btn">
+                <button class="btn btn-success rounded-pill-right" style="padding-right: 15px;" onclick="showLoadingAnalyseAcc()">
+                <i class="fa fa-search">Submit</i>
+              </button>
+              </span>
+            </div>
+            <div class="col-12 col-md-6 btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="flex: 1; border-radius: 2px; padding-bottom: 10px; padding-top: 10px; margin-right:10px;">
+              <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;" >
+                <b style="font-style: italic;">Political Analysis Dataset&nbsp;</b>
+              </label>
+              <label class="btn btn-outline-dark form-check-label active" for="ie" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="ie" id="ie" style="display: none;" checked/>Ireland
+              </label>
+              <label class="btn btn-outline-dark form-check-label" for="uk" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="uk" id="uk" style="display: none;"/>UK
+              </label>
+              <label class="btn btn-outline-dark form-check-label" for="us" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="us" id="us" style="display: none;"/>US
+              </label>
+            
+              <label class="btn btn-outline-dark form-check-label" for="global" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="global" id="global" style="display: none;"/>Global
+              </label>
+            </div>
+          </form>
         </div>
-        <div class="col-12 col-md-6 btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="flex: 1; border-radius: 2px; padding-bottom: 10px; padding-top: 10px; margin-right:10px;">
-          <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;" >
-            <b style="font-style: italic;">Political Analysis Dataset&nbsp;</b>
-          </label>
-          <label class="btn btn-outline-dark form-check-label active" for="ie" style="flex: 1; font-weight: bold;">
-            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="ie" id="ie" style="display: none;" checked/>Ireland
-          </label>
-          <label class="btn btn-outline-dark form-check-label" for="uk" style="flex: 1; font-weight: bold;">
-            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="uk" id="uk" style="display: none;"/>UK
-          </label>
-          <label class="btn btn-outline-dark form-check-label" for="us" style="flex: 1; font-weight: bold;">
-            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="us" id="us" style="display: none;"/>US
-          </label>
-        
-          <label class="btn btn-outline-dark form-check-label" for="global" style="flex: 1; font-weight: bold;">
-            <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="global" id="global" style="display: none;"/>Global
-          </label>
-        </div>
-      </form>
-      </div>
-        <label for="twitter_query" style="padding-left:10px;">Click 'Submit' to analyse the User account data:</label>
-      <div style="border-bottom: 1px solid #a19d9c; padding-top:7.5px;"/>
+          <label for="twitter_query" style="padding-left:10px;">Click 'Submit' to analyse the tweets within the User account or Hashtag:</label>
+          <div style="border-bottom: 1px solid #a19d9c; padding-top:7.5px;"/>
       </tr>
-      <div id="loading" style="display: none;">
-        <img class="loadingImg" src="{{ url_for('static',filename='images/loading-gif.gif') }}" alt="loading"/>
-      </div>
-      {% if result != None %}
-      <div id="result_section_1">
-        <div style="text-align:center; padding-top:7.5px;">Search Term: <b>{{result.tweetsetInfo.term}}</b></div>
-        <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
-        <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.tweetsetInfo.dataset_country}}</b></div>
-        <br>
-        <table id="result_section_2" style="width:100%;">
-          <tr>
-            <td class="td-content-desc">Positivity </td>
-            <td class="td-content-data">{{result.political_sentiment_data.sentiment}}</td>
-          </tr>
-          <tr class="tr-content-mid">
-            <td class="td-content-desc">Political Leaning</td>
-          	<td class="td-content-data political_leaning_wrapper">
-                <svg id="political_leaning_meter" style="margin-top:7.5px;">
-                  <circle class="circlesector" id="liberal" r="50" cx="50%" cy="50%" stroke="#7CCCE5" 
-                  stroke-width="20" stroke-dasharray="157, 314" fill="none">
-                  </circle>
-                  <circle class="circlesector" id="neutral" r="50" cx="50%" cy="50%" stroke="#8f8f8f"
-                  stroke-width="20" stroke-dasharray="91, 314" fill="none">
-                  </circle>
-                  <circle class="circlesector" id="conservative" r="50" cx="50%" cy="50%" stroke="#e5957c"
-                  stroke-width="20" stroke-dasharray="67, 314" fill="none">
-                  </circle>
-                  <img id="meter_needle" src="{{ url_for('static',filename='images/meter-gauge-needle.svg') }}" alt="" style="margin-top:7.5px; transform: rotate({{result.political_sentiment_data.political_leaning_degree}}deg);">
-                  <p id="liberal_label">Left</p>
-                  <p id="conservative_label">Right</p>
-                </svg>
-                <div id="politicalLeaningDesc1" style="margin-top: -50px;">{{result.political_sentiment_data.prediction}}</div>
-                <div id="politicalLeaningDesc2">{{result.political_sentiment_data.prediction}}</div>
-            </td>
-          </tr>
-          <tr class="tr-content-mid">
-            <td class="td-content-desc">Tweet Emotions </td>
-          	<td class="td-content-data">
-							<div class="emotion-chart flex-container">
-                {% for emotion in result.most_used_data.strongest_emotions %}
-                  <div class="{% if loop.index == 1 %}emot-first {% elif loop.last %}emot-last  {% endif %}all-emot" style="
-                  flex: 1 1 {{emotion.get_bar_fraction(result.tweetsetInfo.tweet_count)}}%; 
-                  background-color: {{emotion.colour}};">
-                    {{emotion.name.capitalize()}}
+    </table>
+    <div id="loading" style="display: none;">
+      <img class="loadingImg" src="{{ url_for('static',filename='images/loading-gif.gif') }}" alt="loading"/>
+    </div>
+    <br>
+    {% if result != None %}
+      <div class="d-flex two-row-fill">
+        <div id="result_section_2"style="border: 0; width:100%; table-layout: fixed;" class="row">
+          <div class="col-12 col-md-6 compare-content1">
+            <table style="width:100%;">
+              <tr>
+                <td style="padding-right: 10px; padding-bottom: 10px;" rowspan="5">
+        	        <img src="{{result.account_data.profile_image_url}}" alt="profile_picture" class="profile_picture"/>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" style="padding-bottom: 7.5px;"><b>{{result.tweetsetInfo.term}}</b>
+                  {% if result.account_data.verified == true %}
+                    <img src="{{ url_for('static',filename='images/twitter_verified_tick.png') }}" alt="Verified" class="verified_tick"/>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td colspan="3">{{result.account_data.name}}</td>
+              </tr>
+              <tr>
+                <td style="width:100%; padding-bottom: 7.5px;" colspan="3">{{result.account_data.description}}</td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td class="followingdata1" style="width: 40%;">Followers <div class="condbreak"><br></div><b>{{result.account_data.followers_count}}</b></td>
+                <td style="width: 20%; "></td>
+                <td class="followingdata3" style="width: 40%;">Following <div class="condbreak"><br></div><b>{{result.account_data.following_count}}<b></td>
+              </tr>
+            </table>
+            <table style="width:100%;">
+              {% if result.account_data.location != None %}
+                <tr class="tr-content-mid">
+                  <td class="td-content-desc">Account Location </td>
+                  <td class="td-content-data">{{result.account_data.location}}</td>
+                </tr>
+              {% endif %}
+              <tr class="tr-content-mid">
+                <td class="td-content-desc">Account Age </td>
+                <td class="td-content-data">{{result.account_data.age}}</td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td class="td-content-desc">Tweet Count </td>
+                <td class="td-content-data">{{result.account_data.tweet_count}}</td>
+              </tr>
+              {% if result.account_data.withheld_in_countries != None %}
+                <tr class="tr-content-mid">
+                  <td class="td-content-desc">Account Witheld in : </td>
+                  <td class="td-content-data">{{result.account_data.withheld_in_countries}}</td>
+                </tr>
+              {% endif %}
+            </table>
+          </div>
+          <div id="result_section_1" class="col-12 col-md-6 analyse_account2">
+          {% if result.most_used_data != None %}
+            <table style="width:100%;">
+            <tr>
+            <div>
+              <div style="text-align:center; padding-top:7.5px;">Account Analysed: <b>{{result.tweetsetInfo.term}}</b></div>
+              <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
+              <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.political_sentiment_data.dataset_country}}</b></div>
+              <br>
+            </div>
+            </tr>
+              <tr>
+                <td class="td-content-desc">Positivity </td>
+                <td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td class="td-content-desc">Political Leaning</td>
+                <td class="td-content-data political_leaning_wrapper">
+                    <svg id="political_leaning_meter" style="margin-top:7.5px;">
+                      <circle class="circlesector" id="liberal" r="50" cx="50%" cy="50%" stroke="#7CCCE5" 
+                      stroke-width="20" stroke-dasharray="157, 314" fill="none">
+                      </circle>
+                      <circle class="circlesector" id="neutral" r="50" cx="50%" cy="50%" stroke="#8f8f8f"
+                      stroke-width="20" stroke-dasharray="91, 314" fill="none">
+                      </circle>
+                      <circle class="circlesector" id="conservative" r="50" cx="50%" cy="50%" stroke="#e5957c"
+                      stroke-width="20" stroke-dasharray="67, 314" fill="none">
+                      </circle>
+                      <img id="meter_needle" src="{{ url_for('static',filename='images/meter-gauge-needle.svg') }}" alt="" style="margin-top:7.5px; transform: rotate({{result.political_sentiment_data.political_leaning_degree}}deg);">
+                      <p id="liberal_label">Left</p>
+                      <p id="conservative_label">Right</p>
+                    </svg>
+                	<div id="politicalLeaningDesc2" style="display: block;">{{result.political_sentiment_data.prediction}}</div>
+						    </td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td class="td-content-desc">Tweet Emotions </td>
+                <td class="td-content-data">
+                  <div class="emotion-chart flex-container">
+                    {% for emotion in result.most_used_data.strongest_emotions %}
+                      <div class="{% if loop.index == 1 %}emot-first {% elif loop.last %}emot-last  {% endif %}all-emot" style="
+                      flex: 1 1 {{emotion.get_bar_fraction(result.tweetsetInfo.tweet_count)}}%; 
+                      background-color: {{emotion.colour}};">
+                        {{emotion.name.capitalize()}}
+                      </div>
+                    {% endfor %}
                   </div>
-                {% endfor %}
-              </div>
-              <div id="politicalLeaningDesc2" class="flex-wrap">
-                {% for emotion in result.most_used_data.strongest_emotions %}
-                  <div class="Column"><div class="colour-inidicator" style="background-color: {{emotion.colour}};"></div><p class="legendlabel">{{emotion.name.capitalize()}}</p></div>
-                {% endfor %}
-              </div>
-            </td>
-          </tr>
-          <tr class="tr-content-mid">
-            <td class="td-content-desc">Most Used Emojis </td>
-          	<td class="td-content-data">
-							{% if result.most_used_data.most_used_emojis != [] %}
-                {% for item in result.most_used_data.most_used_emojis %}
-                  {{item.word}}
-                  {% if not loop.last %},&nbsp;{%endif%}
-                {% endfor %}
-							{% else %}
-							  No emojis used in the last 7 days of tweets<br>
-							{% endif %}
-            </td>
-          </tr>
-          <tr class="tr-content-mid">
-            <td class="td-content-desc">Most Used Words </td>
-          	<td class="td-content-data">
-							{% if result.most_used_data.most_used_words != [] %}
-                {% for item in result.most_used_data.most_used_words %}
-                  {{item.word}}
-                  {% if not loop.last %},&nbsp;{%endif%}
-                {% endfor %}
-							{% else %}
-							  No Words used in the last 7 days of tweets<br>
-							{% endif %}
-            </td>
-          </tr>
-          <tr class="tr-content-mid">
-            <td class="td-content-desc">Most Used Hashtags </td>
-            <td class="td-content-data">
-							{% if result.most_used_data.most_used_hashtags != [] %}
-                {% for item in result.most_used_data.most_used_hashtags %}
-                  {{item.word}}
-                  {% if not loop.last %},&nbsp;{%endif%}
-                {% endfor %}
-							{% else %}
-							  No hashtags used in the last 7 days of tweets<br>
-							{% endif %}
-            </td>
-          </tr>
-        </table>
+                  <div id="politicalLeaningDesc2" class="flex-wrap">
+                    {% for emotion in result.most_used_data.strongest_emotions %}
+                      <div class="Column"><div class="colour-inidicator" style="background-color: {{emotion.colour}};"></div><p class="legendlabel">{{emotion.name.capitalize()}}</p></div>
+                    {% endfor %}
+                  </div>
+                </td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td class="td-content-desc">Most Used Emojis </td>
+                <td class="td-content-data">
+                  {% if result.most_used_data.most_used_emojis != [] %}
+                    {% for item in result.most_used_data.most_used_emojis %}
+                      {{item.word}}
+                      {% if not loop.last %},&nbsp;{%endif%}
+                    {% endfor %}
+                  {% else %}
+                    No emojis used in the last 7 days of tweets<br>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td class="td-content-desc">Most Used Words </td>
+                <td class="td-content-data">
+                  {% if result.most_used_data.most_used_words != [] %}
+                    {% for item in result.most_used_data.most_used_words %}
+                      {{item.word}}
+                      {% if not loop.last %},&nbsp;{%endif%}
+                    {% endfor %}
+                  {% else %}
+                    No Words used in the last 7 days of tweets<br>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr class="tr-content-mid">
+                <td class="td-content-desc">Most Used Hashtags </td>
+                <td class="td-content-data">
+                  {% if result.most_used_data.most_used_hashtags != [] %}
+                    {% for item in result.most_used_data.most_used_hashtags %}
+                      {{item.word}}
+                      {% if not loop.last %},&nbsp;{%endif%}
+                    {% endfor %}
+                  {% else %}
+                    No hashtags used in the last 7 days of tweets<br>
+                  {% endif %}
+                </td>
+              </tr>
+            </table>
+            {% else %}
+            <div style="text-align: center; padding-top: 50px;">No Tweets by <b>{{result.tweetsetInfo.term}}</b> in the last 7 days</div>
+              {% endif %}
+          </div>
         </div>
       {% endif %}
-    </table>
   </div>
 {% endblock %}

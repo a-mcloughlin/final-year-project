@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_from_directory, flash
-from analyse import analyse
+from analyse import analyse, analyse_account
 import os
 resultlist = [None,None]
 resultitem = None
@@ -17,34 +17,6 @@ def add_to_resultlist(resultitem, resultlist):
 @app.route("/")
 def hello():           
     return render_template('tabs/analyse_tweets.html', result=resultitem)
-
-@app.route('/analyse_account')
-def analyse_acc():
-    resultlist[0] = None
-    resultlist[1] = None
-    return render_template('tabs/analyse_account.html', result=resultitem)
-
-def analyse_acc_err(msg):
-    flash(msg)
-    return render_template('tabs/analyse_account.html', result=None)
-
-# If a request has been made, render the results on the page
-@app.route('/analyse_account', methods=['POST'])
-def analyse_acc_Query():
-    term = request.form.get('twitter_query', '')
-    if len(term) == 0:
-        return analyse_acc_err("You must add a search query")
-    
-    country = request.form.get('countryDataset', 'global')
-    resultitem = analyse(term, country)
-    
-    if resultitem == "noHashorAt":
-        return analyse_acc_err("You must enter a #tag or @user, please try again")
-    
-    elif resultitem == "noTweetsFound":
-        return analyse_acc_err("No tweets found for this query, please try again")
-    
-    return render_template('tabs/analyse_account.html', result=resultitem)   
 
 @app.route('/analyse_tweets')
 def analyse_tweets():
@@ -64,7 +36,7 @@ def analyseQuery():
         return analyse_err("You must add a search query")
     
     country = request.form.get('countryDataset', 'global')
-    resultitem = analyse(term, country)
+    resultitem, err = analyse(term, country)
     
     if resultitem == "noHashorAt":
         return analyse_err("You must enter a #tag or @user, please try again")
@@ -72,6 +44,9 @@ def analyseQuery():
     elif resultitem == "noTweetsFound":
         return analyse_err("No tweets found for this query, please try again")
     
+    if err != None:
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term))
+        
     return render_template('tabs/analyse_tweets.html', result=resultitem)   
 
 @app.route('/compare_tweets')
@@ -93,7 +68,7 @@ def compareQuery():
         return compare_err("You must add a search query", lp)
     
     country = request.form.get('countryDataset', 'global')
-    result = analyse(term, country)  
+    result, err = analyse(term, country)
     
     if result == "noHashorAt":
         return compare_err("You must enter a #tag or @user, please try again", lp)
@@ -105,7 +80,43 @@ def compareQuery():
         resultlist[0] = result
     elif lp == '2':
         resultlist[1] = result
+        
+    if err != None:
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result.tweetsetInfo.term), "category"+lp)
+    
     return render_template('tabs/compare_tweets.html', resultlist=resultlist)   
+
+@app.route('/analyse_account')
+def analyse_acc():
+    resultlist[0] = None
+    resultlist[1] = None
+    return render_template('tabs/analyse_account.html', result=resultitem)
+
+def analyse_acc_err(msg):
+    flash(msg)
+    return render_template('tabs/analyse_account.html', result=None)
+
+# If a request has been made, render the results on the page
+@app.route('/analyse_account', methods=['POST'])
+def analyse_acc_Query():
+    term = request.form.get('twitter_query', '')
+    if len(term) == 0:
+        return analyse_acc_err("You must add a search query")
+    
+    country = request.form.get('countryDataset', 'global')
+    resultitem, err = analyse_account(term, country)
+    
+    if resultitem == "noHashorAt":
+        return analyse_acc_err("You must enter a @user handle, please try again")
+    elif resultitem == "hashNotAt":
+        return analyse_acc_err("You must enter a @user handle, not a hashtag, please try again")
+    elif resultitem == "noTweetsFound":
+        return analyse_acc_err("No tweets found for this query, please try again")
+    
+    if err != None:
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term))
+    
+    return render_template('tabs/analyse_account.html', result=resultitem)   
 
 @app.route('/favicon.ico')
 def favicon():

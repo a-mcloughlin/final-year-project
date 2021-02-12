@@ -5,7 +5,7 @@
 {% block tab3 %}{% endblock %}
 {% block content %}
     <div class="bigtab d-flex">
-      <div style="border: 0; width:100%; table-layout: fixed;" class="row">
+      <div style="border: 0; table-layout: fixed;" class="two-row-fill row">
         {% for result in resultlist %}
 			{% if loop.index == 1 %}
 				<div class="col-12 col-md-6 compare-content1">
@@ -64,12 +64,12 @@
       		<div Name="result_section_1_{{loop.index}}">
               <div style="text-align:center;">Search Term: <b>{{result.tweetsetInfo.term}}</b></div>
               <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
-              <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.tweetsetInfo.dataset_country}}</b></div>
+              <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.political_sentiment_data.dataset_country}}</b></div>
 			  <br>
 				<table Name="result_section_2_{{loop.index}}" style="width:100%;">
 					<tr>
 						<td class="td-content-desc">Positivity </td>
-						<td class="td-content-data">{{result.political_sentiment_data.sentiment}}</td>
+						<td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
 					</tr>
 					<tr class="tr-content-mid">
 						<td class="td-content-desc">Political Leaning </td>
@@ -88,7 +88,7 @@
 							<p id="liberal_label">Left</p>
 							<p id="conservative_label">Right</p>
 							</svg>
-							<div id="politicalLeaningDesc2" style="margin-right: -50px; display: block;">{{result.political_sentiment_data.prediction}}</div>
+							<div id="politicalLeaningDesc2" style="display: block;">{{result.political_sentiment_data.prediction}}</div>
 						</td>
 					</tr>
 					<tr class="tr-content-mid">
