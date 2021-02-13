@@ -35,7 +35,7 @@ def process_tweetset(json_file, tag):
         file_writer = csv.writer(my_data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL )
         for p in json_file['data']:
             tweet = process_tweet(p['text'])
-            file_writer.writerow([tweet, tag, 2, 'liberal'])
+            file_writer.writerow([tweet, tag, -2, 'conservative'])
             full_wordset += p['text']
         
     print(full_wordset)
