@@ -1,2 +1,2 @@
-search_tweets_api:
+twitter_api:
   bearer_token: mocked_token

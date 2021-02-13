@@ -67,11 +67,11 @@
 			  <br>
 				<table Name="result_section_2_{{loop.index}}" style="width:100%;">
 					<tr>
-						<td class="td-content-desc">Positivity </td>
+						<td class="td-content-desc">Positivity</td>
 						<td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
 					</tr>
 					<tr class="tr-content-mid">
-						<td class="td-content-desc">Political Leaning </td>
+						<td class="td-content-desc">Political Leaning</td>
 						<td class="td-content-data political_leaning_wrapper">
 							<svg id="political_leaning_meter" style="margin-top:7.5px;">
 							<circle class="circlesector" id="liberal" r="50" cx="50%" cy="50%" stroke="#7CCCE5" 
@@ -91,7 +91,7 @@
 						</td>
 					</tr>
 					<tr class="tr-content-mid">
-						<td class="td-content-desc">Tweet Emotions </td>
+						<td class="td-content-desc">Tweet Emotions</td>
 						<td class="td-content-data">
 							<div class="emotion-chart flex-container">
 								{% for emotion in result.most_used_data.strongest_emotions %}
@@ -149,7 +149,7 @@
 						</td>
 					</tr>
 				</table>
-          </div>
+           </div>
             {% endif %}
           </div>
         {% endfor %}

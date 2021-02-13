@@ -60,7 +60,7 @@
         <br>
         <table id="result_section_2" style="width:100%;">
           <tr>
-            <td class="td-content-desc">Positivity </td>
+            <td class="td-content-desc">Positivity</td>
             <td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
           </tr>
           <tr class="tr-content-mid">
@@ -85,7 +85,7 @@
             </td>
           </tr>
           <tr class="tr-content-mid">
-            <td class="td-content-desc">Tweet Emotions </td>
+            <td class="td-content-desc">Tweet Emotions</td>
           	<td class="td-content-data">
 							<div class="emotion-chart flex-container">
                 {% for emotion in result.most_used_data.strongest_emotions %}
@@ -104,7 +104,7 @@
             </td>
           </tr>
           <tr class="tr-content-mid">
-            <td class="td-content-desc">Most Used Emojis </td>
+            <td class="td-content-desc">Most Used Emojis</td>
           	<td class="td-content-data">
 							{% if result.most_used_data.most_used_emojis != [] %}
                 {% for item in result.most_used_data.most_used_emojis %}
@@ -143,7 +143,7 @@
             </td>
           </tr>
         </table>
-        </div>
+      </div>
       {% endif %}
     </table>
   </div>

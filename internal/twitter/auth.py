@@ -8,7 +8,7 @@ def process_yaml(auth_location):
 
 # Create a twitter API access token from the auth.yml file token
 def create_token(data):
-    return data["search_tweets_api"]["bearer_token"]
+    return data["twitter_api"]["bearer_token"]
 
 # Authenticate and connect to the twitter APIs
 def twitter_auth_and_connect(twitter_api_token, url):
