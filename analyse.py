@@ -7,6 +7,7 @@ import internal.twitter.requests as requests
 import internal.word_processing.handle_wordlist as handle_wordlist
 import internal.word_processing.process_json_tweets as process_json
 import internal.data_analysis.detect_emotions as check_emotion
+from internal.data_analysis.bot_detector import analyse_acc
 from internal.data_analysis.analyse_sentiment_emotions import evaluate_emotions_sentiment
 from internal.machine_learning.analyse_political_leaning import evaluate_politics
 
@@ -23,11 +24,12 @@ class tweetset_result:
 
 # A class to store result data more efficiently 
 class account_result:  
-    def __init__(self, tweetsetInfo, most_used_data, political_sentiment_data, account_data):  
+    def __init__(self, tweetsetInfo, most_used_data, political_sentiment_data, account_data, authenticity_measures):  
         self.tweetsetInfo = tweetsetInfo
         self.most_used_data = most_used_data
         self.political_sentiment_data = political_sentiment_data
         self.account_data = account_data
+        self.authenticity_measures = authenticity_measures
         
 class tweetset_data:
     def __init__(self, term, word_count, tweet_count, sentiment):  
@@ -79,6 +81,7 @@ def get_tag_or_usr(param):
    
 def analyse_account(term, country):
     
+    auth_file = 'auth.yaml'
     tweetNumErr = None
     
     url, typ, parsed, err = get_tag_or_usr(term)
@@ -90,11 +93,13 @@ def analyse_account(term, country):
 
     
     acc_url = requests.get_account_info(parsed)
-    data, erracc = run_twitter_request_fetch_account_info(acc_url, "auth.yaml")
-    account_data = process_json.process_user_data(data)
-        
+    data, erracc = run_twitter_request_fetch_account_info(acc_url, auth_file)
+    
     if erracc != None:
         return erracc, None
+
+    account_data = process_json.process_user_data(data)
+    authenticity_measures = analyse_acc(auth_file, term)
 
     if errtweets != None:
         tweetset_info = tweetset_data(term, None, None, None)
@@ -110,7 +115,7 @@ def analyse_account(term, country):
         if tweet_count < 20:
             tweetNumErr = "InsufficientTweets"
     
-    resultitem = account_result(tweetset_info, most_used_data_info, political_data_info, account_data)
+    resultitem = account_result(tweetset_info, most_used_data_info, political_data_info, account_data, authenticity_measures)
     
     return resultitem, tweetNumErr
     
@@ -183,7 +188,9 @@ def fetch_tweetset_data(url, typ, parsed):
 # Display nicely formatted response data
 if __name__ == "__main__":
     print("Enter the hashtag or user tag to analyse in the form #tag or @user")
-    resultitem = analyse_account(input(), "global")
+    resultitem, err = analyse_account(input(), "global")
+    if err != None:
+        print("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term))
     
     if resultitem == "hashNotAt":
         print("You must enter a @user handle, not a hashtag, please try again")
@@ -222,3 +229,11 @@ if __name__ == "__main__":
         print("Followers Count:       "+str(resultitem.account_data.followers_count))
         print("Following Count:       "+str(resultitem.account_data.following_count))
         print("Tweet Count:           "+str(resultitem.account_data.tweet_count))
+        print("Authenticity:          "+str(resultitem.authenticity_measures.probReal(resultitem.authenticity_measures.average()))+"%")
+        
+        print("Astroturf:              "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.astroturf))+"%")
+        print("Fake Follower:         "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.fake_follower))+"%")
+        print("Spammer:               "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.spammer))+"%")
+        print("Financial Bot:         "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.financial))+"%")
+        print("Flagged as Fake:       "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.self_declared))+"%")
+              

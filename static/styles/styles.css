@@ -22,9 +22,9 @@ html {
     background:#D0CECE;  
     color: #D0CECE; 
     border-bottom: none;
-    width: 100%;
-    margin: auto;
-    height: 60px;
+    width: 100% !important; 
+    margin: auto !important; 
+    height: 60px !important; 
 }
 .navbar-brand{ 
     color: #000000; 
@@ -60,6 +60,7 @@ html {
 .td-content-desc {
     padding:0px; 
     text-align:left;
+    min-width: fit-content !important; 
 }
 .td-content-data {
     padding:0px; 
@@ -392,4 +393,35 @@ html {
     width: 15px;
     height: 15px;
 }
+
+
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+[data-title]:after {
+    content: attr(data-title);
+    background-color: #D0CECE;
+    color: #111;
+    position: absolute;
+    padding: 1px 5px 2px 5px;
+    bottom: -1.6em;
+    left: 100%;
+    white-space: nowrap;
+    opacity: 0;
+    border: 2px solid #6a6868;
+    border-radius: 50rem !important;
+    z-index: 99999;
+    visibility: hidden;
+}
+[data-title] {
+    position: relative;
+}
+
+.informational_icon {
+    width: 15px;
+    height: 15px;
+}
+
 /* End */
