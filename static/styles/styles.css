@@ -60,7 +60,6 @@ html {
 .td-content-desc {
     padding:0px; 
     text-align:left;
-    min-width: fit-content !important; 
 }
 .td-content-data {
     padding:0px; 
@@ -174,6 +173,9 @@ html {
         padding-top: 15px !important; 
         border-top: 2px solid #a19d9c;
     }
+    .td-content-desc {
+        width: 30%;
+    }
 }
 
 @media (min-width: 761px) {
@@ -231,6 +233,9 @@ html {
     }
     .condbreak {
         display: none;
+    }
+    .td-content-desc {
+        min-width: fit-content;
     }
 }
 
@@ -403,22 +408,37 @@ html {
 [data-title]:after {
     content: attr(data-title);
     background-color: #D0CECE;
-    color: #111;
-    position: absolute;
-    padding: 1px 5px 2px 5px;
-    bottom: -1.6em;
-    left: 100%;
-    white-space: nowrap;
     opacity: 0;
     border: 2px solid #6a6868;
     border-radius: 50rem !important;
+    padding: 5px 10px 5px 10px;
+    position:absolute !important; 
+    min-width: 250px; 
     z-index: 99999;
-    visibility: hidden;
-}
-[data-title] {
-    position: relative;
 }
 
+[auth-title] {
+    position: relative;
+}
+[auth-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+[auth-title]:after {
+    content: attr(auth-title);
+    background-color: #D0CECE;
+    opacity: 0;
+    border: 2px solid #6a6868;
+    border-radius: 50rem !important;
+    padding: 5px 10px 5px 10px;
+    position:absolute !important; 
+    min-width: 250px; 
+    z-index: 99999;
+}
+[auth-title] {
+    position: relative;
+}
 .informational_icon {
     width: 15px;
     height: 15px;
