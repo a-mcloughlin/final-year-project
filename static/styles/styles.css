@@ -176,6 +176,9 @@ html {
     .td-content-desc {
         width: 30%;
     }
+    .hoverInfo {
+        display: none;
+    }
 }
 
 @media (min-width: 761px) {
@@ -399,7 +402,6 @@ html {
     height: 15px;
 }
 
-
 [data-title]:hover:after {
     opacity: 1;
     transition: all 0.1s ease 0.5s;
@@ -417,28 +419,6 @@ html {
     z-index: 99999;
 }
 
-[auth-title] {
-    position: relative;
-}
-[auth-title]:hover:after {
-    opacity: 1;
-    transition: all 0.1s ease 0.5s;
-    visibility: visible;
-}
-[auth-title]:after {
-    content: attr(auth-title);
-    background-color: #D0CECE;
-    opacity: 0;
-    border: 2px solid #6a6868;
-    border-radius: 50rem !important;
-    padding: 5px 10px 5px 10px;
-    position:absolute !important; 
-    min-width: 250px; 
-    z-index: 99999;
-}
-[auth-title] {
-    position: relative;
-}
 .informational_icon {
     width: 15px;
     height: 15px;

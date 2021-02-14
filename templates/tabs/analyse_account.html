@@ -119,42 +119,42 @@
               {% if result.authenticity_measures != None %}
               <tr class="tr-content-mid">
               <td colspan="5" style="text-align: center; padding-top: 25px; padding-bottom: 5px;"><b>Probability of {{result.tweetsetInfo.term}} being Different Twitter Bot Types</b></td>
-              </tr>
-              <tr class="tr-content-mid">
-                <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Political <div class="condbreak"><br></div>Bot<div class="condbreak"><br></div>
-                  <img id="politicalBot" name="political" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  <br>
+              </tr class="tr-content-mid">
+              <td style="text-align: center; border-right: 1px solid #a19d9c;">
+                  Political <div class="condbreak"><br></div>Bot
+                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Manually labeled political bots and accounts involved in follow trains that systematically delete content.">
+                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  </a><br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.astroturf)}}%</b>
                 </td>
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Fake <div class="condbreak"><br></div>Follower<div class="condbreak"><br></div>
-                  <img id="fakeFollower" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  <br>
+                  Fake <div class="condbreak"><br></div>Follower
+                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots purchased to increase follower counts.">
+                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  </a><br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.fake_follower)}}%<b>
                 </td>
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Spammer <div class="condbreak"><br></div>Bot<div class="condbreak"><br></div>
-                  <img id="spammerBot" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  <br>
+                  Spammer <div class="condbreak"><br></div>Bot
+                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Accounts labeled as spambots from several datasets.">
+                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  </a><br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.spammer)}}%</b>
                 </td>
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Financial <div class="condbreak"><br></div>Bot<div class="condbreak"><br></div>
-                  <img id="financialBot" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  <br>
+                  Financial <div class="condbreak"><br></div>Bot
+                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots that post using cashtags.">
+                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  </a><br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.financial)}}%<b>
                 </td>
                 <td style="text-align: center;">
-                  Flagged <div class="condbreak"><br></div>as Fake<div class="condbreak"><br></div>
-                  <img id="flaggedAsFake" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  <br>
+                  Flagged <div class="condbreak"><br></div>as Fake
+                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots identified from botwiki.org.">
+                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  </a><br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.self_declared)}}%</b>
                 </td>
-              </tr>
-              <tr>
-              <td colspan="5"><div id="divpolitical" style="margin-top: 10px;height: 30px; line-height:30px; text-align: center; border-radius: 50rem; padding-left: 10px;"></div></td>
-              </tr>
               {% endif %}
             </table>
           </div>
@@ -171,7 +171,7 @@
             </tr>
               <tr>
                 <td class="td-content-desc">Positivity
-              <a class="tip" style="width: 15px;color:#000000;text-decoration:none" data-title="How Positive or Negative this set of tweets is.">
+              <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="How Positive or Negative this set of tweets is.">
                 <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
               </a>
             </td>
@@ -179,7 +179,7 @@
               </tr>
               <tr class="tr-content-mid">
                 <td class="td-content-desc">Political Leaning
-              <a class="tip" style="width: 15px;text-decoration:none" data-title="Where this set of tweets falls on the spectrum from left/liberal to right/conservative.">
+              <a class="hoverInfo" style="width: 15px;text-decoration:none" data-title="Where this set of tweets falls on the spectrum from left/liberal to right/conservative.">
                 <img data-title="Where this set of tweets falls on the spectrum from left/liberal to right/conservative." src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
               </a>
             </td>
@@ -203,7 +203,7 @@
               </tr>
               <tr class="tr-content-mid">
                 <td class="td-content-desc">Tweet Emotions
-                  <a class="tip" style="width: 15px;color:#000000;text-decoration:none" data-title="The percentages of the set of tweets which is associated with various emotions.">
+                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="The percentages of the set of tweets which is associated with various emotions.">
                     <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
                   </a>
                 </td>
