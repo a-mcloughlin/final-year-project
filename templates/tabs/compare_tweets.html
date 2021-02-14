@@ -67,11 +67,19 @@
 			  <br>
 				<table Name="result_section_2_{{loop.index}}" style="width:100%;">
 					<tr>
-						<td class="td-content-desc">Positivity</td>
+						<td class="td-content-desc">Positivity
+							<a class="tip" style="width: 15px;color:#000000;text-decoration:none" data-title="How Positive or Negative this set of tweets is.">
+								<img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+							</a>
+						</td>
 						<td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
 					</tr>
 					<tr class="tr-content-mid">
-						<td class="td-content-desc">Political Leaning</td>
+						<td class="td-content-desc">Political Leaning
+							<a class="tip" style="width: 15px;text-decoration:none" data-title="Where this set of tweets falls on the spectrum from left/liberal to right/conservative.">
+								<img data-title="Where this set of tweets falls on the spectrum from left/liberal to right/conservative." src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+							</a>
+						</td>
 						<td class="td-content-data political_leaning_wrapper">
 							<svg id="political_leaning_meter" style="margin-top:7.5px;">
 							<circle class="circlesector" id="liberal" r="50" cx="50%" cy="50%" stroke="#7CCCE5" 
@@ -91,7 +99,11 @@
 						</td>
 					</tr>
 					<tr class="tr-content-mid">
-						<td class="td-content-desc">Tweet Emotions</td>
+						<td class="td-content-desc">Tweet Emotions
+							<a class="tip" style="width: 15px;color:#000000;text-decoration:none" data-title="The percentages of the set of tweets which is associated with various emotions.">
+								<img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+							</a>
+						</td>
 						<td class="td-content-data">
 							<div class="emotion-chart flex-container">
 								{% for emotion in result.most_used_data.strongest_emotions %}

@@ -122,25 +122,38 @@
               </tr>
               <tr class="tr-content-mid">
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Political Bot<br>
+                  Political <div class="condbreak"><br></div>Bot<div class="condbreak"><br></div>
+                  <img id="politicalBot" name="political" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  <br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.astroturf)}}%</b>
                 </td>
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Fake Follower<br>
+                  Fake <div class="condbreak"><br></div>Follower<div class="condbreak"><br></div>
+                  <img id="fakeFollower" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  <br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.fake_follower)}}%<b>
                 </td>
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Spammer Bot<br>
+                  Spammer <div class="condbreak"><br></div>Bot<div class="condbreak"><br></div>
+                  <img id="spammerBot" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  <br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.spammer)}}%</b>
                 </td>
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Financial Bot<br>
+                  Financial <div class="condbreak"><br></div>Bot<div class="condbreak"><br></div>
+                  <img id="financialBot" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  <br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.financial)}}%<b>
                 </td>
                 <td style="text-align: center;">
-                  Flagged as Fake<br>
+                  Flagged <div class="condbreak"><br></div>as Fake<div class="condbreak"><br></div>
+                  <img id="flaggedAsFake" src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  <br>
                   <b>{{result.authenticity_measures.probability(result.authenticity_measures.self_declared)}}%</b>
                 </td>
+              </tr>
+              <tr>
+              <td colspan="5"><div id="divpolitical" style="margin-top: 10px;height: 30px; line-height:30px; text-align: center; border-radius: 50rem; padding-left: 10px;"></div></td>
               </tr>
               {% endif %}
             </table>
@@ -157,11 +170,19 @@
             </div>
             </tr>
               <tr>
-                <td class="td-content-desc">Positivity</td>
+                <td class="td-content-desc">Positivity
+              <a class="tip" style="width: 15px;color:#000000;text-decoration:none" data-title="How Positive or Negative this set of tweets is.">
+                <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+              </a>
+            </td>
                 <td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
               </tr>
               <tr class="tr-content-mid">
-                <td class="td-content-desc">Political Leaning</td>
+                <td class="td-content-desc">Political Leaning
+              <a class="tip" style="width: 15px;text-decoration:none" data-title="Where this set of tweets falls on the spectrum from left/liberal to right/conservative.">
+                <img data-title="Where this set of tweets falls on the spectrum from left/liberal to right/conservative." src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+              </a>
+            </td>
                 <td class="td-content-data political_leaning_wrapper">
                     <svg id="political_leaning_meter" style="margin-top:7.5px;">
                       <circle class="circlesector" id="liberal" r="50" cx="50%" cy="50%" stroke="#7CCCE5" 
@@ -181,7 +202,11 @@
 						    </td>
               </tr>
               <tr class="tr-content-mid">
-                <td class="td-content-desc">Tweet Emotions</td>
+                <td class="td-content-desc">Tweet Emotions
+                  <a class="tip" style="width: 15px;color:#000000;text-decoration:none" data-title="The percentages of the set of tweets which is associated with various emotions.">
+                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                  </a>
+                </td>
                 <td class="td-content-data">
                   <div class="emotion-chart flex-container">
                     {% for emotion in result.most_used_data.strongest_emotions %}
