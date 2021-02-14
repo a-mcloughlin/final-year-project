@@ -38,29 +38,6 @@
 				document.getElementById("loading").style.display = "block";
 				$(this).parent().trigger('submit')
 			}
-			$(document).ready(function() {
-
-				function showBox(text) {
-					$("#divpolitical").html(text);
-					$("#divpolitical").css("background", "#D0CECE");
-					$("#divpolitical").css("border", "2px solid #6a6868");
-				}
-				function hidebox() {
-					$("#divpolitical").html("");
-					$("#divpolitical").css("background", "transparent");
-					$("#divpolitical").css("border", "0px");
-				}
-				$("#politicalBot").mouseover(function() {  showBox("Manually labeled political bots and accounts involved in follow trains that systematically delete content."); });
-				$("#fakeFollower").mouseover(function() {  showBox("Bots purchased to increase follower counts."); });
-				$("#spammerBot").mouseover(function() {    showBox("Accounts labeled as spambots from several datasets."); });
-				$("#financialBot").mouseover(function() {  showBox("Bots that post using cashtags."); });
-				$("#flaggedAsFake").mouseover(function() { showBox("Bots identified from botwiki.org."); });
-				$("#politicalBot").mouseout(function() {   hidebox(); });
-				$("#fakeFollower").mouseout(function() {   hidebox(); });
-				$("#spammerBot").mouseout(function() {     hidebox(); });
-				$("#financialBot").mouseout(function() {   hidebox(); });
-				$("#flaggedAsFake").mouseout(function() {  hidebox(); });
-			});
 		</script>
 		<nav class="navbar navbar-expand-lg fixed-top flex-nowrap">  
         	<img src="{{ url_for('static',filename='images/fyplogo.png') }}" alt="logo" class="logo"/>
