@@ -82,7 +82,7 @@ def compareQuery():
         resultlist[1] = result
         
     if err != None:
-        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result.tweetsetInfo.term), "category"+lp)
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result.tweetsetInfo.term))
     
     return render_template('tabs/compare_tweets.html', resultlist=resultlist)   
 
@@ -105,16 +105,15 @@ def analyse_acc_Query():
     
     country = request.form.get('countryDataset', 'global')
     resultitem, err = analyse_account(term, country)
+    if err != None:
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term))
     
     if resultitem == "noHashorAt":
         return analyse_acc_err("You must enter a @user handle, please try again")
     elif resultitem == "hashNotAt":
         return analyse_acc_err("You must enter a @user handle, not a hashtag, please try again")
-    elif resultitem == "noTweetsFound":
-        return analyse_acc_err("No tweets found for this query, please try again")
-    
-    if err != None:
-        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term))
+    elif (resultitem == "noUserFound") | (resultitem == "invalidSearchQuery"):
+        return analyse_acc_err("No user found for the handle "+str(term)+" , please try again")
     
     return render_template('tabs/analyse_account.html', result=resultitem)   
 
@@ -124,5 +123,6 @@ def favicon():
 
 # This webapp runs on port 8081
 if __name__ == "__main__":
-     app.run(host='0.0.0.0', port=8081)
+    app.debug = True
+    app.run(host='0.0.0.0', port=8081)
 

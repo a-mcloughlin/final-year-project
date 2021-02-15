@@ -109,7 +109,7 @@
                   <td class="td-content-data">{{result.account_data.pinned_tweet}}</td>
                 </tr>
               {% endif %}
-              {% if result.authenticity != None %}
+              {% if result.authenticity_measures != None %}
                 <tr class="tr-content-mid">
                   <td style="text-align: center;" colspan="2" class="td-content-data"><b>{{result.authenticity_measures.probReal(result.authenticity_measures.average())}}%</b> Probability of <b>{{result.tweetsetInfo.term}}</b> being an authentic account</td>
                 </tr>
@@ -117,45 +117,47 @@
             </table>
             <table style="width:100%; min-height: 80px;">
               {% if result.authenticity_measures != None %}
-              <tr class="tr-content-mid">
-              <td colspan="5" style="text-align: center; padding-top: 25px; padding-bottom: 5px;"><b>Probability of {{result.tweetsetInfo.term}} being Different Twitter Bot Types</b></td>
-              </tr class="tr-content-mid">
-              <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Political <div class="condbreak"><br></div>Bot
-                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Manually labeled political bots and accounts involved in follow trains that systematically delete content.">
-                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  </a><br>
-                  <b>{{result.authenticity_measures.probability(result.authenticity_measures.astroturf)}}%</b>
-                </td>
+                <tr class="tr-content-mid">
+                  <td colspan="5" style="text-align: center; padding-top: 25px; padding-bottom: 5px;"><b>Probability of {{result.tweetsetInfo.term}} being Different Twitter Bot Types</b></td>
+                </tr>
                 <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Fake <div class="condbreak"><br></div>Follower
-                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots purchased to increase follower counts.">
-                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  </a><br>
-                  <b>{{result.authenticity_measures.probability(result.authenticity_measures.fake_follower)}}%<b>
-                </td>
-                <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Spammer <div class="condbreak"><br></div>Bot
-                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Accounts labeled as spambots from several datasets.">
-                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  </a><br>
-                  <b>{{result.authenticity_measures.probability(result.authenticity_measures.spammer)}}%</b>
-                </td>
-                <td style="text-align: center; border-right: 1px solid #a19d9c;">
-                  Financial <div class="condbreak"><br></div>Bot
-                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots that post using cashtags.">
-                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  </a><br>
-                  <b>{{result.authenticity_measures.probability(result.authenticity_measures.financial)}}%<b>
-                </td>
-                <td style="text-align: center;">
-                  Flagged <div class="condbreak"><br></div>as Fake
-                  <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots identified from botwiki.org.">
-                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-                  </a><br>
-                  <b>{{result.authenticity_measures.probability(result.authenticity_measures.self_declared)}}%</b>
-                </td>
-              {% endif %}
+                    Political <div class="condbreak"><br></div>Bot
+                    <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Manually labeled political bots and accounts involved in follow trains that systematically delete content.">
+                      <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                    </a><br>
+                    <b>{{result.authenticity_measures.probability(result.authenticity_measures.astroturf)}}%</b>
+                  </td>
+                  <td style="text-align: center; border-right: 1px solid #a19d9c;">
+                    Fake <div class="condbreak"><br></div>Follower
+                    <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots purchased to increase follower counts.">
+                      <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                    </a><br>
+                    <b>{{result.authenticity_measures.probability(result.authenticity_measures.fake_follower)}}%<b>
+                  </td>
+                  <td style="text-align: center; border-right: 1px solid #a19d9c;">
+                    Spammer <div class="condbreak"><br></div>Bot
+                    <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Accounts labeled as spambots from several datasets.">
+                      <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                    </a><br>
+                    <b>{{result.authenticity_measures.probability(result.authenticity_measures.spammer)}}%</b>
+                  </td>
+                  <td style="text-align: center; border-right: 1px solid #a19d9c;">
+                    Financial <div class="condbreak"><br></div>Bot
+                    <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots that post using cashtags.">
+                      <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                    </a><br>
+                    <b>{{result.authenticity_measures.probability(result.authenticity_measures.financial)}}%<b>
+                  </td>
+                  <td style="text-align: center;">
+                    Flagged <div class="condbreak"><br></div>as Fake
+                    <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="Bots identified from botwiki.org.">
+                      <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                    </a><br>
+                    <b>{{result.authenticity_measures.probability(result.authenticity_measures.self_declared)}}%</b>
+                  </td>
+                {% else %}
+                  <div style="text-align: center;">Cannot analyse authenticity of twitter account which has not tweeted in the last 7 days.</div>
+                {% endif %}
             </table>
           </div>
           <div id="result_section_1" class="col-12 col-md-6 analyse_account2">
@@ -265,8 +267,8 @@
               </tr>
             </table>
             {% else %}
-            <div style="text-align: center; padding-top: 50px;">No Tweets by <b>{{result.tweetsetInfo.term}}</b> in the last 7 days</div>
-              {% endif %}
+              <div style="text-align: center; padding-top: 50px;">No Tweets by <b>{{result.tweetsetInfo.term}}</b> in the last 7 days</div>
+            {% endif %}
           </div>
         </div>
       {% endif %}

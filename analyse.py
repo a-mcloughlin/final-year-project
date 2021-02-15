@@ -7,7 +7,7 @@ import internal.twitter.requests as requests
 import internal.word_processing.handle_wordlist as handle_wordlist
 import internal.word_processing.process_json_tweets as process_json
 import internal.data_analysis.detect_emotions as check_emotion
-from internal.data_analysis.bot_detector import analyse_acc
+from internal.data_analysis.detect_bot_account import analyse_acc
 from internal.data_analysis.analyse_sentiment_emotions import evaluate_emotions_sentiment
 from internal.machine_learning.analyse_political_leaning import evaluate_politics
 
@@ -86,6 +86,9 @@ def analyse_account(term, country):
     
     url, typ, parsed, err = get_tag_or_usr(term)
     
+    if err != None:
+        return err, None
+    
     if typ == 'tag':
         return "hashNotAt", None
     
@@ -99,13 +102,14 @@ def analyse_account(term, country):
         return erracc, None
 
     account_data = process_json.process_user_data(data)
-    authenticity_measures = analyse_acc(auth_file, term)
 
     if errtweets != None:
         tweetset_info = tweetset_data(term, None, None, None)
         most_used_data_info = None
         political_data_info = None
+        authenticity_measures = None
     else:
+        authenticity_measures = analyse_acc(auth_file, term)
         dataset_country, statement, political_leaning_degree = evaluate_politics(tweetset, country)
         political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree)
         sentiment, strongest_emotions = evaluate_emotions_sentiment(tweetset)
@@ -129,12 +133,12 @@ def analyse(term, country):
     url, typ, parsed, err = get_tag_or_usr(term)
     
     if err != None:
-        return err
+        return err, None
     
     err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count = fetch_tweetset_data(url, typ, parsed)
     
     if err != None:
-        return err
+        return err, None
     
     dataset_country, statement, political_leaning_degree = evaluate_politics(tweetset, country)
     political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree)
@@ -196,29 +200,34 @@ if __name__ == "__main__":
         print("You must enter a @user handle, not a hashtag, please try again")
     elif resultitem == "noHashorAt":
         print("You must enter a #tag or @user")
-    elif resultitem == "noTweetsFound":
-        print("No tweets found for this query")
+    # elif resultitem == "noTweetsFound":
+    #     print("No tweets found for this query")
+    elif resultitem == "noUserFound":
+        print("Invalid User handle")
     else:
-        print("Unique words used in "+str(resultitem.tweetsetInfo.tweet_count)+" tweets: "+resultitem.tweetsetInfo.word_count)
-        print("Politics Analysed with a dataset from "+str(resultitem.political_sentiment_data.dataset_country))
-        print(resultitem.tweetsetInfo.sentiment)
-        print("Strongest Emotions: ")
-        for i in resultitem.most_used_data.strongest_emotions:
-            print(i.name+" : "+str(i.get_bar_fraction(resultitem.tweetsetInfo.tweet_count)))
-        print("Political Leaning : "+str(resultitem.political_sentiment_data.prediction))
-        print(resultitem.political_sentiment_data.prediction)
-        print("Most Used Words: ")
-        for i in resultitem.most_used_data.most_used_words:
-            print(i.word+":"+str(i.count))
-        print("Most Used Emojis: ")
-        for i in resultitem.most_used_data.most_used_emojis:
-            print(i.word+":"+str(i.count))
-        print("Most Used Hashtags: ")
-        for i in resultitem.most_used_data.most_used_hashtags:
-            print(i.word+":"+str(i.count))
-        print("Most Tagged Users: ")
-        for i in resultitem.most_used_data.most_tagged_users:
-            print(i.word+":"+str(i.count))
+        if resultitem.most_used_data != None:
+            print("Unique words used in "+str(resultitem.tweetsetInfo.tweet_count)+" tweets: "+resultitem.tweetsetInfo.word_count)
+            print("Politics Analysed with a dataset from "+str(resultitem.political_sentiment_data.dataset_country))
+            print(resultitem.tweetsetInfo.sentiment)
+            print("Strongest Emotions: ")
+            for i in resultitem.most_used_data.strongest_emotions:
+                print(i.name+" : "+str(i.get_bar_fraction(resultitem.tweetsetInfo.tweet_count)))
+            print("Political Leaning : "+str(resultitem.political_sentiment_data.prediction))
+            print(resultitem.political_sentiment_data.prediction)
+            print("Most Used Words: ")
+            for i in resultitem.most_used_data.most_used_words:
+                print(i.word+":"+str(i.count))
+            print("Most Used Emojis: ")
+            for i in resultitem.most_used_data.most_used_emojis:
+                print(i.word+":"+str(i.count))
+            print("Most Used Hashtags: ")
+            for i in resultitem.most_used_data.most_used_hashtags:
+                print(i.word+":"+str(i.count))
+            print("Most Tagged Users: ")
+            for i in resultitem.most_used_data.most_tagged_users:
+                print(i.word+":"+str(i.count))
+        else:
+            print("No Tweets by "+str(resultitem.tweetsetInfo.term)+" in the last 7 days")
             
         print("Account Verified?      "+str(resultitem.account_data.verified))
         print("Account Name:          "+str(resultitem.account_data.name))
@@ -229,11 +238,14 @@ if __name__ == "__main__":
         print("Followers Count:       "+str(resultitem.account_data.followers_count))
         print("Following Count:       "+str(resultitem.account_data.following_count))
         print("Tweet Count:           "+str(resultitem.account_data.tweet_count))
-        print("Authenticity:          "+str(resultitem.authenticity_measures.probReal(resultitem.authenticity_measures.average()))+"%")
         
-        print("Astroturf:              "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.astroturf))+"%")
-        print("Fake Follower:         "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.fake_follower))+"%")
-        print("Spammer:               "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.spammer))+"%")
-        print("Financial Bot:         "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.financial))+"%")
-        print("Flagged as Fake:       "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.self_declared))+"%")
-              
+        if resultitem.authenticity_measures != None:
+            print("Authenticity:          "+str(resultitem.authenticity_measures.probReal(resultitem.authenticity_measures.average()))+"%")
+            print("Astroturf:              "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.astroturf))+"%")
+            print("Fake Follower:         "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.fake_follower))+"%")
+            print("Spammer:               "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.spammer))+"%")
+            print("Financial Bot:         "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.financial))+"%")
+            print("Flagged as Fake:       "+str(resultitem.authenticity_measures.probability(resultitem.authenticity_measures.self_declared))+"%")
+        else:
+            print("Cannot analyse authenticity of twitter account which has not tweeted in the last 7 days.")
+    

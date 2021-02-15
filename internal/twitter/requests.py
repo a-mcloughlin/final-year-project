@@ -33,7 +33,7 @@ def get_tweets_for_tag_maxid(tag, until_id):
     )
     return url
 
-# kjhgfdswdefrgthyjukujyhtgrf
+# Get the account information for a given twitter account
 def get_account_info(handle):
     user = "usernames={}".format(handle)
     user_fields = "user.fields={}".format("verified,name,description,location,created_at,public_metrics,withheld,profile_image_url,pinned_tweet_id&expansions=pinned_tweet_id&tweet.fields=text")

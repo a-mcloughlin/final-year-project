@@ -26,16 +26,3 @@ def get_sentiment(tweets):
     neg_ratio = neg_count/len(tweets)
     neut_ratio = neut_count/len(tweets)
     return pos_ratio, neg_ratio, neut_ratio
-
-# Describle the sentiment of the set of tweets based on the ratios of tweet sentiments
-def describe_sentiment(pos_ratio, neg_ratio, neut_ratio):
-    statement = "These tweets are overall "
-    if abs(pos_ratio-neg_ratio) > 0.3:
-        statement += "much "
-    if (pos_ratio > neg_ratio) & (pos_ratio > neut_ratio):
-        statement += "more Positive than Negative"
-    elif (neg_ratio > pos_ratio) & (neg_ratio > neut_ratio):
-        statement += "more Negative than Positive"
-    else:
-        statement = "These tweets are overall of neutral sentiment"
-    return statement
