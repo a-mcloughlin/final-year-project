@@ -2,6 +2,7 @@
 import unittest
 import internal.data_analysis.detect_emotions as detect_emotions
 import internal.data_analysis.detect_sentiment as detect_sentiment
+import internal.word_processing.interpret_data as interpret_data
 import test.mocked_data as mock
 
 class TestSentiment(unittest.TestCase):
@@ -13,19 +14,19 @@ class TestSentiment(unittest.TestCase):
         self.assertEqual(neut_ratio, 0.44)
         
     def test_describe_sentiment(self):
-        sentiment = detect_sentiment.describe_sentiment(0.64, 0.13, 0.24)
+        sentiment = interpret_data.describe_sentiment(0.64, 0.13, 0.24)
         self.assertEqual(sentiment, 'These tweets are overall much more Positive than Negative')
         
-        sentiment = detect_sentiment.describe_sentiment(0.44, 0.33, 0.24)
+        sentiment = interpret_data.describe_sentiment(0.44, 0.33, 0.24)
         self.assertEqual(sentiment, 'These tweets are overall more Positive than Negative')
         
-        sentiment = detect_sentiment.describe_sentiment(0.33, 0.24, 0.44)
+        sentiment = interpret_data.describe_sentiment(0.33, 0.24, 0.44)
         self.assertEqual(sentiment, 'These tweets are overall of neutral sentiment')
         
-        sentiment = detect_sentiment.describe_sentiment(0.24, 0.44, 0.23)
+        sentiment = interpret_data.describe_sentiment(0.24, 0.44, 0.23)
         self.assertEqual(sentiment, 'These tweets are overall more Negative than Positive')
         
-        sentiment = detect_sentiment.describe_sentiment(0.14, 0.64, 0.23)
+        sentiment = interpret_data.describe_sentiment(0.14, 0.64, 0.23)
         self.assertEqual(sentiment, 'These tweets are overall much more Negative than Positive')
         
     
