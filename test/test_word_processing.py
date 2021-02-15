@@ -70,11 +70,11 @@ class TestWordProcessing(unittest.TestCase):
         emojis = ['💨', '🦊', '😁']
         hashtags = ['#over', '#Lazy']
         tagged_users = ['@The', '@brown']
-        splitdata = process_json_tweets.split_into_tweet_data_categories(sentence)
-        self.assertEqual(splitdata.words, words)
-        self.assertEqual(splitdata.emojis, emojis)
-        self.assertEqual(splitdata.hashtags, hashtags)
-        self.assertEqual(splitdata.tagged_users, tagged_users)
+        words_list, emojis_list, hashtags_list, tagged_users_list = process_json_tweets.split_into_tweet_data_categories(sentence)
+        self.assertEqual(words_list, words)
+        self.assertEqual(emojis_list, emojis)
+        self.assertEqual(hashtags_list, hashtags)
+        self.assertEqual(tagged_users_list, tagged_users)
 
 def assert_wordlists_equal(self, wordlist1, wordlist2):
     for index, word in enumerate(wordlist1):

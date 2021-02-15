@@ -7,84 +7,64 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import chi2
+from sklearn.utils import resample
+from sklearn.svm import LinearSVC
 
+# Build a Machine Learning Political Estimator Model from the dataset from the given country
 def build_ml_model(country):
     if country == "ie":
         data = pd.read_csv(r'datasets/ie_parties_full_set.csv')
-        print("Using Irish Dataset")
     elif country == "uk":
         data = pd.read_csv(r'datasets/uk_parties_full_set.csv')
-        print("Using UK Dataset")
     elif country == "us":
         data = pd.read_csv(r'datasets/kaggle_US_dataset_modified.csv')
-        print("Using US Dataset")
     else:
         data = pd.read_csv(r'datasets/ie_uk_us_full_set.csv')
-        print("Using IE, UK and US Datasets")
     
     data.columns = ['Tweet', 'Account', 'Score', 'Leaning']
-    
-    if country != "us":
-        from sklearn.utils import resample
-        # import matplotlib.pyplot as plt
-        # # fig = plt.figure(figsize=(8,6))
-        # # data.groupby('Leaning').Tweet.count().plot.bar(ylim=0)
-        # # plt.show()
-        
-        conservative = data[data.Leaning=='conservative']
-        liberal = data[data.Leaning=='liberal']
-        lib_downsampled = resample(liberal,replace=True, n_samples=len(conservative),random_state=27)
-        scaled_data = pd.concat([conservative, lib_downsampled])
-        scaled_data.Leaning.value_counts()
-        conservative = scaled_data[scaled_data.Leaning=='conservative']
-        liberal = scaled_data[scaled_data.Leaning=='liberal']
-    else:
-        scaled_data = data
-    
-    
-    scaled_data['leaning_id'] = scaled_data['Leaning'].factorize()[0]
-    leaning_id_df = scaled_data[['Leaning', 'leaning_id']].drop_duplicates().sort_values('leaning_id')
-    leaning_to_id = dict(leaning_id_df.values)
-    
-    from sklearn.svm import LinearSVC
+    scaled_data = resample_data(data)
 
-    tfidf = TfidfVectorizer(sublinear_tf=True, min_df=5, norm='l2', encoding='utf-8', ngram_range=(1, 2), stop_words='english')
+    test_model(scaled_data)
 
-    features = tfidf.fit_transform(scaled_data.Tweet.astype('U').values)
-    labels = scaled_data.leaning_id
-    features.shape
-
-    x_train, x_test, y_train, y_test = train_test_split(scaled_data['Tweet'], scaled_data['Leaning'], random_state = 0, test_size=0.33)
-    word_count_vect = CountVectorizer()
-    X_train_counts = word_count_vect.fit_transform(x_train.astype('U').values)
+    word_count_vectoriser = CountVectorizer()
+    data_train_wordcounts = word_count_vectoriser.fit_transform(scaled_data.Tweet.astype('U').values)
 
     tfidf_transformer = TfidfTransformer()
-    X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
-    tclf = LogisticRegression(random_state=0, max_iter=1000).fit(X_train_tfidf, y_train)
+    data_train_tfidf = tfidf_transformer.fit_transform(data_train_wordcounts)
+    logicalRegressionModel = LogisticRegression(random_state=0, max_iter=1000).fit(data_train_tfidf, scaled_data['Leaning'])
     
-    prediction = tclf.predict(word_count_vect.transform(x_test.astype('U').values))
-    print(np.mean(prediction == y_test))
-    
-    return tclf, word_count_vect
+    return logicalRegressionModel, word_count_vectoriser
 
+# Test the logical regression by splitting the data into trainng and testing data,
+# and building the Machine Learning model to calculate accuracy on the base dataset
+def test_model(model):
+    x_train, x_test, y_train, y_test = train_test_split(model['Tweet'], model['Leaning'], random_state = 0, test_size=0.10)
+    word_count_vect = CountVectorizer()
+    data_train_wordcounts = word_count_vect.fit_transform(x_train.astype('U').values)
+
+    tfidf_transformer = TfidfTransformer()
+    data_train_tfidf = tfidf_transformer.fit_transform(data_train_wordcounts)
+    logicalRegressionModel = LogisticRegression(random_state=0, max_iter=1000).fit(data_train_tfidf, y_train)
+    
+    prediction = logicalRegressionModel.predict(word_count_vect.transform(x_test.astype('U').values))
+    print(np.mean(prediction == y_test))
+
+# Randomly trim entries from the larger group within the dataset
+# This will result in equal size classification groups within the training dataset
+def resample_data(data):
+    bigger_group = data.groupby('Leaning').Tweet.count().idxmax()
+    smaller_group = data.groupby('Leaning').Tweet.count().idxmin()
+    
+    bigger_group = data[data.Leaning==bigger_group]
+    smaller_group = data[data.Leaning==smaller_group]
+    
+    smaller_downsampled = resample(bigger_group,replace=True, n_samples=len(smaller_group),random_state=27)
+    scaled_data = pd.concat([smaller_group, smaller_downsampled])
+    
+    return scaled_data
+
+# Predict the class of a previously unseen text string
+# This will classify any string as liberal or conservative
 def predict_from_model(model, word_count_vect, text_data):
     prediction = model.predict(word_count_vect.transform([text_data]))
     return prediction
-
-def test():
-    model, word_count_vect = build_ml_model("us")
-    prediction = predict_from_model(model, word_count_vect, "Trump is very bad")
-    print(prediction)
- 
-# Describe the leaning of a political score
-def describe_political_leaning(political_score):
-    statement = ""
-    if political_score < -0.15:
-        statement = "More politically Left Leaning than Right Leaning"
-    elif political_score > 0.15:
-        statement = "More politically Right Leaning than Left Leaning"
-    else:
-        statement = "These tweets have no strong political leaning"
-    return statement
-    
-#test()

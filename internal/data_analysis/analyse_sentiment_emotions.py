@@ -1,7 +1,10 @@
 
 import internal.data_analysis.detect_emotions as check_emotion
-from internal.data_analysis.detect_sentiment import get_sentiment, describe_sentiment
+from internal.data_analysis.detect_sentiment import get_sentiment
+import internal.word_processing.interpret_data as interpret_data
 
+# Taking in a set of tweet objects, analyse the emotions and sentiment of the tweets
+# Return a string describing the sentiment, and an array of emotion strengths
 def evaluate_emotions_sentiment(tweetset):
     
     emolex_words = check_emotion.prepare_dataset()
@@ -29,6 +32,6 @@ def evaluate_emotions_sentiment(tweetset):
     
     pos_ratio, neg_ratio, neut_ratio = get_sentiment(tweetset)
     print("Pos_ratio: "+str(pos_ratio)+"\tneg_ratio: "+str(neg_ratio)+"\tneut_ratio: "+str(neut_ratio))
-    sentiment = describe_sentiment(pos_ratio, neg_ratio, neut_ratio)  
+    sentiment = interpret_data.describe_sentiment(pos_ratio, neg_ratio, neut_ratio)  
     
     return sentiment, strongest_emotions

@@ -16,22 +16,22 @@ def twitter_auth_and_connect(twitter_api_token, url):
     response = requests.request("GET", url, headers=headers)
     return response.json()
 
-# Run the twitter API request url passed to the function, and return the results
+# Run the get_tweets api reuest, and handle errors associated with it
 def run_twitter_request_fetch_tweets(url, auth_location):
     err = None
     res_json = run_twitter_request(url, auth_location)
-    if res_json['meta']['result_count'] == 0:
+    if 'errors' in res_json:
+        err = "invalidSearchQuery"
+    elif (res_json['meta']['result_count'] == 0) :
         err = "noTweetsFound"
     return res_json, err
 
-# Run the twitter API request url passed to the function, and return the results
+# Run the get_account_info api reuest, and handle errors associated with it
 def run_twitter_request_fetch_account_info(url, auth_location):
     err = None
-    data = process_yaml(auth_location)
-    twitter_api_token = create_token(data)
-    res_json = twitter_auth_and_connect(twitter_api_token, url)
-    # if res_json['meta']['result_count'] == 0:
-    #     err = "noTweetsFound"
+    res_json = run_twitter_request(url, auth_location)
+    if 'errors' in res_json:
+        err = "noUserFound"
     return res_json, err
 
 # Run the twitter API request url passed to the function, and return the results
