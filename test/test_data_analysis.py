@@ -14,19 +14,19 @@ class TestSentiment(unittest.TestCase):
         self.assertEqual(neut_ratio, 0.44)
         
     def test_describe_sentiment(self):
-        sentiment = interpret_data.describe_sentiment(0.64, 0.13, 0.24)
+        sentiment = interpret_data.describe_sentiment(0.64, 0.24, 0.13)
         self.assertEqual(sentiment, 'These tweets are overall much more Positive than Negative')
         
-        sentiment = interpret_data.describe_sentiment(0.44, 0.33, 0.24)
+        sentiment = interpret_data.describe_sentiment(0.44, 0.24, 0.33)
         self.assertEqual(sentiment, 'These tweets are overall more Positive than Negative')
         
-        sentiment = interpret_data.describe_sentiment(0.33, 0.24, 0.44)
+        sentiment = interpret_data.describe_sentiment(0.33, 0.44, 0.24)
         self.assertEqual(sentiment, 'These tweets are overall of neutral sentiment')
         
-        sentiment = interpret_data.describe_sentiment(0.24, 0.44, 0.23)
+        sentiment = interpret_data.describe_sentiment(0.24, 0.23, 0.44)
         self.assertEqual(sentiment, 'These tweets are overall more Negative than Positive')
         
-        sentiment = interpret_data.describe_sentiment(0.14, 0.64, 0.23)
+        sentiment = interpret_data.describe_sentiment(0.14, 0.23, 0.64)
         self.assertEqual(sentiment, 'These tweets are overall much more Negative than Positive')
         
     
