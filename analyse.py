@@ -32,11 +32,12 @@ class account_result:
         self.authenticity_measures = authenticity_measures
         
 class tweetset_data:
-    def __init__(self, term, word_count, tweet_count, sentiment):  
+    def __init__(self, term, word_count, tweet_count, sentiment, sentiment_ratios):  
         self.word_count=word_count
         self.term = term
         self.tweet_count = tweet_count
         self.sentiment = sentiment
+        self.sentiment_ratios = sentiment_ratios
         
 class most_used_data:
     def __init__(self, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions):  
@@ -112,9 +113,9 @@ def analyse_account(term, country):
         authenticity_measures = analyse_acc(auth_file, term)
         dataset_country, statement, political_leaning_degree = evaluate_politics(tweetset, country)
         political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree)
-        sentiment, strongest_emotions = evaluate_emotions_sentiment(tweetset)
+        sentiment, sentiment_ratios, strongest_emotions = evaluate_emotions_sentiment(tweetset)
         
-        tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment)
+        tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment, sentiment_ratios)
         most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions)
         if tweet_count < 20:
             tweetNumErr = "InsufficientTweets"
@@ -142,9 +143,9 @@ def analyse(term, country):
     
     dataset_country, statement, political_leaning_degree = evaluate_politics(tweetset, country)
     political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree)
-    sentiment, strongest_emotions = evaluate_emotions_sentiment(tweetset)
+    sentiment, sentiment_ratios, strongest_emotions = evaluate_emotions_sentiment(tweetset)
     
-    tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment)
+    tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment, sentiment_ratios)
     most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions)
     resultitem = tweetset_result(tweetset_info, most_used_data_info, political_data_info)
     

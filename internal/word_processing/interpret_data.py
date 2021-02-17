@@ -41,7 +41,7 @@ def describe_political_leaning(political_score):
 
 # Take in 3 floats describing the ratio of a set of tweets whch is positive, negative and neutral
 # Using these values, describe the overall sentiment of the set of tweets
-def describe_sentiment(pos_ratio, neg_ratio, neut_ratio):
+def describe_sentiment(pos_ratio, neut_ratio, neg_ratio):
     statement = "These tweets are overall "
     if abs(pos_ratio-neg_ratio) > 0.3:
         statement += "much "
