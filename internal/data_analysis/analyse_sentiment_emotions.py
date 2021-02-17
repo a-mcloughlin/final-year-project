@@ -3,6 +3,12 @@ import internal.data_analysis.detect_emotions as check_emotion
 from internal.data_analysis.detect_sentiment import get_sentiment
 import internal.word_processing.interpret_data as interpret_data
 
+class sentiment_data:  
+    def __init__(self, name, ratio, colour):  
+        self.name = name
+        self.ratio = ratio
+        self.colour = colour
+
 # Taking in a set of tweet objects, analyse the emotions and sentiment of the tweets
 # Return a string describing the sentiment, and an array of emotion strengths
 def evaluate_emotions_sentiment(tweetset):
@@ -31,7 +37,24 @@ def evaluate_emotions_sentiment(tweetset):
     
     
     pos_ratio, neg_ratio, neut_ratio = get_sentiment(tweetset)
-    print("Pos_ratio: "+str(pos_ratio)+"\tneg_ratio: "+str(neg_ratio)+"\tneut_ratio: "+str(neut_ratio))
-    sentiment = interpret_data.describe_sentiment(pos_ratio, neg_ratio, neut_ratio)  
+    print("Pos_ratio: "+str(pos_ratio)+"\tneut_ratio: "+str(neut_ratio)+"\tneg_ratio: "+str(neg_ratio))
+    sentiment = interpret_data.describe_sentiment(pos_ratio, neut_ratio, neg_ratio)
+      
+    pos_ratio_rounded  = round(pos_ratio*10)
+    neut_ratio_rounded = round(neut_ratio*10)
+    neg_ratio_rounded  = round(neg_ratio*10)
     
-    return sentiment, strongest_emotions
+    if (pos_ratio_rounded + neut_ratio_rounded + neg_ratio_rounded) < 10:
+        pos_rem =  (pos_ratio*10) -  pos_ratio_rounded
+        neut_rem = (neut_ratio*10) - neut_ratio_rounded
+        neg_rem =  (neg_ratio*10) -  neg_ratio_rounded
+        if ( pos_rem > neut_rem ) & ( pos_rem > neg_rem ):
+            pos_ratio_rounded +=1
+        elif ( neg_rem > neut_rem ) & ( neg_rem > pos_rem ):
+            neg_ratio_rounded += 1
+        else:
+            neut_ratio_rounded += 1 
+    
+    sentiment_ratios = [pos_ratio_rounded, neut_ratio_rounded, neg_ratio_rounded]
+    
+    return sentiment, sentiment_ratios, strongest_emotions

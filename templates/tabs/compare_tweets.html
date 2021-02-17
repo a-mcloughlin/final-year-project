@@ -67,12 +67,23 @@
 			  <br>
 				<table Name="result_section_2_{{loop.index}}" style="width:100%;">
 					<tr>
-						<td class="td-content-desc">Positivity
+						<td class="td-content-desc">Sentiment
 							<a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="How Positive or Negative this set of tweets is.">
 								<img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
 							</a>
 						</td>
-						<td class="td-content-data">{{result.tweetsetInfo.sentiment}}</td>
+						<td class="td-content-data">
+							{% for n in range(result.tweetsetInfo.sentiment_ratios[2]) %}
+								<img src="{{ url_for('static',filename='images/sad.png') }}" alt="Verified" height="30px" width="30px"/>
+							{% endfor %}
+							{% for n in range(result.tweetsetInfo.sentiment_ratios[1]) %}
+								<img src="{{ url_for('static',filename='images/neutral.png') }}" alt="Verified" height="30px" width="30px"/>
+							{% endfor %}
+							{% for n in range(result.tweetsetInfo.sentiment_ratios[0]) %}
+								<img src="{{ url_for('static',filename='images/happy.png') }}" alt="Verified" height="30px" width="30px"/>
+							{% endfor %}
+							<div style="padding-top:7.5px;">{{result.tweetsetInfo.sentiment}}</div>
+						</td>
 					</tr>
 					<tr class="tr-content-mid">
 						<td class="td-content-desc">Political Leaning
