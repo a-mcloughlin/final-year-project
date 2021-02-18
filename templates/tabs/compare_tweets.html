@@ -77,11 +77,14 @@
 								<img src="{{ url_for('static',filename='images/sad.png') }}" alt="Verified" class="sentimentEmojis"/>
 							{% endfor %}
 							{% if result.tweetsetInfo.sentiment_ratios[1] == 1 %}
-									<img src="{{ url_for('static',filename='images/sad_neut.png') }}" alt="Verified" class="sentimentEmojis"/>
+								<img src="{{ url_for('static',filename='images/sad_neut.png') }}" alt="Verified" class="sentimentEmojis"/>
 							{% endif %}
 							{% for n in range(result.tweetsetInfo.sentiment_ratios[2]) %}
 								<img src="{{ url_for('static',filename='images/neutral.png') }}" alt="Verified" class="sentimentEmojis"/>
 							{% endfor %}
+							{% if result.tweetsetInfo.sentiment_ratios[3] == 1 %}
+								<img src="{{ url_for('static',filename='images/neut_happy.png') }}" alt="Verified" class="sentimentEmojis"/>
+							{% endif %}
 							{% for n in range(result.tweetsetInfo.sentiment_ratios[4]) %}
 								<img src="{{ url_for('static',filename='images/happy.png') }}" alt="Verified" class="sentimentEmojis"/>
 							{% endfor %}
