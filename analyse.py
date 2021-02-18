@@ -105,7 +105,7 @@ def analyse_account(term, country):
     account_data = process_json.process_user_data(data)
 
     if errtweets != None:
-        tweetset_info = tweetset_data(term, None, None, None)
+        tweetset_info = tweetset_data(term, None, None, None, None)
         most_used_data_info = None
         political_data_info = None
         authenticity_measures = None
