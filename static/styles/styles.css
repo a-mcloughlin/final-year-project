@@ -179,6 +179,10 @@ html {
     .hoverInfo {
         display: none;
     }
+    .sentimentEmojis {
+        height: 16px;
+        width: 16px;
+    }
 }
 
 @media (min-width: 761px) {
@@ -240,6 +244,10 @@ html {
     .td-content-desc {
         min-width: fit-content;
     }
+    .sentimentEmojis {
+        height: 30px;
+        width: 30px;
+    }
 }
 
 .followingdata1{
@@ -279,7 +287,7 @@ html {
     min-height:88%;
 }
 
-.flexwidth {
+.flob {
     width: -moz-calc(100vw - 30px);
     width: -webkit-calc(100vw - 30px);
     width: -o-calc(100vw - 30px);

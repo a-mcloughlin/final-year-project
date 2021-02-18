@@ -66,14 +66,20 @@
               </a>
             </td>
             <td class="td-content-data">
-              {% for n in range(result.tweetsetInfo.sentiment_ratios[2]) %}
-                <img src="{{ url_for('static',filename='images/sad.png') }}" alt="Verified" height="30px" width="30px"/>
-              {% endfor %}
-              {% for n in range(result.tweetsetInfo.sentiment_ratios[1]) %}
-                <img src="{{ url_for('static',filename='images/neutral.png') }}" alt="Verified" height="30px" width="30px"/>
-              {% endfor %}
               {% for n in range(result.tweetsetInfo.sentiment_ratios[0]) %}
-                <img src="{{ url_for('static',filename='images/happy.png') }}" alt="Verified" height="30px" width="30px"/>
+                <img src="{{ url_for('static',filename='images/sad.png') }}" class="sentimentEmojis" alt="Verified" />
+              {% endfor %}
+              {% if result.tweetsetInfo.sentiment_ratios[1] == 1 %}
+                	<img src="{{ url_for('static',filename='images/sad_neut.png') }}" alt="Verified" class="sentimentEmojis"/>
+              {% endif %}
+              {% for n in range(result.tweetsetInfo.sentiment_ratios[2]) %}
+                <img src="{{ url_for('static',filename='images/neutral.png') }}" class="sentimentEmojis" alt="Verified"/>
+              {% endfor %}
+              {% if result.tweetsetInfo.sentiment_ratios[3] == 1 %}
+                <img src="{{ url_for('static',filename='images/neut_happy.png') }}" alt="Verified" class="sentimentEmojis"/>
+              {% endif %}
+              {% for n in range(result.tweetsetInfo.sentiment_ratios[4]) %}
+                <img src="{{ url_for('static',filename='images/happy.png') }}" class="sentimentEmojis" alt="Verified"/>
               {% endfor %}
               <div style="padding-top:7.5px;">{{result.tweetsetInfo.sentiment}}</div>
             </td>
