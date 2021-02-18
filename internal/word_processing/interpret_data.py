@@ -43,15 +43,14 @@ def describe_political_leaning(political_score):
 # Using these values, describe the overall sentiment of the set of tweets
 def describe_sentiment(pos_ratio, neut_ratio, neg_ratio):
     statement = "These tweets are overall "
-    abs(pos_ratio-neg_ratio)
-    if abs(pos_ratio-neg_ratio) > 0.3:
-        statement += "much "
     if (pos_ratio > (neg_ratio+0.05)) & (pos_ratio > (neut_ratio+0.05)):
-        statement += "more Positive than Negative"
+        statement += "more Positive than Negative or Neutral"
     elif (neg_ratio > (pos_ratio+0.05)) & (neg_ratio > (neut_ratio+0.05)):
-        statement += "more Negative than Positive"
-    elif (neut_ratio > (pos_ratio+0.05)) & (neut_ratio > (neg_ratio+0.05)):
-        statement += "more Neutral than having any strong Positive or Ngeative Sentiment"
+        statement += "more Negative than Positive or Neutral"
+    elif (pos_ratio > (neg_ratio+0.05)) & (pos_ratio <= (neut_ratio+0.05)):
+        statement += "more Positive and Neutral in sentiment than Negative"
+    elif (neg_ratio > (pos_ratio+0.05)) & (neg_ratio <= (neut_ratio+0.05)):
+        statement += "more Negative and Neutral in sentiment than Positive"
     else:
         statement = "These tweets are reasonably balanced in sentiment between Positive, Neutral and Negative Sentiments"
     return statement
