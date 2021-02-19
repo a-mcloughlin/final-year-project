@@ -10,11 +10,13 @@
     	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 		<script type="text/javascript">
 			function showLoadingAnalyse(){
 				var myElem = document.getElementById("result_section_1");
 				if (myElem != null) {
 					myElem.style.display = "none";
+					document.getElementById("result_section_3").style.display = "none";
 					document.getElementById("result_section_2").style.display = "none";
 				}
 				document.getElementById("loading").style.display = "block";
@@ -24,6 +26,7 @@
 				var myElem = document.getElementsByName("result_section_1_"+i)[0];
 				if (myElem != null) {
 					myElem.style.display = "none";
+					document.getElementsByName("result_section_3_"+i)[0].style.display = "none";
 					document.getElementsByName("result_section_2_"+i)[0].style.display = "none";
 				}
 				document.getElementsByName("loading_"+i)[0].style.display = "block";
@@ -33,6 +36,7 @@
 				var myElem = document.getElementById("result_section_1");
 				if (myElem != null) {
 					myElem.style.display = "none";
+					document.getElementById("result_section_3").style.display = "none";
 					document.getElementById("result_section_2").style.display = "none";
 				}
 				document.getElementById("loading").style.display = "block";

@@ -28,6 +28,8 @@ def evaluate_emotions_sentiment(tweetset):
 
     sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(len(tweetset)))
     
+    emotion_summary = [sorted_emotions[0], sorted_emotions[1],sorted_emotions[2]]
+    
     strongest_emotions = []
     othercount = len(tweetset)
     for i in range(0,3):
@@ -41,7 +43,7 @@ def evaluate_emotions_sentiment(tweetset):
     
     pos_ratio, neg_ratio, neut_ratio = get_sentiment(tweetset)
     print("Pos_ratio: "+str(pos_ratio)+"\tneut_ratio: "+str(neut_ratio)+"\tneg_ratio: "+str(neg_ratio))
-    sentiment = interpret_data.describe_sentiment(pos_ratio, neut_ratio, neg_ratio)
+    sentiment, summary = interpret_data.describe_sentiment(pos_ratio, neut_ratio, neg_ratio)
       
     pos_ratio_rounded  = round_of_rating(pos_ratio*10)
     neut_ratio_rounded = round_of_rating(neut_ratio*10)
@@ -73,4 +75,4 @@ def evaluate_emotions_sentiment(tweetset):
     
     sentiment_ratios = [int(neg_ratio_rounded), neg_neut, int(neut_ratio_rounded), pos_neut, int(pos_ratio_rounded)]
 
-    return sentiment, sentiment_ratios, strongest_emotions
+    return sentiment, sentiment_ratios, summary, strongest_emotions, emotion_summary

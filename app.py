@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, send_from_directory, flash
 from analyse import analyse, analyse_account
 import os
+import urllib
+from markupsafe import Markup
 resultlist = [None,None]
 resultitem = None
 app = Flask(__name__)
@@ -126,3 +128,10 @@ if __name__ == "__main__":
     app.debug = True
     app.run(host='0.0.0.0', port=8081)
 
+@app.template_filter('urlencode')
+def urlencode_filter(s):
+    if type(s) == 'Markup':
+        s = s.unescape()
+    s = s.encode('utf8')
+    s = urllib.quote_plus(s)
+    return Markup(s)
