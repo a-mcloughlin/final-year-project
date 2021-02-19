@@ -19,7 +19,7 @@ def evaluate_politics(tweetset, country):
             
     political_prediction = political_prediction/len(tweetset)
     
-    statement = interpret_data.describe_political_leaning(political_prediction)
+    statement, summary = interpret_data.describe_political_leaning(political_prediction)
     
     if country == 'ie':
         dataset_country = "Ireland"
@@ -37,4 +37,4 @@ def evaluate_politics(tweetset, country):
         
     political_leaning_degree =  (((political_prediction + 1) / 2)*180) + 270
     
-    return dataset_country, statement, political_leaning_degree
+    return dataset_country, statement, political_leaning_degree, summary

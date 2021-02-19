@@ -180,8 +180,8 @@ html {
         display: none;
     }
     .sentimentEmojis {
-        height: 16px;
-        width: 16px;
+        height: 15px;
+        width: 15px;
     }
 }
 
@@ -414,9 +414,10 @@ html {
     opacity: 1;
     transition: all 0.1s ease 0.5s;
     visibility: visible;
+    content: attr(data-title);
 }
 [data-title]:after {
-    content: attr(data-title);
+    content: attr("");
     background-color: #D0CECE;
     opacity: 0;
     border: 2px solid #6a6868;
@@ -432,4 +433,7 @@ html {
     height: 15px;
 }
 
+.displaybtn {
+    background: #ffffff;
+}
 /* End */

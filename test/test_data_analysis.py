@@ -15,19 +15,19 @@ class TestSentiment(unittest.TestCase):
         
     def test_describe_sentiment(self):
         sentiment = interpret_data.describe_sentiment(0.64, 0.24, 0.13)
-        self.assertEqual(sentiment, 'These tweets are overall more Positive than Negative or Neutral')
+        self.assertEqual(sentiment, ('These tweets are overall more Positive than Negative or Neutral', 'Positive'))
         
         sentiment = interpret_data.describe_sentiment(0.33, 0.24, 0.44)
-        self.assertEqual(sentiment, 'These tweets are overall more Negative than Positive or Neutral')
+        self.assertEqual(sentiment, ('These tweets are overall more Negative than Positive or Neutral', 'Negative'))
         
         sentiment = interpret_data.describe_sentiment(0.33, 0.44, 0.24)
-        self.assertEqual(sentiment, 'These tweets are overall more Positive and Neutral in sentiment than Negative')
+        self.assertEqual(sentiment, ('These tweets are overall more Positive and Neutral in sentiment than Negative', 'Neutral'))
         
         sentiment = interpret_data.describe_sentiment(0.14, 0.43, 0.44)
-        self.assertEqual(sentiment, 'These tweets are overall more Negative and Neutral in sentiment than Positive')
+        self.assertEqual(sentiment, ('These tweets are overall more Negative and Neutral in sentiment than Positive', 'Neutral'))
         
         sentiment = interpret_data.describe_sentiment(0.33, 0.33, 0.34)
-        self.assertEqual(sentiment, 'These tweets are reasonably balanced in sentiment between Positive, Neutral and Negative Sentiments')
+        self.assertEqual(sentiment, ('These tweets are reasonably balanced in sentiment between Positive, Neutral and Negative Sentiments', 'Neutral'))
         
     
     def test_get_emotion_of_tweet(self):
