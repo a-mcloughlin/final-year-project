@@ -27,7 +27,7 @@ def analyse_tweets():
     return render_template('tabs/analyse_tweets.html', result=resultitem)
 
 def analyse_err(msg):
-    flash(msg)
+    flash(msg, 'error')
     return render_template('tabs/analyse_tweets.html', result=None)
     
 # If a request has been made, render the results on the page
@@ -47,7 +47,7 @@ def analyseQuery():
         return analyse_err("No tweets found for this query, please try again")
     
     if err != None:
-        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term))
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term),'info')
         
     return render_template('tabs/analyse_tweets.html', result=resultitem)   
 
@@ -57,7 +57,7 @@ def compare():
     return render_template('tabs/compare_tweets.html', resultlist=resultlist)
 
 def compare_err(msg, column):
-    flash(msg, "category"+column)
+    flash(msg, "column"+column+"_error")
     return render_template('tabs/compare_tweets.html', resultlist=resultlist) 
 
 # If a request has been made, render the results on the page
@@ -84,7 +84,7 @@ def compareQuery():
         resultlist[1] = result
         
     if err != None:
-        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result.tweetsetInfo.term))
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result.tweetsetInfo.term), "column"+lp+"_info")
     
     return render_template('tabs/compare_tweets.html', resultlist=resultlist)   
 
@@ -95,7 +95,7 @@ def analyse_acc():
     return render_template('tabs/analyse_account.html', result=resultitem)
 
 def analyse_acc_err(msg):
-    flash(msg)
+    flash(msg, 'error')
     return render_template('tabs/analyse_account.html', result=None)
 
 # If a request has been made, render the results on the page
@@ -108,7 +108,7 @@ def analyse_acc_Query():
     country = request.form.get('countryDataset', 'global')
     resultitem, err = analyse_account(term, country)
     if err != None:
-        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term))
+        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(resultitem.tweetsetInfo.tweet_count)+" tweets analysed for "+str(resultitem.tweetsetInfo.term),'info')
     
     if resultitem == "noHashorAt":
         return analyse_acc_err("You must enter a @user handle, please try again")

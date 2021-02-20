@@ -9,15 +9,26 @@
         {% for result in resultlist %}
 			{% if loop.index == 1 %}
 				<div class="col-12 col-md-6 compare-content1">
-				{% set category = "category1"%}
+				{% set column = "column1"%}
 			{% else %}
 				<div class="col-12 col-md-6 compare-content2">
-				{% set category = "category2"%}
+				{% set column = "column2"%}
 			{%endif%}
-			{% with messages = get_flashed_messages(category_filter=[category]) %}
+			{% with messages = get_flashed_messages(category_filter=[column+"_info"]) %}
 				{% if messages %}
 					{% for message in messages %}
-					<div class="alert alert-warning alert-dismissible" role="alert">
+					<div class="info alert alert-warning alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">×</span></button>
+						{{message}}
+					</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with messages = get_flashed_messages(category_filter=[column+"_error"]) %}
+				{% if messages %}
+					{% for message in messages %}
+					<div class="error alert alert-warning alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">×</span></button>
 						{{message}}
