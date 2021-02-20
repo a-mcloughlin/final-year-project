@@ -1,4 +1,4 @@
-from internal.machine_learning.political_leaning_ml import build_ml_model as build_ml_model ,predict_from_model as predict_from_model
+from internal.political_leaning.political_leaning_ml import build_ml_model as build_ml_model ,predict_from_model as predict_from_model
 import internal.word_processing.interpret_data as interpret_data
 
 # From a set of tweets and a country code, predict the political leaning of the set of tweets

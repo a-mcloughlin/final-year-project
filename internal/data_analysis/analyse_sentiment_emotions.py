@@ -28,7 +28,7 @@ def evaluate_emotions_sentiment(tweetset):
 
     sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(len(tweetset)))
     
-    emotion_summary = [sorted_emotions[0], sorted_emotions[1],sorted_emotions[2]]
+    emotion_summary = [sorted_emotions[0].name, sorted_emotions[1].name,sorted_emotions[2].name]
     
     strongest_emotions = []
     othercount = len(tweetset)

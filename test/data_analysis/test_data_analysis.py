@@ -2,9 +2,9 @@
 import unittest
 import internal.data_analysis.detect_emotions as detect_emotions
 import internal.data_analysis.detect_sentiment as detect_sentiment
-import internal.word_processing.interpret_data as interpret_data
+import internal.data_analysis.analyse_sentiment_emotions as analyse_sentiment_emotions
 import test.mocked_data as mock
-
+        
 class TestSentiment(unittest.TestCase):
     
     def test_get_sentiment(self):
@@ -12,23 +12,6 @@ class TestSentiment(unittest.TestCase):
         self.assertEqual(pos_ratio, 0.33)
         self.assertEqual(neg_ratio, 0.23)
         self.assertEqual(neut_ratio, 0.44)
-        
-    def test_describe_sentiment(self):
-        sentiment = interpret_data.describe_sentiment(0.64, 0.24, 0.13)
-        self.assertEqual(sentiment, ('These tweets are overall more Positive than Negative or Neutral', 'Positive'))
-        
-        sentiment = interpret_data.describe_sentiment(0.33, 0.24, 0.44)
-        self.assertEqual(sentiment, ('These tweets are overall more Negative than Positive or Neutral', 'Negative'))
-        
-        sentiment = interpret_data.describe_sentiment(0.33, 0.44, 0.24)
-        self.assertEqual(sentiment, ('These tweets are overall more Positive and Neutral in sentiment than Negative', 'Neutral'))
-        
-        sentiment = interpret_data.describe_sentiment(0.14, 0.43, 0.44)
-        self.assertEqual(sentiment, ('These tweets are overall more Negative and Neutral in sentiment than Positive', 'Neutral'))
-        
-        sentiment = interpret_data.describe_sentiment(0.33, 0.33, 0.34)
-        self.assertEqual(sentiment, ('These tweets are reasonably balanced in sentiment between Positive, Neutral and Negative Sentiments', 'Neutral'))
-        
     
     def test_get_emotion_of_tweet(self):
         dataset = detect_emotions.prepare_dataset()
@@ -53,13 +36,31 @@ class TestSentiment(unittest.TestCase):
             detect_emotions.removelistelement(test_list, "one"), 
             [word2]
         )
+        
+    def test_evaluate_emotions_sentiment(self):
+        self.maxDiff = None
+        sentiment, sentiment_ratios, summary, strongest_emotions, emotion_summary = analyse_sentiment_emotions.evaluate_emotions_sentiment(mock.mock_tweetlist)
+        self.assertEqual(sentiment, 'These tweets are overall more Positive and Neutral in sentiment than Negative')
+        self.assertEqual(sentiment_ratios, [2, 1, 3, 1, 3])
+        self.assertEqual(summary, 'Neutral')
+        
+        mock_strongest_emotions = [detect_emotions.emotion_data('anger','#E5957C'),
+                detect_emotions.emotion_data('anticipation','#D2C160'),
+                detect_emotions.emotion_data('other','#8f8f8f')]
+        mock_strongest_emotions[0].set_count(85)
+        mock_strongest_emotions[1].set_count(12)
+        mock_strongest_emotions[2].set_count(3)
+        
+        assert_emotionlists_are_equal(self, strongest_emotions, mock_strongest_emotions)
+        self.assertEqual(emotion_summary, ['anger','anticipation','disgust'])
+        
             
 def assert_emotionlists_are_equal(self, list1, list2):
    for index, emotion in enumerate(list1):
             self.assertEqual(emotion.name, list2[index].name)
-            self.assertEqual(emotion.weight, list2[index].weight)
-            self.assertEqual(emotion.count, list2[index].count)
-            self.assertEqual(emotion.get_strength(), list2[index].get_strength()) 
+            self.assertEqual(emotion.colour, list2[index].colour)
+            self.assertEqual(emotion.predominant_tweet_count, list2[index].predominant_tweet_count)
+            self.assertEqual(emotion.get_bar_fraction(100), list2[index].get_bar_fraction(100)) 
 
 def run_tests():
     unittest.main()

@@ -1,0 +1,29 @@
+{
+    "data": [
+        {
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1351720980972933122/I3MnYUdm_normal.jpg",
+            "created_at": "2015-11-15T21:41:29.000Z",
+            "id": "4196983835",
+            "name": "WeRateDogs®",
+            "pinned_tweet_id": "1336361298368495618",
+            "verified": true,
+            "public_metrics": {
+                "followers_count": 8963683,
+                "following_count": 17,
+                "tweet_count": 13462,
+                "listed_count": 6375
+            },
+            "location": "links and things ➜",
+            "description": "Your Only Source For Professional Dog Ratings Instagram and Facebook ➜ WeRateDogs partnerships@weratedogs.com ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "username": "dog_rates"
+        }
+    ],
+    "includes": {
+        "tweets": [
+            {
+                "id": "1336361298368495618",
+                "text": "This is Ollie. He’s just here to get your attention. If you’re in the US and would like us to send a dog pic to your phone every single day, text “🐶” to 213-212-6731 https://t.co/uJsMd3h2C0"
+            }
+        ]
+    }
+}
