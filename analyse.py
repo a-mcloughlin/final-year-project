@@ -9,7 +9,7 @@ import internal.word_processing.process_json_tweets as process_json
 import internal.data_analysis.detect_emotions as check_emotion
 from internal.data_analysis.detect_bot_account import analyse_acc
 from internal.data_analysis.analyse_sentiment_emotions import evaluate_emotions_sentiment
-from internal.machine_learning.analyse_political_leaning import evaluate_politics
+from internal.political_leaning.analyse_political_leaning import evaluate_politics
 
 ml_model_ibc = None
 ml_model_kaggle = None

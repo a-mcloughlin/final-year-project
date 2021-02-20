@@ -287,11 +287,11 @@ html {
     min-height:88%;
 }
 
-.flob {
-    width: -moz-calc(100vw - 30px);
-    width: -webkit-calc(100vw - 30px);
-    width: -o-calc(100vw - 30px);
-    width: calc(100vw - 30px);
+.comparetab {
+    width: -moz-calc(100% - 30px) !important;
+    width: -webkit-calc(100% - 30px) !important;
+    width: -o-calc(100% - 30px) !important;
+    width: calc(100% - 30px) !important;
 }​
 
 .political_leaning_wrapper{

@@ -19,7 +19,7 @@ def get_time_since_acc_creation(created_at):
         age_sentence += str(diff.months)+" Months old"
     elif diff.days > 1:
         age_sentence += str(diff.days)+" Days old"
-    elif diff.months > 1:
+    elif diff.hours > 1:
         age_sentence += str(diff.hours)+" Hours old"
     else:
         age_sentence += str(diff.minutes)+" Minutes old"
