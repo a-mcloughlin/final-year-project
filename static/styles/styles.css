@@ -376,10 +376,17 @@ html {
     float:left;
 }
 
-.alert {
+.error {
     background-color: #e5957c !important;
     border-color: #a96b58 !important;
     color: #50342b !important;
+    font-weight: bold !important;
+}
+
+.info {
+    background-color: #ffd390 !important;
+    border-color: #FCB040 !important;
+    color: #835c21 !important;
     font-weight: bold !important;
 }
 
@@ -433,7 +440,4 @@ html {
     height: 15px;
 }
 
-.displaybtn {
-    background: #ffffff;
-}
 /* End */
