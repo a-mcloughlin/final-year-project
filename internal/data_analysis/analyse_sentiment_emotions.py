@@ -15,29 +15,31 @@ def round_of_rating(number):
 # Taking in a set of tweet objects, analyse the emotions and sentiment of the tweets
 # Return a string describing the sentiment, and an array of emotion strengths
 def evaluate_emotions_sentiment(tweetset):
-    
+    count = 0;
     emolex_words = check_emotion.prepare_dataset()
     emotions = check_emotion.create_emotion_set()
     
     for tweet in tweetset:
             
         emotion = check_emotion.get_emotion_of_tweet(emotions, emolex_words, tweet)
-        for em in emotions:
-            if emotion==em.name:
-                em.increase_count()
+        if emotion != None:
+            count +=1
+            for em in emotions:
+                if emotion==em.name:
+                    em.increase_count()
 
-    sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(len(tweetset)))
-    
+    sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(count))
+        
     emotion_summary = [sorted_emotions[0].name, sorted_emotions[1].name,sorted_emotions[2].name]
     
     strongest_emotions = []
-    othercount = len(tweetset)
+    othercount = count
     for i in range(0,3):
-        if sorted_emotions[i].get_bar_fraction(len(tweetset)) > 5 :
+        if sorted_emotions[i].get_bar_fraction(count) > 5 :
             strongest_emotions.append(sorted_emotions[i])
             othercount -= sorted_emotions[i].predominant_tweet_count
     
-    if othercount > 0 & ((othercount/len(tweetset))*100 > 5):
+    if othercount > 0 & ((othercount/count)*100 > 5):
         strongest_emotions.append( check_emotion.other_emotion(othercount))
     
     
@@ -76,3 +78,4 @@ def evaluate_emotions_sentiment(tweetset):
     sentiment_ratios = [int(neg_ratio_rounded), neg_neut, int(neut_ratio_rounded), pos_neut, int(pos_ratio_rounded)]
 
     return sentiment, sentiment_ratios, summary, strongest_emotions, emotion_summary
+    
