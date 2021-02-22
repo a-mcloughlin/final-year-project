@@ -28,21 +28,23 @@ def evaluate_emotions_sentiment(tweetset):
                 if emotion==em.name:
                     em.increase_count()
                     
-    if count == 0: count =1
+    if count == 0: 
+        count =1
+        emotion_summary = ["No emotions detected"]
+        strongest_emotions = [check_emotion.emotion_data("No emotions Detected", '#8f8f8f')]
+    else:
+        sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(count))
+        emotion_summary = [sorted_emotions[0].name, sorted_emotions[1].name,sorted_emotions[2].name]
     
-    sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(count))
+        strongest_emotions = []
+        othercount = count
+        for i in range(0,3):
+            if sorted_emotions[i].get_bar_fraction(count) > 5 :
+                strongest_emotions.append(sorted_emotions[i])
+                othercount -= sorted_emotions[i].predominant_tweet_count
         
-    emotion_summary = [sorted_emotions[0].name, sorted_emotions[1].name,sorted_emotions[2].name]
-    
-    strongest_emotions = []
-    othercount = count
-    for i in range(0,3):
-        if sorted_emotions[i].get_bar_fraction(count) > 5 :
-            strongest_emotions.append(sorted_emotions[i])
-            othercount -= sorted_emotions[i].predominant_tweet_count
-    
-    if othercount > 0 & ((othercount/count)*100 > 5):
-        strongest_emotions.append( check_emotion.other_emotion(othercount))
+        if othercount > 0 & ((othercount/count)*100 > 5):
+            strongest_emotions.append( check_emotion.other_emotion(othercount))
     
     
     pos_ratio, neg_ratio, neut_ratio = get_sentiment(tweetset)
