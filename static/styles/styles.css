@@ -16,7 +16,7 @@ html {
     padding-top: 30px;
     /* min-width: 100vw;
     min-height: 100vh; */
-    font-size: 12px;
+    font-size: 13px;
 }
 .navbar{ 
     background:#D0CECE;  
@@ -435,6 +435,32 @@ html {
     z-index: 99999;
 }
 
+[data-title-info]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+    content: attr(data-title-info);
+}
+[data-title-info]:after {
+    content: attr("");
+    background-color: #D0CECE;
+    opacity: 0;
+    border: 2px solid #6a6868;
+    border-radius: 50rem !important;
+    padding: 5px 12px 5px 12px;
+    margin-top: 25px;
+    margin-left: -200px;
+    position:absolute !important;
+    z-index: 99999 !important; 
+    width: 400px;
+    text-align:justify;
+    word-break: break-word;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    -ms-word-break: break-word;
+    word-break: break-word;
+
+}
 .informational_icon {
     width: 15px;
     height: 15px;

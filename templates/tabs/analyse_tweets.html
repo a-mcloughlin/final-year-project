@@ -28,8 +28,13 @@
           </span>
         </div>
         <div class="col-12 col-md-6 btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="flex: 1; border-radius: 2px; padding-bottom: 10px; padding-top: 10px; margin-right:10px;">
-          <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;" >
-            <b style="font-style: italic;">Political Analysis Dataset&nbsp;</b>
+          <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;">
+            <b style="font-style: italic; pointer-events: none; ">Political Analysis Dataset&nbsp;</b>
+          </label>
+          <label class="btn btn-outline-dark form-check-label" for="ie" style="background:#efefef; border-left: 0px;">
+            <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none;" data-title-info="The dataset to use when predicting political leaning. Political discourse varies a lot between countries, seleting the right dataset to analyse with is thus very important.">
+								<img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+            </a>
           </label>
           <label class="btn btn-outline-dark form-check-label" for="ie" style="flex: 1; font-weight: bold;">
             <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="ie" id="ie" style="display: none;"/>Ireland
