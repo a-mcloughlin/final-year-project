@@ -344,7 +344,13 @@ html {
     border-top-right-radius: 50rem !important;
     border-bottom-right-radius: 50rem !important;
 }
-
+.emot-only{
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+    flex-grow: 1;
+    border-top-right-radius: 50rem !important;
+    border-bottom-right-radius: 50rem !important;
+}
 .all-emot {
     height: 100%;
     text-align: center;

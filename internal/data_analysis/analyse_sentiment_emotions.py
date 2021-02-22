@@ -27,7 +27,9 @@ def evaluate_emotions_sentiment(tweetset):
             for em in emotions:
                 if emotion==em.name:
                     em.increase_count()
-
+                    
+    if count == 0: count =1
+    
     sorted_emotions = sorted(emotions, key=lambda x:-x.get_bar_fraction(count))
         
     emotion_summary = [sorted_emotions[0].name, sorted_emotions[1].name,sorted_emotions[2].name]
