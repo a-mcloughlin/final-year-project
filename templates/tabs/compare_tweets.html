@@ -140,7 +140,7 @@
 						<td class="td-content-data">
 							<div class="emotion-chart flex-container">
 								{% for emotion in result.most_used_data.strongest_emotions %}
-								<div class="{% if loop.index == 1 %}emot-first {% elif loop.last %}emot-last  {% endif %}all-emot" style="
+                  				<div class="{% if (loop.index == 1) and (loop.last) %}emot-only {% elif loop.index == 1 %}emot-first {% elif loop.last %}emot-last {% endif %}all-emot" style="
 								flex: 1 1 {{emotion.get_bar_fraction(result.tweetsetInfo.tweet_count)}}%; 
 								background-color: {{emotion.colour}};">
 									{{emotion.name.capitalize()}}

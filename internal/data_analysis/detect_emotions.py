@@ -30,8 +30,11 @@ def get_emotion_of_tweet(emotions, emolex_words, tweet):
                      emotion.increase_count()
     emotion_tracker = removelistelement(emotion_tracker, 'positive')
     emotion_tracker = removelistelement(emotion_tracker, 'negative')
-    emotion_tracker.sort(key=lambda x: x.predominant_tweet_count)
-    return emotion_tracker[0].name
+    emotion_tracker.sort(key=lambda x: -x.predominant_tweet_count)
+    if emotion_tracker[0].predominant_tweet_count != 0:
+        return emotion_tracker[0].name
+    else:
+        return None
 
 # Remove an element from a list by its key value    
 def removelistelement(list, key):
