@@ -8,7 +8,7 @@ import test.mocked_data as mock
 class TestWordProcessing(unittest.TestCase):
     
     def test_getItem(self):
-        self.assertEqual(handle_wordlist.getItem(mock.mock_wordlist, "people"), 23)
+        self.assertEqual(handle_wordlist.getItem(mock.mock_wordlist, "people"), 22)
     
     def test_checkList(self):
         self.assertEqual(handle_wordlist.checkList(mock.mock_wordlist, "people"), True)
@@ -41,7 +41,7 @@ class TestWordProcessing(unittest.TestCase):
         assert_wordlists_equal(self, mentionlist, mock.mock_mentionlist_sample)      
 
     def test_unique_word_count(self):
-        self.assertEqual(handle_wordlist.unique_word_count(mock.mock_wordlist), '622')
+        self.assertEqual(handle_wordlist.unique_word_count(mock.mock_wordlist), '621')
 
     def test_get_n_most_frequent_items(self):
         most_used_words = handle_wordlist.get_n_most_frequent_items(mock.mock_wordlist,5)

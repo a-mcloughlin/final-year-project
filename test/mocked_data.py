@@ -297,7 +297,6 @@ mock_wordlist = [
     mock_word("gets",5),
     mock_word("like",5),
     mock_word("hes",5),
-    mock_word("amp",5),
     mock_word("owner",5),
     mock_word("people",5),
     mock_word("night",4),
