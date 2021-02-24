@@ -138,6 +138,26 @@
             </td>
           </tr>
           <tr class="tr-content-mid">
+            <td class="td-content-desc">Most Popular Tweet
+              <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="The most popular tweet {% if result.tweetsetInfo.type == 'usr' %}by {% elif result.tweetsetInfo.type == 'tag'  %}in {% endif %}{{result.tweetsetInfo.term}} {% if result.tweetsetInfo.tweet_count == 300 %} from the 300 most recent tweets {% else %} from the last 7 days {% endif %}">
+                <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+              </a>
+            </td>
+          	<td class="td-content-data" style="width: 50%;">
+              {% if result.tweetsetInfo.most_retweeted.text != None %}
+                  {{result.tweetsetInfo.most_retweeted.text}}<br>
+                  <div style="padding-right: 20px;">
+                  <img src="{{ url_for('static',filename='images/twitter_like.png') }}" alt="Verified" class="verified_tick"/>
+                  {{result.tweetsetInfo.most_retweeted.like_count}}&nbsp;&nbsp;
+                  <img src="{{ url_for('static',filename='images/retweet.png') }}" alt="Verified" class="verified_tick"/>
+                  {{result.tweetsetInfo.most_retweeted.retweet_count}}<br>
+                  </div>
+                {% else %}
+                  {{result.tweetsetInfo.term}} has not written an original tweet, only retweeted tweets by others in the last 7 days
+                {% endif %}
+            </td>
+          </tr>
+          <tr class="tr-content-mid">
             <td class="td-content-desc">Most Used Emojis</td>
           	<td class="td-content-data">
 							{% if result.most_used_data.most_used_emojis != [] %}

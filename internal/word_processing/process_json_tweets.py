@@ -4,6 +4,13 @@ import emoji
 import re
 
 # Python object to store data fetched about a specifc twitter account
+class tweetstats:
+    def __init__(self, text, retweet_count, like_count):  
+        self.text = text
+        self.retweet_count = retweet_count
+        self.like_count = like_count
+        
+# Python object to store data fetched about a specifc twitter account
 class acc_data:
     def __init__(self, verified, name, description, location, age, followers_count, following_count, tweet_count, withheld_in_countries, profile_image_url, pinned_tweet):  
         self.verified = verified
@@ -20,14 +27,25 @@ class acc_data:
 
 # Get a list of word objects from a json set of tweets
 # Append this word list data to any pre-existing word data
-def process_json_tweetset(json_file, tweet_list, word_list, emoji_list, hashtag_list, mention_list):
+def process_json_tweetset(json_file, tweet_list, word_list, emoji_list, hashtag_list, mention_list, sum_likes_retweets):
     count = json_file['meta']['result_count']
     last_id = ""
-
+    most_retweeted=tweetstats(None, 0, 0)
     for p in json_file['data']:
         wordlist, emojis, hashtags, mentions = split_into_tweet_data_categories(p['text']) 
         word_list = handle_wordlist.add_words_to_list(wordlist, word_list)
         tweet_list.append(p['text'])
+        
+        if not handle_wordlist.isRetweet(p['text']):
+            retweet_count = p['public_metrics']['retweet_count']
+            like_count = p['public_metrics']['like_count']
+            sum_temp = retweet_count + like_count
+            if sum_temp > sum_likes_retweets:
+                most_retweeted = tweetstats(p['text'], retweet_count, like_count)
+                sum_likes_retweets = sum_temp
+            
+            print("Retweets: "+str(retweet_count)+"\tLikes: "+str(like_count))
+            
         emoji_list = handle_wordlist.add_items_to_list(emojis, emoji_list)
         hashtag_list = handle_wordlist.add_items_to_list(hashtags, hashtag_list)
         mention_list = handle_wordlist.add_items_to_list(mentions, mention_list)
@@ -39,7 +57,7 @@ def process_json_tweetset(json_file, tweet_list, word_list, emoji_list, hashtag_
     hashtag_list.sort(key=lambda x: x.count, reverse=True)
     mention_list.sort(key=lambda x: x.count, reverse=True)
     
-    return tweet_list, word_list, emoji_list, hashtag_list, mention_list, count, last_id
+    return tweet_list, word_list, emoji_list, hashtag_list, mention_list, count, last_id, most_retweeted
 
 # Parse rge emojiis, words, hashtags and user mentions from a tweet
 # Return this data as a tweet_data object

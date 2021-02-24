@@ -22,6 +22,12 @@ def checkList(list, word):
             return True
     return False
 
+def isRetweet(tweet_text):
+    words = tweet_text.split() 
+    if words[0] == 'RT':
+        return True;
+    return False;
+
 # Check that a word is:
 # - not an empty string
 # - not a url
