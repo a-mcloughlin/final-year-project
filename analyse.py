@@ -32,13 +32,15 @@ class account_result:
         self.authenticity_measures = authenticity_measures
         
 class tweetset_data:
-    def __init__(self, term, word_count, tweet_count, sentiment, sentiment_ratios, summary):  
+    def __init__(self, term, type, word_count, tweet_count, sentiment, sentiment_ratios, summary, most_retweeted):  
         self.word_count=word_count
         self.term = term
+        self.type = type
         self.tweet_count = tweet_count
         self.sentiment = sentiment
         self.sentiment_ratios = sentiment_ratios
         self.summary = summary
+        self.most_retweeted = most_retweeted
         
 class most_used_data:
     def __init__(self, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions, emotion_summary):  
@@ -96,7 +98,7 @@ def analyse_account(term, country):
     if typ == 'tag':
         return "hashNotAt", None
     
-    errtweets, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count = fetch_tweetset_data(url, typ, parsed)
+    errtweets, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count, most_retweeted = fetch_tweetset_data(url, typ, parsed)
 
     acc_url = requests.get_account_info(parsed)
     data, erracc = run_twitter_request_fetch_account_info(acc_url, auth_file)
@@ -107,7 +109,7 @@ def analyse_account(term, country):
     account_data = process_json.process_user_data(data)
 
     if errtweets != None:
-        tweetset_info = tweetset_data(term, None, None, None, None)
+        tweetset_info = tweetset_data(term, None, None, None, None, None, None)
         most_used_data_info = None
         political_data_info = None
         authenticity_measures = None
@@ -117,7 +119,7 @@ def analyse_account(term, country):
         political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree, pol_summary)
         sentiment, sentiment_ratios, summary, strongest_emotions, emotion_summary = evaluate_emotions_sentiment(tweetset)
         
-        tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment, sentiment_ratios, summary)
+        tweetset_info = tweetset_data(term, typ, word_count, tweet_count, sentiment, sentiment_ratios, summary, most_retweeted)
         most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions, emotion_summary)
         if tweet_count < 20:
             tweetNumErr = "InsufficientTweets"
@@ -138,7 +140,7 @@ def analyse(term, country):
     if err != None:
         return err, None
     
-    err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count = fetch_tweetset_data(url, typ, parsed)
+    err, tweetset, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count, most_retweeted = fetch_tweetset_data(url, typ, parsed)
     
     if err != None:
         return err, None
@@ -147,7 +149,7 @@ def analyse(term, country):
     political_data_info = political_sentiment_data(dataset_country, statement, political_leaning_degree, pol_summary)
     sentiment, sentiment_ratios, summary, strongest_emotions, emotion_summary = evaluate_emotions_sentiment(tweetset)
     
-    tweetset_info = tweetset_data(term, word_count, tweet_count, sentiment, sentiment_ratios, summary)
+    tweetset_info = tweetset_data(term, typ, word_count, tweet_count, sentiment, sentiment_ratios, summary, most_retweeted)
     most_used_data_info = most_used_data(most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, strongest_emotions, emotion_summary)
     resultitem = tweetset_result(tweetset_info, most_used_data_info, political_data_info)
     
@@ -165,7 +167,7 @@ def fetch_tweetset_data(url, typ, parsed):
     if err != None:
         return err, None, None, None, None, None, None, None
     
-    tweet_list, word_list, emoji_list, hashtag_list, mention_list, tweet_count, last_id = process_json.process_json_tweetset(tweets, [], [], [], [], [])
+    tweet_list, word_list, emoji_list, hashtag_list, mention_list, tweet_count, last_id, most_retweeted = process_json.process_json_tweetset(tweets, [], [], [], [], [], 0)
     
     extra_tweet_count = tweet_count
     for item in range(2):
@@ -179,7 +181,8 @@ def fetch_tweetset_data(url, typ, parsed):
             if err != None:
                 return err, None, None, None, None, None, None, None, None
             
-            tweet_list, word_list, emoji_list, hashtag_list, mention_list, extra_tweet_count, last_id = process_json.process_json_tweetset(more_tweets, tweet_list, word_list, emoji_list, hashtag_list, mention_list)
+            sum_likes_retweets = most_retweeted.like_count + most_retweeted.retweet_count
+            tweet_list, word_list, emoji_list, hashtag_list, mention_list, extra_tweet_count, last_id, most_retweeted = process_json.process_json_tweetset(more_tweets, tweet_list, word_list, emoji_list, hashtag_list, mention_list, sum_likes_retweets)
             tweet_count = tweet_count + extra_tweet_count
     
     most_used_words = handle_wordlist.get_n_most_frequent_items(word_list, 5)
@@ -187,7 +190,7 @@ def fetch_tweetset_data(url, typ, parsed):
     most_used_hashtags = handle_wordlist.get_n_most_frequent_items(hashtag_list, 5)
     most_tagged_users = handle_wordlist.get_n_most_frequent_items(mention_list, 5)
     word_count = handle_wordlist.unique_word_count(word_list)
-    return err, tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count
+    return err, tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count, most_retweeted
 
 # When running this file locally through the command line:
 # Take user search input

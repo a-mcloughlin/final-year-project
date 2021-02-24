@@ -13,25 +13,25 @@ class TestTwitter(unittest.TestCase):
         #print("twitter/requests.py get_tweets_for_tag TEST: SUCCESS")
         self.assertEqual(
             requests.get_tweets_for_tag("hash"), 
-            base_url + "&query=hash"
+            base_url + "&query=hash&tweet.fields=public_metrics"
         )
         
     def test_get_tweets_for_usr(self):
         self.assertEqual(
             requests.get_tweets_for_user("user"),  
-            base_url + "&query=from:user"
+            base_url + "&query=from:user&tweet.fields=public_metrics"
         )
         
     def test_get_tweets_for_tag_maxid(self):
         result = self.assertEqual(
             requests.get_tweets_for_tag_maxid("hash", 12345), 
-            base_url + "&query=hash" + until_tweet
+            base_url + "&query=hash" + until_tweet + "&tweet.fields=public_metrics"
         )
         
     def test_get_tweets_for_usr_maxid(self):
         self.assertEqual(
             requests.get_tweets_for_usr_maxid("user", 12345), 
-            base_url + "&query=from:user" + until_tweet
+            base_url + "&query=from:user" + until_tweet + "&tweet.fields=public_metrics"
         )
              
     def test_process_yaml_create_token(self):
