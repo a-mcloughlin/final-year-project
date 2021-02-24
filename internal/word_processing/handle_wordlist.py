@@ -43,6 +43,8 @@ def check_validity(word):
         return False
     if word == 'rt':
         return False
+    if word == 'amp':
+        return False
     if word in set(stopwords.words('english')):
         return False
     return True

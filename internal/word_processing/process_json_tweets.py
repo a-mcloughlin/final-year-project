@@ -44,8 +44,6 @@ def process_json_tweetset(json_file, tweet_list, word_list, emoji_list, hashtag_
                 most_retweeted = tweetstats(p['text'], retweet_count, like_count)
                 sum_likes_retweets = sum_temp
             
-            print("Retweets: "+str(retweet_count)+"\tLikes: "+str(like_count))
-            
         emoji_list = handle_wordlist.add_items_to_list(emojis, emoji_list)
         hashtag_list = handle_wordlist.add_items_to_list(hashtags, hashtag_list)
         mention_list = handle_wordlist.add_items_to_list(mentions, mention_list)
