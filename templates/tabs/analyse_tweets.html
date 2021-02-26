@@ -59,7 +59,17 @@
       </div>
       {% if result != None %}
       <div id="result_section_1">
-        <div style="text-align:center; padding-top:7.5px;">Search Term: <b>{{result.tweetsetInfo.term}}</b></div>
+        <div style="text-align:center; padding-top:7.5px; ">Search Term: <b>{{result.tweetsetInfo.term}}</b>
+        &nbsp;<a class="seetweetsbtn"
+            {% if result.tweetsetInfo.type == 'usr' %}
+              href="https://twitter.com/{{result.tweetsetInfo.term}}"
+            {% else  %}
+              href="https://twitter.com/search?q={{result.tweetsetInfo.term| urlencode }}&src=typed_query&f=live"
+            {% endif %}
+            target="_blank">
+            See Tweets
+          </a>
+        </div>
         <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
         <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.political_sentiment_data.dataset_country}}</b></div>
         <br>
@@ -153,7 +163,11 @@
                   {{result.tweetsetInfo.most_retweeted.retweet_count}}<br>
                   </div>
                 {% else %}
+                  {% if result.tweetsetInfo.type == 'usr' %}
                   {{result.tweetsetInfo.term}} has not written an original tweet, only retweeted tweets by others in the last 7 days
+                  {% elif result.tweetsetInfo.type == 'tag'  %}
+                  {{result.tweetsetInfo.term}} has had too many recent tweets to easily identify the most popular tweet
+                  {% endif %}
                 {% endif %}
             </td>
           </tr>
