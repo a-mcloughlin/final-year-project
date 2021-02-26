@@ -472,4 +472,17 @@ html {
     height: 15px;
 }
 
+.seetweetsbtn{
+    background:#908C8C; 
+    border-radius: 20rem; 
+    color: black; 
+    padding:2px 8px 2px 5px;
+    text-decoration: none;
+}
+
+.seetweetsbtn:hover {
+    background:#575757; 
+    color: white; 
+    text-decoration: none;
+}
 /* End */
