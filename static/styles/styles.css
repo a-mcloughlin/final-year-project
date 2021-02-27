@@ -14,8 +14,6 @@ html {
     padding-left: 10px !important;
     padding-right:10px !important;
     padding-top: 30px;
-    /* min-width: 100vw;
-    min-height: 100vh; */
     font-size: 13px;
 }
 .navbar{ 
@@ -114,7 +112,7 @@ html {
         display: none !important;
     }
     .nav-link{
-        width: 25vw !important;
+        width: 18vw !important;
     }
     
     .bigtab {
@@ -182,6 +180,18 @@ html {
     .sentimentEmojis {
         height: 14px;
         width: 14px;
+    }
+    .hometab {
+        margin-bottom: 30px;
+    }
+
+    .blarp {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    .tabcontainer {
+        margin-bottom: 4px !important;
     }
 }
 
@@ -484,5 +494,30 @@ html {
     background:#575757; 
     color: white; 
     text-decoration: none;
+}
+
+.hometd {
+    padding:0 15px;
+    border-left: 1px solid #616161 !important; 
+}
+
+.blarp{
+    background: #908C8C; 
+    padding: 10px;
+    border-top-right-radius: 1rem !important;
+    border-top-left-radius: 1rem !important;
+    margin-bottom: 6px !important;
+}
+.btabw {
+    border: 3px solid #908C8C !important; 
+    border-radius: 2rem !important;
+    padding: 10px;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+.tabcontainer {
+    margin-bottom: 6px;
+    text-align: center;
 }
 /* End */

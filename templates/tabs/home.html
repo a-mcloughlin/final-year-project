@@ -1,0 +1,121 @@
+
+{% extends 'base.html' %}
+{% block tab1 %}" style="background: #AFABAB; border-color: #AFABAB; font-weight: bold;{% endblock %}
+{% block tab2 %}{% endblock %}
+{% block tab3 %}{% endblock %}
+{% block tab4 %}{% endblock %}
+{% block content %}
+  <div class="bigtab">
+    <div style="text-align: center; font-size: 24px;">Twitter Analysis Application</div>
+    <div >The Twitter Analysis Application is a tool for analysing twitter data. Using the Twitter APIs, this application can fetch a set of tweets for a given hashtag or user handle, and draw conclusions based on that dataset. All data accessed is public, and conclusions made by the algorithm are not to be taken as certainties, only observations.</div>
+    <hr><br>
+    <div style="table-layout: fixed;" class="row">
+  
+      <div class="col-12 col-md-4 hometab" style="vertical-align:top;">
+        <div class="tabcontainer"><span class="blarp">Analyse Tweets</span></div>
+        <div class="btabw" style="height: 100%;">
+          Analyse a set of tweets for a given user handle or hashtag. For that set of tweets, determine:<br>
+          <ul>
+            <li>Tweet-set Sentiment</li>
+            <li>Tweet-set Political Leaning</li>
+            <li>Tweet-set Emotions</li>
+            <li>Most Popular Tweet</li>
+            <li>Most Used Emojis in Tweet-set</li>
+            <li>Most Used Words in Tweet-set</li>
+            <li>Most Used Hashtags in Tweet-set</li>
+          </ul>This data can be used to see interesting trends or patterns within a hashtag, and to observe interesting data about how public figures use twitter.<br>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 hometab" style="vertical-align:top;">
+        <div class="tabcontainer"><span class="blarp">Compare Tweets</span></div>
+        <div class="btabw" style="height: 100%;">
+          Analyse two sets of tweets for given user handles or hashtags side by side to see similarities and differences.<br>
+          <ul>
+            <li>Tweet-set Sentiment</li>
+            <li>Tweet-set Political Leaning</li>
+            <li>Tweet-set Emotions</li>
+            <li>Most Popular Tweet</li>
+            <li>Most Used Emojis in Tweet-set</li>
+            <li>Most Used Words in Tweet-set</li>
+            <li>Most Used Hashtags in Tweet-set</li>
+          </ul>This data can be used to see how different issues are discussed in different ways on twitter, and determine how different groups or political figures use different words, emotions and sentiments within their tweets
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 hometab" style="vertical-align:top;">
+        <div class="tabcontainer"><span class="blarp">Analyse Account</span></div>
+        <div class="btabw" style="height: 100%;">
+          Analyse a given public twitter user's account and recent activity.<br>
+          <ul>
+            <li>Tweet-set Sentiment</li>
+            <li>Tweet-set Political Leaning</li>
+            <li>Tweet-set Emotions</li>
+            <li>Most Popular Tweet</li>
+            <li>Most Used Emojis in Tweet-set</li>
+            <li>Most Used Words in Tweet-set</li>
+            <li>Most Used Hashtags in Tweet-set</li>
+          </ul>As well as:
+          <ul>
+            <li>Twitter User Account Info</li>
+            <li>Account Authenticity Probability</li>
+            <li>Bot type Probabilities</li>
+          </ul>
+        </div>
+      </div>
+    
+      <div class="col-12" style="margin-top:20px;">
+        <br><hr>
+        <div style="text-align: center; font-weight: bold;">Political Analysis Datasets</div>
+        <div>The dataset used in the Political Leaning prediction can be set based on country, since political discourse varies a lot across different countries. The data used to classify american politicians tends not to be very accurate at classifying Irish or politicians, since general speech, and especially political discourse, is very different in the different countries. The political analysis region selctor, shown below as an example, allows you to choose what the country from which the political database is gathered. The default 'Global' option is a collection of the databases for Ireland, the Uk and the US. This dataset can make general predictions, but will be less accurate on average at predicting the political leaning than the correct country datset for the set of tweets.</div>
+        <div style="text-align: center;">
+          <div class="col-12 col-md-6 btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="flex: 1; border-radius: 2px; padding-bottom: 10px; padding-top: 10px; margin-right:10px;">
+            <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;">
+              <b style="font-style: italic; pointer-events: none; ">Political Analysis Dataset&nbsp;</b>
+            </label>
+            <label class="btn btn-outline-dark form-check-label" for="ie" style="background:#efefef; border-left: 0px;">
+              <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none;" data-title-info="The dataset to use when predicting political leaning. Political discourse varies a lot between countries, seleting the right dataset to analyse with is thus very important.">
+                  <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+              </a>
+            </label>
+            <label class="btn btn-outline-dark form-check-label" for="ie" style="flex: 1; font-weight: bold;">
+              <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="ie" id="ie" style="display: none;"/>Ireland
+            </label>
+            <label class="btn btn-outline-dark form-check-label" for="uk" style="flex: 1; font-weight: bold;">
+              <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="uk" id="uk" style="display: none;"/>UK
+            </label>
+            <label class="btn btn-outline-dark form-check-label" for="us" style="flex: 1; font-weight: bold;">
+              <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="us" id="us" style="display: none;"/>US
+            </label>
+            <label class="btn btn-outline-dark form-check-label active" for="global" style="flex: 1; font-weight: bold;">
+              <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="global" id="global" style="display: none;" checked/>Global
+            </label>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div style="text-align: center; font-weight: bold;">Result Fields Explanations</div>
+      <div>The conclusions which this application draws based on the given twitter data are:</td></tr>
+      <div>
+        <ul>
+          <li>Tweet-set Sentiment: How Positive or negative the set of tweets are.</li>
+          <li>Tweet-set Political Leaning: Where this set of tweets falls on the spectrum from left/liberal to right/conservative. The political sphere to base this prediction on can be chose as Ireland, the UK, the US or Global.</li>
+          <li>Tweet-set Emotions: Each tweet is assigned a predominant emotion based on the words used. This is used to show the prevelence of various emotions within the set of tweets.</li>
+          <li>Most Popular Tweet: The Most Liked and retweeted tweet by the user or wihin the hashtag from the last 7 days.</li>
+          <li>Most Used Emojis in Tweet-set: The most frequently used emojis within the set of tweets.</li>
+          <li>Most Used Words in Tweet-set: The most frequently used words within the set of tweets.</li>
+          <li>Most Used Hashtags in Tweet-set: The most frequently used hashtags within the set of tweets.</li>
+        </ul>
+      </div>
+      <div>When analysing a twitter account, this additional data can be seen:</div>
+      <div>
+        <ul>
+          <li>Twitter User Account: The user photo, twitter bio, follower and following stats are shown,along with the account age and number of tweets made by the account.</li>
+          <li>Account info (If avaliable): If an account has its location set or a tweet pinned to the top of their twitter timeline, then those fields will also be shown.</li>
+          <li>Account Authenticity Probability: The probability of a twitter account being authentic, and not a bot, is calculated using Botometer based on the last 7 days of tweets.</li>
+          <li>Bot type Probabilities: The probability of the Account being any of 5 different types of common twitter bots.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

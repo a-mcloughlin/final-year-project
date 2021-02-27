@@ -18,7 +18,11 @@ def add_to_resultlist(resultitem, resultlist):
 # If nothing has been passed, display an empty html page
 @app.route("/")
 def hello():           
-    return render_template('tabs/analyse_tweets.html', result=resultitem)
+    return render_template('tabs/home.html', result=resultitem)
+
+@app.route("/home")
+def home():           
+    return render_template('tabs/home.html', result=resultitem)
 
 @app.route('/analyse_tweets')
 def analyse_tweets():
