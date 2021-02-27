@@ -5,8 +5,8 @@
 {% block tab3 %}{% endblock %}
 {% block tab4 %}{% endblock %}
 {% block content %}
-  <div class="bigtab">
-    <div style="text-align: center; font-size: 24px;">Twitter Analysis Application</div>
+  <div class="bigtab comparetab">
+    <div style="text-align: center; font-size: 20px;">Twitter Analysis Application</div>
     <div >The Twitter Analysis Application is a tool for analysing twitter data. Using the Twitter APIs, this application can fetch a set of tweets for a given hashtag or user handle, and draw conclusions based on that dataset. All data accessed is public, and conclusions made by the algorithm are not to be taken as certainties, only observations.</div>
     <hr><br>
     <div style="table-layout: fixed;" class="row">
@@ -68,6 +68,7 @@
         <br><hr>
         <div style="text-align: center; font-weight: bold;">Political Analysis Datasets</div>
         <div>The dataset used in the Political Leaning prediction can be set based on country, since political discourse varies a lot across different countries. The data used to classify american politicians tends not to be very accurate at classifying Irish or politicians, since general speech, and especially political discourse, is very different in the different countries. The political analysis region selctor, shown below as an example, allows you to choose what the country from which the political database is gathered. The default 'Global' option is a collection of the databases for Ireland, the Uk and the US. This dataset can make general predictions, but will be less accurate on average at predicting the political leaning than the correct country datset for the set of tweets.</div>
+        <br>
         <div style="text-align: center;">
           <div class="col-12 col-md-6 btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="flex: 1; border-radius: 2px; padding-bottom: 10px; padding-top: 10px; margin-right:10px;">
             <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;">
@@ -93,7 +94,8 @@
           </div>
         </div>
       </div>
-      <hr>
+      <div class="col-12">
+      <br><hr>
       <div style="text-align: center; font-weight: bold;">Result Fields Explanations</div>
       <div>The conclusions which this application draws based on the given twitter data are:</td></tr>
       <div>
@@ -116,6 +118,7 @@
           <li>Bot type Probabilities: The probability of the Account being any of 5 different types of common twitter bots.</li>
         </ul>
       </div>
+    </div>
     </div>
   </div>
 {% endblock %}
