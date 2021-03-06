@@ -18,7 +18,7 @@ def evaluate_politics(tweetset, country):
             political_prediction += 1
             
     political_prediction = political_prediction/len(tweetset)
-    
+    print("Pol Pred: "+str(political_prediction))
     statement, summary = interpret_data.describe_political_leaning(political_prediction)
     
     if country == 'ie':

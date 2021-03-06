@@ -272,9 +272,12 @@
                       </div>
                     {% endfor %}
                   </div>
-                  <div id="politicalLeaningDesc2" class="flex-wrap">
+                  <div id="politicalLeaningDesc2" style="font-size:12px;" class="flex-wrap">
                     {% for emotion in result.most_used_data.strongest_emotions %}
-                      <div class="Column"><div class="colour-inidicator" style="background-color: {{emotion.colour}};"></div><p class="legendlabel">{{emotion.name.capitalize()}}</p></div>
+                    <div class="Column">
+                      <div class="colour-inidicator" style="background-color: {{emotion.colour}};"></div>
+                      <p style="font-size:10px;" class="legendlabel">{{emotion.name.capitalize()}}</p>
+                    </div>
                     {% endfor %}
                   </div>
                 </td>
