@@ -30,13 +30,13 @@ class TestSentiment(unittest.TestCase):
     
     def test_describe_political_leaning(self):
         leaning = interpret_data.describe_political_leaning(-1.5)
-        self.assertEqual(leaning, ('More politically Left Leaning than Right Leaning', 'Left Leaning'))
+        self.assertEqual(leaning, ('The language used in these tweets is more Left leaning than Right leaning', 'Left Leaning'))
         
         leaning = interpret_data.describe_political_leaning(0)
         self.assertEqual(leaning, ('These tweets have no strong political leaning', 'No Strong Political Leaning'))
         
         leaning = interpret_data.describe_political_leaning(1.5)
-        self.assertEqual(leaning, ('More politically Right Leaning than Left Leaning', 'Right Leaning'))
+        self.assertEqual(leaning, ('The language used in these tweets is more Right leaning than Left leaning', 'Right Leaning'))
           
     def test_describe_sentiment(self):
         sentiment = interpret_data.describe_sentiment(0.64, 0.24, 0.13)

@@ -165,7 +165,7 @@ def fetch_tweetset_data(url, typ, parsed):
 
     tweets, err = run_twitter_request_fetch_tweets(url, "auth.yaml")
     if err != None:
-        return err, None, None, None, None, None, None, None
+        return err, None, None, None, None, None, None, None, None
     
     tweet_list, word_list, emoji_list, hashtag_list, mention_list, tweet_count, last_id, most_retweeted = process_json.process_json_tweetset(tweets, [], [], [], [], [], 0)
     
