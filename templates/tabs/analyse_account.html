@@ -309,6 +309,19 @@
                 </td>
               </tr>
               <tr class="tr-content-mid">
+                <td class="td-content-desc">Most Used Hashtags </td>
+                <td class="td-content-data">
+                  {% if result.most_used_data.most_used_hashtags != [] %}
+                    {% for item in result.most_used_data.most_used_hashtags %}
+                      {{item.word}}
+                      {% if not loop.last %},&nbsp;{%endif%}
+                    {% endfor %}
+                  {% else %}
+                    No hashtags used in the last 7 days of tweets<br>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr class="tr-content-mid">
                 <td class="td-content-desc">Most Tagged Accounts </td>
                 <td class="td-content-data">
                   {% if result.most_used_data.most_tagged_users != [] %}
