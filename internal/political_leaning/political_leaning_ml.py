@@ -25,7 +25,7 @@ def build_ml_model(country):
     elif country == "uk":
         data = pd.read_csv(r'datasets/ml_training/uk_parties_full_set.csv')
     elif country == "us":
-        data = pd.read_csv(r'datasets/ml_training/us_parties_full_set.csv')
+        data = pd.read_csv(r'datasets/ml_training/kaggle_US_dataset_modified.csv')
     else:
         data = pd.read_csv(r'datasets/ml_training/ie_uk_us_full_set.csv')
     
@@ -89,5 +89,3 @@ def store_models():
         model, word_count_vect = build_ml_model(country)
         ml_object = ml_model(model, word_count_vect)
         dump(ml_object, "datasets/ml_models/"+country+".joblib")
-
-store_models()
