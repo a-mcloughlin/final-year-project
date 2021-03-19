@@ -231,6 +231,19 @@
 						{% endif %}
 						</td>
 					</tr>
+					<tr class="tr-content-mid">
+						<td class="td-content-desc">Most Tagged Accounts </td>
+						<td class="td-content-data">
+						{% if result.most_used_data.most_tagged_users != [] %}
+							{% for item in result.most_used_data.most_tagged_users %}
+							{{item.word}}
+							{% if not loop.last %},&nbsp;{%endif%}
+							{% endfor %}
+						{% else %}
+							No accounts tagged used in the last 7 days of tweets<br>
+						{% endif %}
+						</td>
+					</tr>
 				</table>
            </div>
         <div Name="result_section_3_{{loop.index}}" style="text-align:center; padding-top: 10px;">

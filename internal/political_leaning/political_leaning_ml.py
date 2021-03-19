@@ -25,7 +25,7 @@ def build_ml_model(country):
     elif country == "uk":
         data = pd.read_csv(r'datasets/ml_training/uk_parties_full_set.csv')
     elif country == "us":
-        data = pd.read_csv(r'datasets/ml_training/kaggle_US_dataset_modified.csv')
+        data = pd.read_csv(r'datasets/ml_training/us_parties_full_set.csv')
     else:
         data = pd.read_csv(r'datasets/ml_training/ie_uk_us_full_set.csv')
     
