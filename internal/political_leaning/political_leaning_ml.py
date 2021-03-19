@@ -9,17 +9,25 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import chi2
 from sklearn.utils import resample
 from sklearn.svm import LinearSVC
+import pickle
+from joblib import dump, load
 
+# A python class to store the relevant data for a scikit learn machine learning model
+class ml_model:
+    def __init__(self, model, word_count_vect):  
+        self.model = model
+        self.word_count_vect = word_count_vect
+        
 # Build a Machine Learning Political Estimator Model from the dataset from the given country
 def build_ml_model(country):
     if country == "ie":
-        data = pd.read_csv(r'datasets/ie_parties_full_set.csv')
+        data = pd.read_csv(r'datasets/ml_training/ie_parties_full_set.csv')
     elif country == "uk":
-        data = pd.read_csv(r'datasets/uk_parties_full_set.csv')
+        data = pd.read_csv(r'datasets/ml_training/uk_parties_full_set.csv')
     elif country == "us":
-        data = pd.read_csv(r'datasets/kaggle_US_dataset_modified.csv')
+        data = pd.read_csv(r'datasets/ml_training/us_parties_full_set.csv')
     else:
-        data = pd.read_csv(r'datasets/ie_uk_us_full_set.csv')
+        data = pd.read_csv(r'datasets/ml_training/ie_uk_us_full_set.csv')
     
     data.columns = ['Tweet', 'Account', 'Score', 'Leaning']
     scaled_data = resample_data(data)
@@ -65,6 +73,21 @@ def resample_data(data):
 
 # Predict the class of a previously unseen text string
 # This will classify any string as liberal or conservative
-def predict_from_model(model, word_count_vect, text_data):
-    prediction = model.predict(word_count_vect.transform([text_data]))
+def predict_from_model(ml_model, word_count_vect, text_data):
+    prediction = ml_model.predict(word_count_vect.transform([text_data]))
     return prediction
+
+def retrieve_ml_model(country):
+    country_ml_object = load( "datasets/ml_models/"+ country +".joblib" ) 
+    model = country_ml_object.model
+    word_count_vect = country_ml_object.word_count_vect
+    return model, word_count_vect
+
+# build the set of ml models and store them as joblib files for faster processing
+def store_models():
+    for country in ['ie', 'uk', 'us','global']:
+        model, word_count_vect = build_ml_model(country)
+        ml_object = ml_model(model, word_count_vect)
+        dump(ml_object, "datasets/ml_models/"+country+".joblib")
+
+store_models()

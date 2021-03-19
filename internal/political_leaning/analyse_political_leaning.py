@@ -1,6 +1,6 @@
-from internal.political_leaning.political_leaning_ml import build_ml_model as build_ml_model ,predict_from_model as predict_from_model
+from internal.political_leaning.political_leaning_ml import retrieve_ml_model,predict_from_model
 import internal.word_processing.interpret_data as interpret_data
-
+        
 # From a set of tweets and a country code, predict the political leaning of the set of tweets
 # Classify each tweet with a political leaning, and get the predominant leaning
 # This variable is represented in the GUI using a guage.
@@ -8,7 +8,7 @@ import internal.word_processing.interpret_data as interpret_data
 def evaluate_politics(tweetset, country):
     
     political_prediction = 0
-    ml_model, word_count_vect = build_ml_model(country)
+    ml_model, word_count_vect = retrieve_ml_model(country)
     
     for tweet in tweetset:
         party = predict_from_model(ml_model, word_count_vect, tweet)

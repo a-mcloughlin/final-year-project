@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, send_from_directory, flash
+from internal.political_leaning.political_leaning_ml import ml_model
 from analyse import analyse, analyse_account
 import os
 import urllib
