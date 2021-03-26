@@ -115,6 +115,7 @@
                   <td class="td-content-data">{{result.account_data.pinned_tweet}}</td>
                 </tr>
               {% endif %}
+              {% if result.tweetsetInfo.most_retweeted != None %}
               <tr class="tr-content-mid">
                 <td class="td-content-desc">Most Popular Tweet
                   <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none" data-title="The most popular tweet {% if result.tweetsetInfo.type == 'usr' %}by {% elif result.tweetsetInfo.type == 'tag'  %}in {% endif %}{{result.tweetsetInfo.term}} {% if result.tweetsetInfo.tweet_count == 300 %} from the 300 most recent tweets {% else %} from the last 7 days {% endif %}">
@@ -135,6 +136,7 @@
                     {% endif %}
                 </td>
               </tr>
+              {% endif %}
               {% if result.authenticity_measures != None %}
                 <tr class="tr-content-mid">
                   <td style="text-align: center;" colspan="2" class="td-content-data"><b>{{result.authenticity_measures.probReal(result.authenticity_measures.average())}}%</b> Probability of <b>{{result.tweetsetInfo.term}}</b> being an authentic account</td>

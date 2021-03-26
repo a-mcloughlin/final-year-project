@@ -28,6 +28,7 @@ html {
     color: #000000; 
     cursor: pointer;
     padding-left: 5px;
+    width: 300px;
 }
 .nav-link{ 
     background: #908C8C; 
@@ -86,6 +87,12 @@ html {
     right:0;
 }
 
+@media (max-width: 1000px) {
+    
+    .navbar-brand {
+        display: none !important;
+    }
+}
 @media (max-width: 760px) {
     
     html {
