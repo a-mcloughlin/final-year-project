@@ -22,14 +22,14 @@
 				document.getElementById("loading").style.display = "block";
 				$(this).parent().trigger('submit')
 			}
-			function showLoadingCompare(i){
-				var myElem = document.getElementsByName("result_section_1_"+i)[0];
+			function showLoadingCompare(){
+
+				var myElem = document.getElementById("result_section_1");
 				if (myElem != null) {
 					myElem.style.display = "none";
-					document.getElementsByName("result_section_3_"+i)[0].style.display = "none";
-					document.getElementsByName("result_section_2_"+i)[0].style.display = "none";
+					document.getElementById("result_section_2").style.display = "none";
 				}
-				document.getElementsByName("loading_"+i)[0].style.display = "block";
+				document.getElementById("loading").style.display = "block";
 				$(this).parent().trigger('submit')
 			}
 			function showLoadingAnalyseAcc(){
@@ -45,7 +45,7 @@
 		</script>
 		<nav class="navbar navbar-expand-lg fixed-top flex-nowrap">  
         	<img src="{{ url_for('static',filename='images/fyplogo.png') }}" alt="logo" class="logo"/>
-  			<a class="navbar-brand" href="/analyse">  Twitter Analysis Application</a>
+  			<a class="navbar-brand" href="/home">  Twitter Analysis Application</a>
   			<div class="collapse navbar-collapse d-flex">     
   				<ul class="nav nav-tabs bd-navbar-nav .nav-justified" id="myTab" role="tablist">
 	  				<li class="nav-item">

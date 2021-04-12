@@ -5,9 +5,76 @@
 {% block tab3 %}" style="background: #AFABAB; border-color: #AFABAB; font-weight: bold;{% endblock %}
 {% block tab4 %}{% endblock %}
 {% block content %}
-    <div class="bigtab d-flex comparetab">
-      <div style="border: 0; table-layout: fixed;" class="two-row-fill row">
-        {% for result in resultlist %}
+  <div class="bigtab d-flex flex-column">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+	  {% if messages %}
+	    {% for category, message in messages %}
+		  <div class="{{category}} alert alert-warning alert-dismissible" role="alert">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			{{message}}
+		  </div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
+    <table style="border: 0; width:100%; table-layout: fixed;">
+      <tr style="border-bottom: 1px solid #a19d9c;">
+        <div class="row two-row-fill" >
+          <form action="compare_tweets" style="width:100%;" method="POST">
+            <input type="hidden" id='loopnum' name='loopnum' style="display:none;" value="1">
+              <div class="input-group mb-3" style="display: flex; flex-wrap: wrap;">
+                <input class="form-control inpcompare1" type="text" placeholder="Enter first #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query1" name="twitter_query1">
+                <input class="form-control inpcompare2" type="text" placeholder="Enter second #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query2" name="twitter_query2">
+                <span class="input-group-btn">
+                  <button class="submbtn btn btn-success rounded-pill-left rounded-pill-right" onclick="showLoadingCompare()">
+                    <i class="fa fa-search">Submit</i>
+                  </button>
+                </span>
+              </div>
+              <div class="col-12 col-md-6 btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="margin: auto; flex: 1; border-radius: 2px; padding-top: 5px; width:100%;">
+              <label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;" >
+                <b style="font-style: italic;">Political Analysis Dataset&nbsp;</b>
+              </label>
+              <label class="btn btn-outline-dark form-check-label" for="ie" style="background:#efefef; border-left: 0px;">
+                <a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none;" data-title-info="The dataset to use when predicting political leaning. Political discourse varies a lot between countries, seleting the right dataset to analyse with is thus very important.">
+                    <img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
+                </a>
+              </label>
+              <label class="btn btn-outline-dark form-check-label" for="ie" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="ie" id="ie" style="display: none;"/>Ireland
+              </label>
+              <label class="btn btn-outline-dark form-check-label" for="uk" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="uk" id="uk" style="display: none;"/>UK
+              </label>
+              <label class="btn btn-outline-dark form-check-label" for="us" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="us" id="us" style="display: none;"/>US
+              </label>
+              <label class="btn btn-outline-dark form-check-label active" for="global" style="flex: 1; font-weight: bold;">
+                <input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="global" id="global" style="display: none;" checked/>Global
+              </label>
+            </div>
+          </form>
+        </div>  <label for="twitter_query" style="text-align:center; padding-left:10px;padding-bottom: 10px; padding-top: 10px; ">Click 'Submit' to compare the tweets from the User accounts or Hashtags</label>
+            
+        <div style="border-bottom: 1px solid #a19d9c; padding-top:7.5px;"/>
+      </tr>
+      <tr>
+    <div id="result_section_2" style="text-align:center; padding-top:10px;">
+    {% if compare != None %}
+      <b>{{compare.term1}}</b>{{compare.tweetcount}}<b>{{compare.term2}}</b><br>
+      The tweets {% if compare.type1 == 'usr' %}by {% elif compare.type1== 'tag'  %}in {% endif %}<b>{{compare.term1}}</b>{{compare.sentiment}}{% if compare.type2 == 'usr' %}by {% elif compare.type2== 'tag'  %}in {% endif %}<b>{{compare.term2}}</b><br>
+      The tweets {% if compare.type1 == 'usr' %}by {% elif compare.type1== 'tag'  %}in {% endif %}<b>{{compare.term1}}</b>{{compare.pol_leaning}}{% if compare.type2 == 'usr' %}by {% elif compare.type2== 'tag'  %}in {% endif %}<b>{{compare.term2}}</b><br>
+    {% endif %}
+      </div>
+      </tr>
+    </table>
+    <div id="loading" style="display: none;">
+      <img class="loadingImg" src="{{ url_for('static',filename='images/loading-gif.gif') }}" alt="loading"/>
+    </div>
+    <br>
+    <div id="result_section_1">
+    <div style="border: 0; table-layout: fixed;" class="two-row-fill row">
+    {% for result in resultlist %}
+    {% if result != None %}
 			{% if loop.index == 1 %}
 				<div class="col-12 col-md-6 compare-content1">
 				{% set column = "column1"%}
@@ -15,70 +82,8 @@
 				<div class="col-12 col-md-6 compare-content2">
 				{% set column = "column2"%}
 			{%endif%}
-			{% with messages = get_flashed_messages(category_filter=[column+"_info"]) %}
-				{% if messages %}
-					{% for message in messages %}
-					<div class="info alert alert-warning alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">×</span></button>
-						{{message}}
-					</div>
-					{% endfor %}
-				{% endif %}
-			{% endwith %}
-			{% with messages = get_flashed_messages(category_filter=[column+"_error"]) %}
-				{% if messages %}
-					{% for message in messages %}
-					<div class="error alert alert-warning alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">×</span></button>
-						{{message}}
-					</div>
-					{% endfor %}
-				{% endif %}
-			{% endwith %}
-            <form action="compare_tweets" style="width:100%;" method="POST">
-            <input type="hidden" id='loopnum' name='loopnum' style="display:none;" value="{{loop.index}}">
-              <div class="input-group mb-3">
-                <input class="rounded-pill-left form-control" type="text" style="width:50%;" placeholder="Enter #tag or @user" aria-label="query" aria-describedby="basic-addon2"  id="twitter_query" name="twitter_query">
-                <span class="input-group-btn">
-            	  <button class="btn btn-success rounded-pill-right" style="padding-right: 15px;" onclick="showLoadingCompare({{loop.index}})">
-                    <i class="fa fa-search">Submit</i>
-                  </button>
-                </span>
-                <br>
-              </div>
-			  <div class="btn-group btn-group-sm biggroup" role="group" data-toggle="buttons" style="width:100%; flex: 1; border-radius: 2px; padding-bottom: 10px; padding-top: 10px; margin-right:10px;">
-				<label class="btn btn-outline-dark form-check-label" style="border-top-left-radius: 50rem; border-bottom-left-radius: 50rem;  pointer-events: none; background:#efefef; padding-left:10px;" >
-					<b style="font-style: italic;">Political Analysis Dataset&nbsp;</b>
-				</label>
-				<label class="btn btn-outline-dark form-check-label" for="ie" style="background:#efefef; border-left: 0px;">
-					<a class="hoverInfo" style="width: 15px;color:#000000;text-decoration:none;" data-title-info="The dataset to use when predicting political leaning. Political discourse varies a lot between countries, seleting the right dataset to analyse with is thus very important.">
-						<img src="{{ url_for('static',filename='images/info_icon.png') }}" alt="Verified" class="informational_icon"/>
-					</a>
-				</label>
-				<label class="btn btn-outline-dark form-check-label" for="ie" style="flex: 1; font-weight: bold;">
-					<input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="ie" id="ie" style="display: none;"/>Ireland
-				</label>
-				<label class="btn btn-outline-dark form-check-label" for="uk" style="flex: 1; font-weight: bold;">
-					<input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="uk" id="uk" style="display: none;"/>UK
-				</label>
-				<label class="btn btn-outline-dark form-check-label" for="us" style="flex: 1; font-weight: bold;">
-					<input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="us" id="us" style="display: none;"/>US
-				</label>
-				<label class="btn btn-outline-dark form-check-label active" for="global" style="flex: 1; font-weight: bold;">
-					<input class="btn-check" type="radio" name="countryDataset" autocomplete="off"  value="global" id="global" style="display: none;" checked/>Global
-				</label>
-			  </div>
-              <label for="twitter_query">Click 'Submit' to analyse the tweets within the User account or Hashtag:</label>
-            </form>
-            <hr>
-			<div Name="loading_{{loop.index}}" style="display: none;">
-				<img class="loadingImg" src="{{ url_for('static',filename='images/loading-gif.gif') }}" alt="loading"/>
-			</div>
-            {% if result != None %}
       		<div Name="result_section_1_{{loop.index}}">
-              	<div style="text-align:center; padding-top:7.5px; ">Search Term: <b>{{result.tweetsetInfo.term}}</b>
+          <div style="text-align:center; padding-top:7.5px; ">Search Term: <b>{{result.tweetsetInfo.term}}</b>
 				&nbsp;<a class="seetweetsbtn"
 					{% if result.tweetsetInfo.type == 'usr' %}
 					href="https://twitter.com/{{result.tweetsetInfo.term}}"
@@ -89,9 +94,9 @@
 					See Tweets
 				</a>
 				</div>
-			  	<div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
-             	<div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.political_sentiment_data.dataset_country}}</b></div>
-			  	<br>
+			  <div style="text-align:center;">Found <b>{{result.tweetsetInfo.tweet_count}} tweets</b> from the last 7 days with <b>{{result.tweetsetInfo.word_count}}</b> unique words used</div>
+        <div style="text-align:center;">Politics Analysed with a dataset from <b>{{result.political_sentiment_data.dataset_country}}</b></div>
+			  <br>
 				<table Name="result_section_2_{{loop.index}}" style="width:100%;">
 					<tr>
 						<td class="td-content-desc">Sentiment
@@ -246,7 +251,7 @@
 					</tr>
 				</table>
            </div>
-        <div Name="result_section_3_{{loop.index}}" style="text-align:center; padding-top: 10px;">
+        <div Name="result_section_3_1" style="text-align:center; padding-top: 10px;">
           <a class="btn btn-primary" 
           	href="https://twitter.com/intent/tweet?text=Analysis%20of%20{{result.tweetsetInfo.term | urlencode }}%3A%0ASentiment%3A%20%20%20%20%20%20%09{{result.tweetsetInfo.summary | urlencode }}%0APolitics%3A%20%20%20%20%20%20%20%20%20%09{{result.political_sentiment_data.pol_summary | urlencode }}%0AStrongest%20Emotions%3A%20{% for item in result.most_used_data.emotion_summary %}{{item | urlencode }}{% if not loop.last %},&nbsp;{%endif%}{% endfor %}%0AMost%20Used%20Words%3A%20%20%20%20{% for item in result.most_used_data.most_used_words %}{{item.word | urlencode }}{% if not loop.last %},&nbsp;{%endif%}{% endfor %}{% if result.most_used_data.most_used_emojis != [] %}%0AMost%20Used%20Emojis%3A%20%20%20{% for item in result.most_used_data.most_used_emojis %}{{item.word | urlencode }}{% if not loop.last %},&nbsp;{% else %}&#010;{%endif%}{% endfor %}{% endif %}%0AAnalysed%20with%3A%20%09%20%20%23TwitterAnalysisApplication" 
          	target="_blank">
@@ -254,9 +259,10 @@
             	Share on Twitter
           </a>
         </div>
-            {% endif %}
-          </div>
+        {% endif %}
+        </div>
         {% endfor %}
-      </div>
+  </div>
+  </div>
   </div>
 {% endblock %}

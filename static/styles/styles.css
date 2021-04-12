@@ -200,8 +200,32 @@ html {
     .tabcontainer {
         margin-bottom: 4px !important;
     }
+    .inpcompare1 {
+        margin-right:10px;
+        border-top-left-radius: 50rem !important;
+        border-bottom-left-radius: 50rem !important;
+        border-top-right-radius: 50rem !important;
+        border-bottom-right-radius: 50rem !important;
+        flex: 70% !important;
+    }
+
+    .inpcompare2 {
+        margin-top:5px;
+        border-top-left-radius: 50rem !important;
+        border-bottom-left-radius: 50rem !important;
+        border-top-right-radius: 50rem !important;
+        border-bottom-right-radius: 50rem !important;
+        flex: 70% !important;
+    }
+    .submbtn{
+        margin-top:5px;
+    }
 }
 
+.submbtn{
+    margin-right:10px;
+    margin-left:10px;
+}
 @media (min-width: 761px) {
     #politicalLeaningDesc1 {
         position: absolute;
@@ -264,6 +288,16 @@ html {
     .sentimentEmojis {
         height: 30px;
         width: 30px;
+    }
+    
+    .inpcompare1 {
+        border-top-left-radius: 50rem !important;
+        border-bottom-left-radius: 50rem !important;
+    }
+
+    .inpcompare2 {
+        border-top-right-radius: 50rem !important;
+        border-bottom-right-radius: 50rem !important;
     }
 }
 
@@ -527,4 +561,5 @@ html {
     margin-bottom: 6px;
     text-align: center;
 }
+
 /* End */

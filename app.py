@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, send_from_directory, flash
 from internal.political_leaning.political_leaning_ml import ml_model
-from analyse import analyse, analyse_account
+from analyse import analyse, analyse_account, compare_results
 import os
 import urllib
 from markupsafe import Markup
 resultlist = [None,None]
 resultitem = None
+compare=None
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -59,39 +60,56 @@ def analyseQuery():
 @app.route('/compare_tweets')
 def compare():
     resultitem = None
-    return render_template('tabs/compare_tweets.html', resultlist=resultlist)
+    return render_template('tabs/compare_tweets.html', resultlist=resultlist, compare=None)
 
-def compare_err(msg, column):
-    flash(msg, "column"+column+"_error")
-    return render_template('tabs/compare_tweets.html', resultlist=resultlist) 
+def compare_err(msg):
+    flash(msg, "error")
+    return render_template('tabs/compare_tweets.html', resultlist=resultlist, compare=None)
 
 # If a request has been made, render the results on the page
 @app.route('/compare_tweets', methods=['POST'])
 def compareQuery():
-    term = request.form.get('twitter_query', None)
-    lp = request.form.get('loopnum', 0)
-    
-    if len(term) == 0:
-        return compare_err("You must add a search query", lp)
+    term1 = request.form.get('twitter_query1', None)
+    term2 = request.form.get('twitter_query2', None)
     
     country = request.form.get('countryDataset', 'global')
-    result, err = analyse(term, country)
-    
-    if result == "noHashorAt":
-        return compare_err("You must enter a #tag or @user, please try again", lp)
-    
-    elif result == "noTweetsFound":
-        return compare_err("No tweets found for this query, please try again",lp)
-      
-    if lp == '1':
-        resultlist[0] = result
-    elif lp == '2':
-        resultlist[1] = result
         
-    if err != None:
-        flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result.tweetsetInfo.term), "column"+lp+"_info")
+    if len(term1) == 0: 
+        if len(term2) == 0:
+            compare = None
+            return compare_err("You must add a search query in at least one of the input fields")
     
-    return render_template('tabs/compare_tweets.html', resultlist=resultlist)   
+    if len(term1) != 0:
+        result1, err = analyse(term1, country)    
+        if err != None:
+            flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result1.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result1.tweetsetInfo.term))
+        
+        if result1 == "invalidSearchQuery":
+            return compare_err(term1+" is not a valid Twitter hashtag or user handle, please try again")
+        elif result1 == "noHashorAt":
+            return compare_err("You must enter a #tag or @user  in the first input field, please try again")                        
+        elif result1 == "noTweetsFound":
+            return compare_err("No tweets found for the query "+term1+", please try again")
+        resultlist[0] = result1
+       
+    if len(term2) != 0: 
+        result2, err = analyse(term2, country)
+        if err != None:
+            flash("Analysing fewer than 20 tweets will lead to less accurate results. Only "+str(result2.tweetsetInfo.tweet_count)+" tweets analysed for "+str(result2.tweetsetInfo.term))
+        
+        if result2 == "invalidSearchQuery":
+            return compare_err(term2+" is not a valid Twitter hashtag or user handle, please try again")
+        elif result2 == "noHashorAt":
+            return compare_err("You must enter a #tag or @user in input  second input field, please try again")
+        elif result2 == "noTweetsFound":
+            return compare_err("No tweets found for this query "+term2+", please try again")
+        resultlist[1] = result2
+    print(resultlist[0])
+    print(resultlist[1])
+    compare = compare_results(resultlist[0], resultlist[1], country)
+
+        
+    return render_template('tabs/compare_tweets.html', resultlist=resultlist, compare=compare)   
 
 @app.route('/analyse_account')
 def analyse_acc():
