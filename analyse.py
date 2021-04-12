@@ -192,6 +192,67 @@ def fetch_tweetset_data(url, typ, parsed):
     word_count = handle_wordlist.unique_word_count(word_list)
     return err, tweet_list, most_used_words, most_used_emojis, most_used_hashtags, most_tagged_users, word_count, tweet_count, most_retweeted
 
+# A class to store the data for a comparison bewteen 2 sets of tweets 
+class comparison:  
+    def __init__(self, term1, term2, type1, type2, tweetcount, sentiment, pol_leaning, dataset):  
+        self.term1 = term1
+        self.term2 = term2
+        self.type1 = type1
+        self.type2 = type2
+        self.tweetcount = tweetcount
+        self.sentiment = sentiment
+        self.pol_leaning = pol_leaning
+        self.dataset = dataset
+
+# Compare the results of 2 seperate queries 
+def compare_results(field1, field2, country):
+    
+    if field1 == None:
+        compare = None
+    elif field2 == None:
+        compare = None
+    else:
+        f1 = field1.tweetsetInfo.term
+        f2 = field2.tweetsetInfo.term
+        
+        type1, parsed = check_type(f1)
+        type2, parsed = check_type(f2)
+        
+        if (field1.tweetsetInfo.tweet_count > field2.tweetsetInfo.tweet_count):
+            tweetcount = " has "+str(field1.tweetsetInfo.tweet_count-field2.tweetsetInfo.tweet_count)+" more tweets in the last 7 days than "
+        elif (field2.tweetsetInfo.tweet_count > field1.tweetsetInfo.tweet_count):
+            tweetcount = " has "+str(field2.tweetsetInfo.tweet_count-field1.tweetsetInfo.tweet_count)+" fewer tweets in the last 7 days than "
+        elif (field1.tweetsetInfo.tweet_count == field2.tweetsetInfo.tweet_count):
+            tweetcount = " has the same number of feched tweets in the last 7 days as "
+            
+        f1pos = field1.tweetsetInfo.sentiment_ratios[4] + (field1.tweetsetInfo.sentiment_ratios[1]/2)
+        f2pos = field2.tweetsetInfo.sentiment_ratios[4] + (field2.tweetsetInfo.sentiment_ratios[1]/2)
+        if (f1pos > f2pos):
+            sentiment = " from the last 7 days than are more positive in sentiment than those  "
+        elif (f2pos > f1pos):
+            sentiment = " from the last 7 days than are less positive in sentiment than those  "
+        elif (f2pos == f2pos):
+            sentiment = " from the last 7 days are of similar overall sentiment to those "
+            
+        if (field2.political_sentiment_data.political_leaning_degree > field1.political_sentiment_data.political_leaning_degree):
+            pol_leaning = " from the last 7 days than are more left-leaning than those "
+        elif (field1.political_sentiment_data.political_leaning_degree > field2.political_sentiment_data.political_leaning_degree):
+            pol_leaning = " from the last 7 days than are more right-leaning than those "
+        elif ((abs(field1.political_sentiment_data.political_leaning_degree - field2.political_sentiment_data.political_leaning_degree)<10)):
+            pol_leaning = " from the last 7 days are of similar political leaning to those "
+        print(abs(field1.political_sentiment_data.political_leaning_degree - field2.political_sentiment_data.political_leaning_degree))
+            
+        dataset_country="global"
+        if country == 'ie':
+            dataset_country = "Ireland"
+        elif country == 'uk':
+            dataset_country = "The United Kingdom"
+        elif country == 'us':
+            dataset_country = "The United States of America"       
+            
+        compare = comparison(f1, f2, type1, type2, tweetcount, sentiment, pol_leaning, dataset_country)
+    return compare
+
 # When running this file locally through the command line:
 # Take user search input
 # Make twitter request
