@@ -104,8 +104,7 @@ def compareQuery():
         elif result2 == "noTweetsFound":
             return compare_err("No tweets found for this query "+term2+", please try again")
         resultlist[1] = result2
-    print(resultlist[0])
-    print(resultlist[1])
+    
     compare = compare_results(resultlist[0], resultlist[1], country)
 
         
